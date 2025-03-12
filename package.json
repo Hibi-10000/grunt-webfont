@@ -25,7 +25,8 @@
     "test": "grunt --stack"
   },
   "engines": {
-    "node": ">=0.12.0"
+    "node": ">=0.12.0",
+    "pnpm": ">=10"
   },
   "dependencies": {
     "async": "~1.5.2",

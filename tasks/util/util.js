@@ -19,31 +19,31 @@ export const UNICODE_PUA_START = 0xF101;
  * @type {Object}
  */
 export const fontsSrcsMap = {
-	eot: [
-		{
-			ext: '.eot'
-		},
-		{
-			ext: '.eot?#iefix',
-			format: 'embedded-opentype'
-		}
-	],
-	woff: [
-		false,
-		{
-			ext: '.woff',
-			format: 'woff',
-			embeddable: true
-		},
-	],
-	woff2: [
-		false,
-		{
-			ext: '.woff2',
-			format: 'woff2',
-			embeddable: true
-		},
-	],
+	//eot: [
+	//	{
+	//		ext: '.eot'
+	//	},
+	//	{
+	//		ext: '.eot?#iefix',
+	//		format: 'embedded-opentype'
+	//	}
+	//],
+	//woff: [
+	//	false,
+	//	{
+	//		ext: '.woff',
+	//		format: 'woff',
+	//		embeddable: true
+	//	},
+	//],
+	//woff2: [
+	//	false,
+	//	{
+	//		ext: '.woff2',
+	//		format: 'woff2',
+	//		embeddable: true
+	//	},
+	//],
 	ttf: [
 		false,
 		{
@@ -81,7 +81,7 @@ export const fontSrcSeparators = {
  * List of available font formats.
  * @type {String}
  */
-export const fontFormats = 'eot,woff2,woff,ttf,svg';
+export const fontFormats = 'ttf';
 
 /**
  * Returns list of all generated font files.

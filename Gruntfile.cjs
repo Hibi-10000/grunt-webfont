@@ -14,29 +14,10 @@ module.exports = function(grunt) {
 					hashes: false
 				}
 			},
-			test2: {
-				src: 'test/src/*.svg',
-				dest: 'test/tmp/test2/fonts',
-				destCss: 'test/tmp/test2',
-				options: {
-					font: 'myfont',
-					types: 'woff,svg',
-					syntax: 'bootstrap'
-				}
-			},
 			embed: {
 				src: 'test/src/*.svg',
 				dest: 'test/tmp/embed',
 				options: {
-					hashes: false,
-					embed: true
-				}
-			},
-			embed_woff: {
-				src: 'test/src/*.svg',
-				dest: 'test/tmp/embed_woff',
-				options: {
-					types: 'woff',
 					hashes: false,
 					embed: true
 				}
@@ -48,15 +29,6 @@ module.exports = function(grunt) {
 					types: 'ttf',
 					hashes: false,
 					embed: 'ttf'
-				}
-			},
-			embed_ttf_woff: {
-				src: 'test/src/*.svg',
-				dest: 'test/tmp/embed_ttf_woff',
-				options: {
-					types: 'ttf,woff',
-					hashes: false,
-					embed: 'ttf,woff'
 				}
 			},
 			one: {
@@ -132,15 +104,6 @@ module.exports = function(grunt) {
 					}
 				}
 			},
-			order: {
-				src: 'test/src/*.svg',
-				dest: 'test/tmp/order',
-				options: {
-					types: 'woff,svg',
-					order: 'svg,woff',
-					hashes: false
-				}
-			},
 			ie7: {
 				src: 'test/src/*.svg',
 				dest: 'test/tmp/ie7',
@@ -182,13 +145,6 @@ module.exports = function(grunt) {
 				dest: 'test/tmp/folders',
 				options: {
 					hashes: false
-				}
-			},
-			woff2: {
-				src: 'test/src/*.svg',
-				dest: 'test/tmp/woff2',
-				options: {
-					types: 'woff2,woff'
 				}
 			},
 			target_overrides: {

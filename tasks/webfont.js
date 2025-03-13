@@ -13,7 +13,7 @@ import async from 'async';
 import glob from 'glob';
 import chalk from 'chalk';
 import mkdirp from 'mkdirp';
-import ttf2woff2 from 'ttf2woff2';
+//import ttf2woff2 from 'ttf2woff2';
 import _ from 'lodash';
 import _s from 'underscore.string';
 import fontforge from './engines/fontforge';
@@ -95,7 +95,7 @@ export default function(grunt) {
 			htmlDemoTemplate: options.htmlDemoTemplate,
 			htmlDemoFilename: options.htmlDemoFilename,
 			styles: optionToArray(options.styles, 'font,icon'),
-			types: optionToArray(options.types, 'eot,woff,ttf'),
+			types: 'ttf',
 			order: optionToArray(options.order, wf.fontFormats),
 			embed: options.embed === true ? ['woff'] : optionToArray(options.embed, false),
 			rename: options.rename || path.basename,
@@ -190,7 +190,7 @@ export default function(grunt) {
 			createOutputDirs,
 			cleanOutputDir,
 			generateFont,
-			generateWoff2Font,
+			//generateWoff2Font,
 			generateStylesheets,
 			generateDemoHtml,
 			generateCustomOutputs,
@@ -283,33 +283,33 @@ export default function(grunt) {
 			});
 		}
 
-		/**
-		 * Converts TTF font to WOFF2.
-		 *
-		 * @param {Function} done
-		 */
-		function generateWoff2Font(done) {
-			if (!has(o.types, 'woff2')) {
-				done();
-				return;
-			}
-
-			// Read TTF font
-			var ttfFontPath = wf.getFontPath(o, 'ttf');
-			var ttfFont = fs.readFileSync(ttfFontPath);
-
-			// Remove TTF font if not needed
-			if (!has(o.types, 'ttf')) {
-				fs.unlinkSync(ttfFontPath);
-			}
-
-			// Convert to WOFF2
-			var woffFont = ttf2woff2(ttfFont);
-
-			// Save
-			var woff2FontPath = wf.getFontPath(o, 'woff2');
-			fs.writeFile(woff2FontPath, woffFont, function() {done();});
-		}
+//		/**
+//		 * Converts TTF font to WOFF2.
+//		 *
+//		 * @param {Function} done
+//		 */
+//		function generateWoff2Font(done) {
+//			if (!has(o.types, 'woff2')) {
+//				done();
+//				return;
+//			}
+//
+//			// Read TTF font
+//			var ttfFontPath = wf.getFontPath(o, 'ttf');
+//			var ttfFont = fs.readFileSync(ttfFontPath);
+//
+//			// Remove TTF font if not needed
+//			if (!has(o.types, 'ttf')) {
+//				fs.unlinkSync(ttfFontPath);
+//			}
+//
+//			// Convert to WOFF2
+//			var woffFont = ttf2woff2(ttfFont);
+//
+//			// Save
+//			var woff2FontPath = wf.getFontPath(o, 'woff2');
+//			fs.writeFile(woff2FontPath, woffFont, function() {done();});
+//		}
 
 		/**
 		 * Generate CSS

@@ -4,19 +4,19 @@
  * @requires fontforge, ttfautohint 1.00+ (optional), eotlitetool.py
  * @author Artem Sapegin (http://sapegin.me)
  */
+'use strict';
 
-module.exports = function(o, allDone) {
-	'use strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { exec } from 'node:child_process';
+import temp from 'temp';
+import chalk from 'chalk';
+import _ from 'lodash';
+import winston from 'winston';
+import wf from '../util/util';
 
-	var fs = require('fs');
-	var path = require('path');
-	var temp = require('temp');
-	var async = require('async');
-	var exec = require('child_process').exec;
-	var chalk = require('chalk');
-	var _ = require('lodash');
-	var logger = o.logger || require('winston');
-	var wf = require('../util/util');
+export default function(o, allDone) {
+	const logger = o.logger || winston;
 
 	// Copy source files to temporary directory
 	var tempDir = temp.mkdirSync();

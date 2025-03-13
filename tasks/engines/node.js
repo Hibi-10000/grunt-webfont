@@ -4,25 +4,30 @@
  * @requires ttfautohint 1.00+ (optional)
  * @author Artem Sapegin (http://sapegin.me)
  */
+'use strict';
 
-module.exports = function(o, allDone) {
-	'use strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { exec } from 'node:child_process';
+import { StringDecoder } from 'node:string_decoder';
+import async from 'async';
+import temp from 'temp';
+import _ from 'lodash';
+//@ts-ignore
+import svgicons2svgfont from 'svgicons2svgfont';
+//@ts-ignore
+import svg2ttf from 'svg2ttf';
+//@ts-ignore
+import ttf2woff from 'ttf2woff';
+//@ts-ignore
+import ttf2eot from 'ttf2eot';
+import SVGO from 'svgo';
+import MemoryStream from 'memorystream';
+import winston from 'winston';
+import wf from '../util/util';
 
-	var fs = require('fs');
-	var path = require('path');
-	var async = require('async');
-	var temp = require('temp');
-	var exec = require('child_process').exec;
-	var _ = require('lodash');
-	var StringDecoder = require('string_decoder').StringDecoder;
-	var svgicons2svgfont = require('svgicons2svgfont');
-	var svg2ttf = require('svg2ttf');
-	var ttf2woff = require('ttf2woff');
-	var ttf2eot = require('ttf2eot');
-	var SVGO = require('svgo');
-	var MemoryStream = require('memorystream');
-	var logger = o.logger || require('winston');
-	var wf = require('../util/util');
+export default function(o, allDone) {
+	var logger = o.logger || winston;
 
 	// @todo Ligatures
 
@@ -55,7 +60,7 @@ module.exports = function(o, allDone) {
 		ttf: function(done) {
 			getFont('svg', function(svgFont) {
 				var font = svg2ttf(svgFont, {});
-				font = new Buffer(font.buffer);
+				font = Buffer.from(font.buffer);
 				autohintTtfFont(font, function(hintedFont) {
 					// ttfautohint is optional
 					if (hintedFont) {
@@ -70,7 +75,7 @@ module.exports = function(o, allDone) {
 		woff: function(done) {
 			getFont('ttf', function(ttfFont) {
 				var font = ttf2woff(new Uint8Array(ttfFont), {});
-				font = new Buffer(font.buffer);
+				font = Buffer.from(font.buffer);
 				fonts.woff = font;
 				done(font);
 			});
@@ -84,7 +89,7 @@ module.exports = function(o, allDone) {
 		eot: function(done) {
 			getFont('ttf', function(ttfFont) {
 				var font = ttf2eot(new Uint8Array(ttfFont));
-				font = new Buffer(font.buffer);
+				font = Buffer.from(font.buffer);
 				fonts.eot = font;
 				done(font);
 			});

@@ -1,10 +1,11 @@
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
-var grunt = require('grunt');
-var parseXMLString = require('xml2js').parseString;
-var wf = require('../tasks/util/util');
+import fs from 'node:fs';
+import path from 'node:path';
+import grunt from 'grunt';
+import stylus from 'stylus';
+import { parseString as parseXMLString } from 'xml2js';
+import wf from '../tasks/util/util';
 
 function find(haystack, needle) {
 	return haystack.indexOf(needle) !== -1;
@@ -23,7 +24,7 @@ function findDuplicates(haystack, needles) {
 	return results;
 }
 
-exports.webfont = {
+export const webfont = {
 	test1: function(test) {
 		// All out files should be created and should not be empty
 		'woff,ttf,eot'.split(',').forEach(function(type) {
@@ -451,7 +452,6 @@ exports.webfont = {
 		m = styl.match(/^\/\//gm);
 		test.equal(m && m.length, 2, 'Single line comments.');
 
-		var stylus = require('stylus');
 		var s = stylus(styl);
 
 		s.render(function(err, css) {
@@ -470,7 +470,6 @@ exports.webfont = {
 
 		var styl = grunt.file.read('test/tmp/stylus_bootstrap/icons.styl');
 
-		var stylus = require('stylus');
 		var s = stylus(styl);
 
 		s.render(function(err, css) {

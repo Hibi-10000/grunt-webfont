@@ -3,7 +3,7 @@
     "enable": true,
   },
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "ESNext",
     "target": "ESNext",
     "lib": ["ESNext"],
     "checkJs": true,
@@ -11,6 +11,8 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
+		"resolveJsonModule": true
   },
+	"include": ["tasks/*", "test/*"],
   "exclude": ["node_modules"],
 }

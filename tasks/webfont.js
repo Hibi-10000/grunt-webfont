@@ -4,22 +4,23 @@
  * @requires ttfautohint
  * @author Artem Sapegin (http://sapegin.me)
  */
+'use strict';
 
-module.exports = function(grunt) {
-	'use strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import async from 'async';
+import glob from 'glob';
+import chalk from 'chalk';
+import mkdirp from 'mkdirp';
+import ttf2woff2 from 'ttf2woff2';
+import _ from 'lodash';
+import _s from 'underscore.string';
+import wf from './util/util';
 
-	var fs = require('fs');
-	var path = require('path');
-	var async = require('async');
-	var glob = require('glob');
-	var chalk = require('chalk');
-	var mkdirp = require('mkdirp');
-	var crypto = require('crypto');
-	var ttf2woff2 = require('ttf2woff2');
-	var _ = require('lodash');
-	var _s = require('underscore.string');
-	var wf = require('./util/util');
+import packageJson from '../package.json' with { type: "json" };
 
+export default function(grunt) {
 	grunt.registerMultiTask('webfont', 'Compile separate SVG files to webfont', function() {
 
 		/**
@@ -231,7 +232,6 @@ module.exports = function(grunt) {
 			md5.update(JSON.stringify(o));
 
 			// grunt-webfont version
-			var packageJson = require('../package.json');
 			md5.update(packageJson.version);
 
 			// Templates
@@ -277,19 +277,22 @@ module.exports = function(grunt) {
 		 * @param {Function} done
 		 */
 		function generateFont(done) {
-			var engine = require('./engines/' + o.engine);
-			engine(o, function(result) {
-				if (result === false) {
-					// Font was not created, exit
-					completeTask();
-					return;
-				}
+			/** @type Promise<import('./engines/node') | import('./engines/fontforge')> */
+			const engine = import('./engines/' + o.engine);
+			engine.then(function(engine) {
+				engine(o, function(result) {
+					if (result === false) {
+						// Font was not created, exit
+						completeTask();
+						return;
+					}
 
-				if (result) {
-					o = _.extend(o, result);
-				}
+					if (result) {
+						o = _.extend(o, result);
+					}
 
-				done();
+					done();
+				});
 			});
 		}
 

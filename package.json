@@ -19,8 +19,24 @@
   "bugs": {
     "url": "https://github.com/sapegin/grunt-webfont/issues"
   },
+  "keywords": [
+    "gruntplugin",
+    "font",
+    "webfont",
+    "fontforge",
+    "font-face",
+    "woff",
+    "woff2",
+    "ttf",
+    "svg",
+    "eot",
+    "truetype",
+    "css",
+    "icon"
+  ],
   "license": "MIT",
   "main": "tasks/webfont.js",
+  "type": "module",
   "scripts": {
     "test": "grunt --stack"
   },
@@ -71,20 +87,5 @@
   },
   "peerDependencies": {
     "grunt": ">=0.4.0"
-  },
-  "keywords": [
-    "gruntplugin",
-    "font",
-    "webfont",
-    "fontforge",
-    "font-face",
-    "woff",
-    "woff2",
-    "ttf",
-    "svg",
-    "eot",
-    "truetype",
-    "css",
-    "icon"
-  ]
+  }
 }

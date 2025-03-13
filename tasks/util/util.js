@@ -4,23 +4,21 @@
  * @author Artem Sapegin (http://sapegin.me)
  */
 
-var path = require('path');
-var glob = require('glob');
-
-var exports = {};
+import path from 'node:path';
+import glob from 'glob';
 
 /**
  * Unicode Private Use Area start.
  * http://en.wikipedia.org/wiki/Private_Use_(Unicode)
  * @type {Number}
  */
-exports.UNICODE_PUA_START = 0xF101;
+export const UNICODE_PUA_START = 0xF101;
 
 /**
  * @font-face’s src values generation rules.
  * @type {Object}
  */
-exports.fontsSrcsMap = {
+export const fontsSrcsMap = {
 	eot: [
 		{
 			ext: '.eot'
@@ -67,7 +65,7 @@ exports.fontsSrcsMap = {
  * CSS fileaname prefixes: _icons.scss.
  * @type {Object}
  */
-exports.cssFilePrefixes = {
+export const cssFilePrefixes = {
 	_default: '',
 	sass: '_',
 	scss: '_'
@@ -77,7 +75,7 @@ exports.cssFilePrefixes = {
  * @font-face’s src parts seperators.
  * @type {Object}
  */
-exports.fontSrcSeparators = {
+export const fontSrcSeparators = {
 	_default: ',\n\t\t',
 	styl: ', '
 };
@@ -86,7 +84,7 @@ exports.fontSrcSeparators = {
  * List of available font formats.
  * @type {String}
  */
-exports.fontFormats = 'eot,woff2,woff,ttf,svg';
+export const fontFormats = 'eot,woff2,woff,ttf,svg';
 
 /**
  * Returns list of all generated font files.
@@ -94,7 +92,7 @@ exports.fontFormats = 'eot,woff2,woff,ttf,svg';
  * @param {Object} o Options.
  * @return {Array}
  */
-exports.generatedFontFiles = function(o) {
+export const generatedFontFiles = function(o) {
  	var mask = '*.{' + o.types + '}';
 	return glob.sync(path.join(o.dest, o.fontFilename + mask));
 };
@@ -106,9 +104,17 @@ exports.generatedFontFiles = function(o) {
  * @param {String} type Font type (see `wf.fontFormats`).
  * @return {String}
  */
-exports.getFontPath = function(o, type) {
+export const getFontPath = function(o, type) {
 	return path.join(o.dest, o.fontFilename + '.' + type);
 };
 
 // Expose
-module.exports = exports;
+export default {
+	UNICODE_PUA_START,
+	fontsSrcsMap,
+	cssFilePrefixes,
+	fontSrcSeparators,
+	fontFormats,
+	generatedFontFiles,
+	getFontPath
+}

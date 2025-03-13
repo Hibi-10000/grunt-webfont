@@ -1,0 +1,16 @@
+{
+  "typeAcquisition": {
+    "enable": true,
+  },
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "checkJs": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+  },
+  "exclude": ["node_modules"],
+}

@@ -54,9 +54,51 @@ importers:
         specifier: ~2.1.1
         version: 2.1.1
     devDependencies:
+      '@types/async':
+        specifier: ^1.4.29
+        version: 1.4.29
+      '@types/chalk':
+        specifier: ^0.4.31
+        version: 0.4.31
+      '@types/glob':
+        specifier: ^7.2.0
+        version: 7.2.0
+      '@types/grunt':
+        specifier: ^0.4.32
+        version: 0.4.32
+      '@types/lodash':
+        specifier: ^4.17.16
+        version: 4.17.16
+      '@types/memorystream':
+        specifier: ^0.3.4
+        version: 0.3.4
+      '@types/mkdirp':
+        specifier: ^0.5.2
+        version: 0.5.2
       '@types/node':
         specifier: ^22.13.10
         version: 22.13.10
+      '@types/stylus':
+        specifier: ^0.48.43
+        version: 0.48.43
+      '@types/svgo':
+        specifier: ^0.7.0
+        version: 0.7.0
+      '@types/temp':
+        specifier: ^0.8.34
+        version: 0.8.34
+      '@types/ttf2woff2':
+        specifier: ^2.0.2
+        version: 2.0.2
+      '@types/underscore.string':
+        specifier: ^0.0.41
+        version: 0.0.41
+      '@types/winston':
+        specifier: 2.2.0
+        version: 2.2.0
+      '@types/xml2js':
+        specifier: ^0.4.14
+        version: 0.4.14
       grunt:
         specifier: ~0.4.5
         version: 0.4.5
@@ -81,8 +123,57 @@ importers:
 
 packages:
 
+  '@types/async@1.4.29':
+    resolution: {integrity: sha512-bAZtcs+UrNDGx6cteq9Z2XAEGtmcvyUP5/CZY5dJ7/ClvldmE8pCDH5rB2RmDYzpYUbgsH0JaRfXzQRgbnE4og==}
+
+  '@types/chalk@0.4.31':
+    resolution: {integrity: sha512-nF0fisEPYMIyfrFgabFimsz9Lnuu9MwkNrrlATm2E4E46afKDyeelT+8bXfw1VSc7sLBxMxRgT7PxTC2JcqN4Q==}
+
+  '@types/glob@7.2.0':
+    resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
+
+  '@types/grunt@0.4.32':
+    resolution: {integrity: sha512-PJy6K4u35RMhBD/rc9xoUFip5bnZNZZqTZoNYsqsadFAsPzs6C24xYe/0QYX/NfuCKPiP6/vSi3R5skIgRp3hQ==}
+
+  '@types/lodash@4.17.16':
+    resolution: {integrity: sha512-HX7Em5NYQAXKW+1T+FiuG27NGwzJfCX3s1GjOa7ujxZa52kjJLOr4FUxT+giF6Tgxv1e+/czV/iTtBw27WTU9g==}
+
+  '@types/memorystream@0.3.4':
+    resolution: {integrity: sha512-AVVe8unTnhTecg9GmRVddQFvi5K7+QcvLTfUstT+5dhQ633+JX4bK/sKaHTj8Z5RUOoVNS6u1gfby29ArDj4Gw==}
+
+  '@types/minimatch@5.1.2':
+    resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
+
+  '@types/mkdirp@0.5.2':
+    resolution: {integrity: sha512-U5icWpv7YnZYGsN4/cmh3WD2onMY0aJIiTE6+51TwJCttdHvtCYmkBNOobHlXwrJRL0nkH9jH4kD+1FAdMN4Tg==}
+
   '@types/node@22.13.10':
     resolution: {integrity: sha512-I6LPUvlRH+O6VRUqYOcMudhaIdUVWfsjnZavnsraHvpBwaEyMN29ry+0UVJhImYL16xsscu0aske3yA+uPOWfw==}
+
+  '@types/stylus@0.48.43':
+    resolution: {integrity: sha512-72dv/zdhuyXWVHUXG2VTPEQdOG+oen95/DNFx2aMFFaY6LoITI6PwEqf5x31JF49kp2w9hvUzkNfTGBIeg61LQ==}
+
+  '@types/svgo@0.7.0':
+    resolution: {integrity: sha512-dNZ/Qt6GcxiUdOC3800wi/wN9pQIxLhbKG1P5GXpZ9bi3E9eXp5uhoVHpF9Hl9KZGyY+Yyii78HFIvUTD3FAgg==}
+
+  '@types/temp@0.8.34':
+    resolution: {integrity: sha512-oLa9c5LHXgS6UimpEVp08De7QvZ+Dfu5bMQuWyMhf92Z26Q10ubEMOWy9OEfUdzW7Y/sDWVHmUaLFtmnX/2j0w==}
+
+  '@types/ttf2woff2@2.0.2':
+    resolution: {integrity: sha512-C9bkZUNpJFp64YD2IO0J2Y0R2EQiM2gvBr2KeVngFOQtKLDyYp7t5biNfkYyBbxDiJXwZFkzBs7jJtpoF0pzlw==}
+
+  '@types/underscore.string@0.0.41':
+    resolution: {integrity: sha512-d5bdU/o9hkoBsAO/o1hIyqkFBBXKgx5eZYPydgBFR1lw/NKylOYcFGjpmLIue4t/MBmV34J3YOwJ4euQrjpBKw==}
+
+  '@types/underscore@1.13.0':
+    resolution: {integrity: sha512-L6LBgy1f0EFQZ+7uSA57+n2g/s4Qs5r06Vwrwn0/nuK1de+adz00NWaztRQ30aEqw5qOaWbPI8u2cGQ52lj6VA==}
+
+  '@types/winston@2.2.0':
+    resolution: {integrity: sha512-o4r+qWUytg+aIoUdqa+r4VIvzJTHpt+z3GUr0Jra/wsolj0Xlwwsj9Gh69MzKBOtHUyV6h3FFn0+nQN7IrsAtg==}
+    deprecated: This is a stub types definition. winston provides its own type definitions, so you do not need this installed.
+
+  '@types/xml2js@0.4.14':
+    resolution: {integrity: sha512-4YnrRemBShWRO2QjvUin8ESA41rH+9nQGLUGZV/1IDhi3SL9OhdpNC/MrulTWuptXKwhx/aDxE7toV0f/ypIXQ==}
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -1122,9 +1213,62 @@ packages:
 
 snapshots:
 
+  '@types/async@1.4.29': {}
+
+  '@types/chalk@0.4.31': {}
+
+  '@types/glob@7.2.0':
+    dependencies:
+      '@types/minimatch': 5.1.2
+      '@types/node': 22.13.10
+
+  '@types/grunt@0.4.32':
+    dependencies:
+      '@types/node': 22.13.10
+
+  '@types/lodash@4.17.16': {}
+
+  '@types/memorystream@0.3.4':
+    dependencies:
+      '@types/node': 22.13.10
+
+  '@types/minimatch@5.1.2': {}
+
+  '@types/mkdirp@0.5.2':
+    dependencies:
+      '@types/node': 22.13.10
+
   '@types/node@22.13.10':
     dependencies:
       undici-types: 6.20.0
+
+  '@types/stylus@0.48.43':
+    dependencies:
+      '@types/node': 22.13.10
+
+  '@types/svgo@0.7.0': {}
+
+  '@types/temp@0.8.34':
+    dependencies:
+      '@types/node': 22.13.10
+
+  '@types/ttf2woff2@2.0.2':
+    dependencies:
+      '@types/node': 22.13.10
+
+  '@types/underscore.string@0.0.41':
+    dependencies:
+      '@types/underscore': 1.13.0
+
+  '@types/underscore@1.13.0': {}
+
+  '@types/winston@2.2.0':
+    dependencies:
+      '@types/node': 22.13.10
+
+  '@types/xml2js@0.4.14':
+    dependencies:
+      '@types/node': 22.13.10
 
   abbrev@1.1.1: {}
 

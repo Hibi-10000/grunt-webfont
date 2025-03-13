@@ -104,14 +104,3 @@ export const generatedFontFiles = function(o) {
 export const getFontPath = function(o, type) {
 	return path.join(o.dest, o.fontFilename + '.' + type);
 };
-
-// Expose
-export default {
-	UNICODE_PUA_START,
-	fontsSrcsMap,
-	cssFilePrefixes,
-	fontSrcSeparators,
-	fontFormats,
-	generatedFontFiles,
-	getFontPath
-}

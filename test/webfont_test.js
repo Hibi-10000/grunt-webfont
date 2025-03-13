@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import grunt from 'grunt';
 import { parseString as parseXMLString } from 'xml2js';
-import wf from '../tasks/util/util.js';
+import * as wf from '../tasks/util/util.js';
 
 function find(haystack, needle) {
 	return haystack.indexOf(needle) !== -1;

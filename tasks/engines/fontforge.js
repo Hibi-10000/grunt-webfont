@@ -13,7 +13,7 @@ import temp from 'temp';
 import chalk from 'chalk';
 import _ from 'lodash';
 import winston from 'winston';
-import wf from '../util/util';
+import * as wf from '../util/util.js';
 
 export default function(o, allDone) {
 	const logger = o.logger || winston;

@@ -16,8 +16,8 @@ import mkdirp from 'mkdirp';
 //import ttf2woff2 from 'ttf2woff2';
 import _ from 'lodash';
 import _s from 'underscore.string';
-import fontforge from './engines/fontforge';
-import wf from './util/util';
+import fontforge from './engines/fontforge.js';
+import * as wf from './util/util.js';
 
 import packageJson from '../package.json' with { type: "json" };
 

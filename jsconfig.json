@@ -3,16 +3,16 @@
     "enable": true,
   },
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "NodeNext",
     "target": "ESNext",
     "lib": ["ESNext"],
-    "checkJs": true,
     "noEmit": true,
+    "allowJs": true,
+    "checkJs": true,
+		"resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "allowJs": true,
-		"resolveJsonModule": true
   },
-	"include": ["tasks/*", "test/*"],
+	"include": ["tasks/*", "test/*.js"],
   "exclude": ["node_modules"],
 }

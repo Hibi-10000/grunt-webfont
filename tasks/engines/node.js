@@ -24,7 +24,7 @@
 // import SVGO from 'svgo';
 // import MemoryStream from 'memorystream';
 // import winston from 'winston';
-// import wf from '../util/util';
+// import * as wf from '../util/util.js';
 //
 // export default function(o, allDone) {
 // 	var logger = o.logger || winston;

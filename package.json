@@ -46,6 +46,7 @@
     "winston": "~2.1.1"
   },
   "devDependencies": {
+    "@types/node": "^22.13.10",
     "grunt": "~0.4.5",
     "grunt-cli": "~0.1.13",
     "grunt-contrib-clean": "~1.0.0",

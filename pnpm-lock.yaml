@@ -54,6 +54,9 @@ importers:
         specifier: ~2.1.1
         version: 2.1.1
     devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.13.10
       grunt:
         specifier: ~0.4.5
         version: 0.4.5
@@ -77,6 +80,9 @@ importers:
         version: 0.4.23
 
 packages:
+
+  '@types/node@22.13.10':
+    resolution: {integrity: sha512-I6LPUvlRH+O6VRUqYOcMudhaIdUVWfsjnZavnsraHvpBwaEyMN29ry+0UVJhImYL16xsscu0aske3yA+uPOWfw==}
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -1051,6 +1057,9 @@ packages:
   underscore@1.7.0:
     resolution: {integrity: sha512-cp0oQQyZhUM1kpJDLdGO1jPZHgS/MpzoWYfe9+CM2h/QGDZlqwT2T3YGukuBdaNJ/CAPoeyAZRRHz8JFo176vA==}
 
+  undici-types@6.20.0:
+    resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
+
   unicode-length@1.0.3:
     resolution: {integrity: sha512-rZKNhIqioUp7H49afr26tivLDCvUSqOXwmwEEnsCwnPX67S1CYbOL45Y5IP3K/XHN73/lg21HlrB8SNlYXKQTg==}
 
@@ -1112,6 +1121,10 @@ packages:
     resolution: {integrity: sha512-ncTzHV7NvsQZkYe1DW7cbDLm0YpzHmZF5r/iyP3ZnQtMiJ+pjzisCiMNI+Sj+xQF5pXhSHxSB3uDbsBTzY/c2A==}
 
 snapshots:
+
+  '@types/node@22.13.10':
+    dependencies:
+      undici-types: 6.20.0
 
   abbrev@1.1.1: {}
 
@@ -2087,6 +2100,8 @@ snapshots:
   underscore.string@3.2.3: {}
 
   underscore@1.7.0: {}
+
+  undici-types@6.20.0: {}
 
   unicode-length@1.0.3:
     dependencies:

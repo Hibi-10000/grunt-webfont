@@ -16,6 +16,7 @@ import mkdirp from 'mkdirp';
 import ttf2woff2 from 'ttf2woff2';
 import _ from 'lodash';
 import _s from 'underscore.string';
+import fontforge from './engines/fontforge';
 import wf from './util/util';
 
 import packageJson from '../package.json' with { type: "json" };
@@ -103,7 +104,6 @@ export default function(grunt) {
 			order: optionToArray(options.order, wf.fontFormats),
 			embed: options.embed === true ? ['woff'] : optionToArray(options.embed, false),
 			rename: options.rename || path.basename,
-			engine: options.engine || 'fontforge',
 			autoHint: options.autoHint !== false,
 			codepoints: options.codepoints,
 			codepointsFile: options.codepointsFile,
@@ -277,22 +277,18 @@ export default function(grunt) {
 		 * @param {Function} done
 		 */
 		function generateFont(done) {
-			/** @type Promise<import('./engines/node') | import('./engines/fontforge')> */
-			const engine = import('./engines/' + o.engine);
-			engine.then(function(engine) {
-				engine(o, function(result) {
-					if (result === false) {
-						// Font was not created, exit
-						completeTask();
-						return;
-					}
+			fontforge(o, function(result) {
+				if (result === false) {
+					// Font was not created, exit
+					completeTask();
+					return;
+				}
 
-					if (result) {
-						o = _.extend(o, result);
-					}
+				if (result) {
+					o = _.extend(o, result);
+				}
 
-					done();
-				});
+				done();
 			});
 		}
 

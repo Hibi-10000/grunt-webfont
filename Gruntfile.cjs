@@ -216,14 +216,6 @@ module.exports = function(grunt) {
 					}
 				}
 			},
-			node: {
-				src: 'test/src/*.svg',
-				dest: 'test/tmp/node',
-				options: {
-					hashes: false,
-					engine: 'node'
-				}
-			},
 			ie7: {
 				src: 'test/src/*.svg',
 				dest: 'test/tmp/ie7',
@@ -240,26 +232,6 @@ module.exports = function(grunt) {
 					hashes: false,
 					ie7: true,
 					syntax: 'bootstrap'
-				}
-			},
-			optimize_enabled: {
-				src: 'test/src/*.svg',
-				dest: 'test/tmp/optimize_enabled',
-				options: {
-					engine: 'node',
-					types: 'svg',
-					autoHint: false,
-					optimize: true
-				}
-			},
-			optimize_disabled: {
-				src: 'test/src/*.svg',
-				dest: 'test/tmp/optimize_disabled',
-				options: {
-					engine: 'node',
-					types: 'svg',
-					autoHint: false,
-					optimize: false
 				}
 			},
 			codepoints: {
@@ -292,14 +264,6 @@ module.exports = function(grunt) {
 				dest: 'test/tmp/woff2',
 				options: {
 					types: 'woff2,woff'
-				}
-			},
-			woff2_node: {
-				src: 'test/src/*.svg',
-				dest: 'test/tmp/woff2_node',
-				options: {
-					types: 'woff2,woff',
-					engine: 'node'
 				}
 			},
 			target_overrides: {
@@ -344,16 +308,6 @@ module.exports = function(grunt) {
 					relativeFontPath: '../iamrelative',
 					fontPathVariables: true,
 					stylesheets: ['css', 'scss', 'less']
-				}
-			},
-			filename_length: {
-				src: 'test/src_filename_length/*.svg',
-				dest: 'test/tmp/filename_length',
-				options: {
-					autoHint: false,
-					engine: 'node',
-					hashes: false,
-					types: 'woff'
 				}
 			},
 		},

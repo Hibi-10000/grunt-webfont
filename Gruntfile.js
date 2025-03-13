@@ -1,5 +1,3 @@
-/*jshint node:true*/
-
 var path = require('path');
 
 module.exports = function(grunt) {
@@ -362,34 +360,12 @@ module.exports = function(grunt) {
 		nodeunit: {
 			all: ['test/webfont_test.js']
 		},
-		jshint: {
-			all: ['Gruntfile.js', 'tasks/*.js', 'test/*.js'],
-			options: {
-				jshintrc: true
-			}
-		},
-		watch: {
-			scripts: {
-				files: '<%= jshint.all %>',
-				tasks: ['jshint', 'jscs'],
-				options: {
-					debounceDelay: 100,
-					nospawn: true
-				}
-			},
-		},
-		jscs: {
-			options: {
-				config: ".jscs.json",
-			},
-			all: ['tasks/*.js']
-		},
 		clean: ['test/tmp']
 	});
 
 	grunt.loadTasks('tasks');
 
 	grunt.registerTask('test', ['nodeunit']);
-	grunt.registerTask('default', ['jshint', 'jscs', 'clean', 'webfont', 'test', 'clean']);
+	grunt.registerTask('default', ['clean', 'webfont', 'test', 'clean']);
 
 };

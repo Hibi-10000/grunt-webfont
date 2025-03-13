@@ -95,7 +95,7 @@ module.exports = function(o, allDone) {
 
 	// Font types
 	var typesToGenerate = o.types.slice();
-	if (o.types.indexOf('woff2') !== -1 && o.types.indexOf('ttf'  === -1)) typesToGenerate.push('ttf');
+	if ((o.types.indexOf('woff2') !== -1) && (o.types.indexOf('ttf') === -1)) typesToGenerate.push('ttf');
 	typesToGenerate.forEach(function(type) {
 		steps.push(createFontWriter(type));
 	});
@@ -144,7 +144,7 @@ module.exports = function(o, allDone) {
 				try {
 					svgo.optimize(svg, function(res) {
 						var stream = new MemoryStream(res.data, {
-							writable: false
+							writeable: false
 						});
 						fileStreamed(name, stream);
 					});

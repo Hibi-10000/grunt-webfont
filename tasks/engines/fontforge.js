@@ -28,7 +28,7 @@ export default function(o, allDone) {
 	var args = [
 		'fontforge',
 		'-script',
-		'"' + path.join(__dirname, 'fontforge/generate.py') + '"'
+		'"' + path.join(import.meta.dirname, 'fontforge/generate.py') + '"'
 	].join(' ');
 
 	var proc = exec(args, {maxBuffer: o.execMaxBuffer}, function(err, out, code) {

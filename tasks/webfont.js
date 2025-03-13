@@ -110,7 +110,7 @@ export default function(grunt) {
 			fontHeight: options.fontHeight !== undefined ? options.fontHeight : 512,
 			descent: options.descent !== undefined ? options.descent : 64,
 			version: options.version !== undefined ? options.version : false,
-			cache: options.cache || path.join(__dirname, '..', '.cache'),
+			cache: options.cache || path.join(import.meta.dirname, '..', '.cache'),
 			callback: options.callback,
 			customOutputs: options.customOutputs,
 			execMaxBuffer: options.execMaxBuffer || 1024 * 200
@@ -709,7 +709,7 @@ export default function(grunt) {
 		function readTemplate(template, syntax, ext, optional) {
 			var filename = template
 				? path.resolve(template.replace(path.extname(template), ext))
-				: path.join(__dirname, 'templates/' + syntax + ext)
+				: path.join(import.meta.dirname, 'templates/' + syntax + ext)
 			;
 			if (fs.existsSync(filename)) {
 				return {

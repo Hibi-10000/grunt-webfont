@@ -1,9 +1,13 @@
+'use strict';
+
 const path = require('node:path');
+const loadGruntTasks = require('load-grunt-tasks');
+const webfont = require('./tasks/webfont.js').default;
 
-module.exports = function(grunt) {
-	'use strict';
+module.exports = (grunt) => {
+	loadGruntTasks(grunt);
 
-	require('load-grunt-tasks')(grunt);
+	webfont(grunt);
 
 	grunt.initConfig({
 		webfont: {
@@ -202,5 +206,4 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('test', ['nodeunit']);
 	grunt.registerTask('default', ['clean', 'webfont', 'test', 'clean']);
-
 };

@@ -67,8 +67,6 @@ export const fontsSrcsMap = {
  */
 export const cssFilePrefixes = {
 	_default: '',
-	sass: '_',
-	scss: '_'
 };
 
 /**
@@ -77,7 +75,6 @@ export const cssFilePrefixes = {
  */
 export const fontSrcSeparators = {
 	_default: ',\n\t\t',
-	styl: ', '
 };
 
 /**

@@ -83,19 +83,14 @@ export default function(grunt) {
 			logger: logger,
 			fontBaseName: options.font || 'icons',
 			destCss: options.destCss || params.destCss || params.dest,
-			destScss: options.destScss || params.destScss || params.destCss || params.dest,
-			destSass: options.destSass || params.destSass || params.destCss || params.dest,
-			destLess: options.destLess || params.destLess || params.destCss || params.dest,
-			destStyl: options.destStyl || params.destStyl || params.destCss || params.dest,
 			dest: options.dest || params.dest,
 			relativeFontPath: options.relativeFontPath,
-			fontPathVariables: options.fontPathVariables || false,
 			addHashes: options.hashes !== false,
 			addLigatures: options.ligatures === true,
 			template: options.template,
 			syntax: options.syntax || 'bem',
 			templateOptions: options.templateOptions || {},
-			stylesheets: options.stylesheets || [options.stylesheet || path.extname(options.template).replace(/^\./, '') || 'css'],
+            stylesheets: ['css'],
 			htmlDemo: options.htmlDemo !== false,
 			htmlDemoTemplate: options.htmlDemoTemplate,
 			htmlDemoFilename: options.htmlDemoFilename,
@@ -125,10 +120,6 @@ export default function(grunt) {
 			fontName: o.fontBaseName,
 			destCssPaths: {
 				css: o.destCss,
-				scss: o.destScss,
-				sass: o.destSass,
-				less: o.destLess,
-				styl: o.destStyl
 			},
 			relativeFontPath: o.relativeFontPath || path.relative(o.destCss, o.dest),
 			destHtml: options.destHtml || o.destCss,
@@ -386,11 +377,6 @@ export default function(grunt) {
 			});
 
 			var css = renderTemplate(o.cssTemplate, cssContext);
-
-			// Fix CSS preprocessors comments: single line comments will be removed after compilation
-			if (has(['sass', 'scss', 'less', 'styl'], stylesheet)) {
-				css = css.replace(/\/\* *(.*?) *\*\//g, '// $1');
-			}
 
 			// Save file
 			fs.writeFileSync(getCssFilePath(stylesheet), css);
@@ -687,27 +673,13 @@ export default function(grunt) {
 		 */
 		function generateFontSrc(type, font, stylesheet) {
 			var filename = template(o.fontFilename + font.ext, o);
-			var fontPathVariableName = o.fontFamilyName + '-font-path';
 
 			var url;
 			if (font.embeddable && has(o.embed, type)) {
 				url = embedFont(path.join(o.dest, filename));
 			}
 			else {
-				if (o.fontPathVariables &&  stylesheet !== 'css') {
-					if (stylesheet === 'less') {
-						fontPathVariableName = '@' + fontPathVariableName;
-						o.fontPathVariable = fontPathVariableName + ' : "' + o.relativeFontPath + '";';
-					}
-					else {
-						fontPathVariableName = '$' + fontPathVariableName;
-						o.fontPathVariable = fontPathVariableName + ' : "' + o.relativeFontPath + '" !default;';
-					}
-					url = filename;
-				}
-				else {
-					url = o.relativeFontPath + filename;
-				}
+				url = o.relativeFontPath + filename;
 				if (o.addHashes) {
 					if (url.indexOf('#iefix') === -1) {  // Do not add hashes for OldIE
 						// Put hash at the end of an URL or before #hash
@@ -720,14 +692,6 @@ export default function(grunt) {
 			}
 
 			var src = 'url("' + url + '")';
-			if (o.fontPathVariables && stylesheet !== 'css') {
-				if (stylesheet === 'less') {
-					src = 'url("@{' + fontPathVariableName.replace('@','') + '}' + url + '")';
-				}
-				else {
-					src = 'url(' + fontPathVariableName + ' + "' + url + '")';
-				}
-			}
 
 			if (font.format) src += ' format("' + font.format + '")';
 

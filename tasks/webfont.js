@@ -433,7 +433,7 @@ export default function(grunt) {
 			var _fontSrc1 = o.fontSrc1.replace(relativeRe, htmlRelativeFontPath);
 			var _fontSrc2 = o.fontSrc2.replace(relativeRe, htmlRelativeFontPath);
 
-			_.extend(context, {
+			context = _.extend(context, {
 				fontSrc1: _fontSrc1,
 				fontSrc2: _fontSrc2,
 				fontfaceStyles: true,
@@ -445,7 +445,7 @@ export default function(grunt) {
 
 			// Prepares CSS for injection into <style> tag at to of HTML
 			htmlStyles = renderTemplate(o.cssTemplate, context);
-			_.extend(context, {
+			context = _.extend(context, {
 				styles: htmlStyles
 			});
 
@@ -461,7 +461,7 @@ export default function(grunt) {
 
 			// Accesses context
 			var context = prepareBaseTemplateContext();
-			_.extend(context, outputConfig.context);
+			context = _.extend(context, outputConfig.context);
 
 			// Prepares config attributes related to template filepath
 			var templatePath = outputConfig.template;

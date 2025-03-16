@@ -45,7 +45,7 @@
     "pnpm": ">=10"
   },
   "dependencies": {
-    "chalk": "~5.4.1",
+    "chalk": "^5.4.1",
     "glob": "~7.0.6",
     "lodash": "~4.17.21",
     "mkdirp": "~0.5.6",
@@ -64,11 +64,11 @@
     "@types/underscore.string": "^0.0.41",
     "@types/winston": "2.2.0",
     "@types/xml2js": "^0.4.14",
-    "grunt": "~1.6.1",
-    "grunt-cli": "~1.5.0",
-    "grunt-contrib-clean": "~2.0.1",
-    "grunt-contrib-nodeunit": "~5.0.0",
-    "load-grunt-tasks": "~5.1.0",
+    "grunt": "^1.6.1",
+    "grunt-cli": "^1.5.0",
+    "grunt-contrib-clean": "^2.0.1",
+    "grunt-contrib-nodeunit": "^5.0.0",
+    "load-grunt-tasks": "^5.1.0",
     "stylus": "~0.53.0",
     "xml2js": "~0.4.23"
   },

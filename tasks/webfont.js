@@ -9,7 +9,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import async from 'async';
 import glob from 'glob';
 import chalk from 'chalk';
 import mkdirp from 'mkdirp';
@@ -186,16 +185,15 @@ export default function(grunt) {
 
 		// Save new hash and run
 		saveHash(this.name, this.target, o.hash);
-		async.waterfall([
-			createOutputDirs,
-			cleanOutputDir,
-			generateFont,
-			//generateWoff2Font,
-			generateStylesheets,
-			generateDemoHtml,
-			generateCustomOutputs,
-			printDone
-		], completeTask);
+		new Promise(createOutputDirs)
+			.then(() => new Promise(cleanOutputDir))
+			.then(() => new Promise(generateFont))
+			//.then(() => new Promise(generateWoff2Font))
+			.then(() => new Promise(generateStylesheets))
+			.then(() => new Promise(generateDemoHtml))
+			.then(() => new Promise(generateCustomOutputs))
+			.then(() => new Promise(printDone))
+			.finally(completeTask);
 
 		/**
 		 * Call callback function if it was specified in the options.
@@ -257,9 +255,10 @@ export default function(grunt) {
 		function cleanOutputDir(done) {
 			var htmlDemoFileMask = path.join(o.destCss, o.fontBaseName + '*.{css,html}');
 			var files = glob.sync(htmlDemoFileMask).concat(wf.generatedFontFiles(o));
-			async.forEach(files, function(file, next) {
-				fs.unlink(file, next);
-			}, done);
+			files.forEach(file => {
+				fs.unlinkSync(file);
+			});
+			done();
 		}
 
 		/**

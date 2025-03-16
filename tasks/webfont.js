@@ -26,7 +26,7 @@ export default function(grunt) {
 		/**
 		 * Winston to Grunt logger adapter.
 		 */
-		var logger = {
+		const logger = {
 			warn: function() {
 				grunt.log.warn.apply(null, arguments);
 			},
@@ -41,10 +41,10 @@ export default function(grunt) {
 			}
 		};
 
-		var allDone = this.async();
-		var params = this.data;
-		var options = this.options();
-		var md5 = crypto.createHash('md5');
+		const allDone = this.async();
+		const params = this.data;
+		const options = this.options();
+		const md5 = crypto.createHash('md5');
 
 		/*
 		 * Check for `src` param on target config
@@ -65,7 +65,7 @@ export default function(grunt) {
 		}
 
 		// Source files
-		var files = _.filter(this.filesSrc, isSvgFile);
+		const files = _.filter(this.filesSrc, isSvgFile);
 		if (!files.length) {
 			logger.warn('Specified empty list of source SVG files.');
 			completeTask();
@@ -78,7 +78,7 @@ export default function(grunt) {
 		}
 
 		// Options
-		var o = {
+		let o = {
 			logger: logger,
 			fontBaseName: options.font || 'icons',
 			destCss: options.destCss || params.destCss || params.dest,
@@ -140,7 +140,7 @@ export default function(grunt) {
 
 		// Check or generate codepoints
 		// @todo Codepoint can be a Unicode code or character.
-		var currentCodepoint = o.startCodepoint;
+		let currentCodepoint = o.startCodepoint;
 		if (!o.codepoints) o.codepoints = {};
 		if (o.codepointsFile) o.codepoints = readCodepointsFromFile();
 		o.glyphs.forEach(function(name) {
@@ -151,13 +151,13 @@ export default function(grunt) {
 		if (o.codepointsFile) saveCodepointsToFile();
 
 		// Check if we need to generate font
-		var previousHash = readHash(this.name, this.target);
+		const previousHash = readHash(this.name, this.target);
 		logger.verbose('New hash:', o.hash, '- previous hash:', previousHash);
 		if (o.hash === previousHash) {
 			logger.verbose('Config and source files weren’t changed since last run, checking resulting files...');
-			var regenerationNeeded = false;
+			let regenerationNeeded = false;
 
-			var generatedFiles = wf.generatedFontFiles(o);
+			const generatedFiles = wf.generatedFontFiles(o);
 			if (!generatedFiles.length){
 				regenerationNeeded = true;
 			}
@@ -253,8 +253,8 @@ export default function(grunt) {
 		 * @param {Function} done
 		 */
 		function cleanOutputDir(done) {
-			var htmlDemoFileMask = path.join(o.destCss, o.fontBaseName + '*.{css,html}');
-			var files = glob.sync(htmlDemoFileMask).concat(wf.generatedFontFiles(o));
+			const htmlDemoFileMask = path.join(o.destCss, o.fontBaseName + '*.{css,html}');
+			const files = glob.sync(htmlDemoFileMask).concat(wf.generatedFontFiles(o));
 			files.forEach(file => {
 				fs.unlinkSync(file);
 			});
@@ -294,8 +294,8 @@ export default function(grunt) {
 //			}
 //
 //			// Read TTF font
-//			var ttfFontPath = wf.getFontPath(o, 'ttf');
-//			var ttfFont = fs.readFileSync(ttfFontPath);
+//			const ttfFontPath = wf.getFontPath(o, 'ttf');
+//			const ttfFont = fs.readFileSync(ttfFontPath);
 //
 //			// Remove TTF font if not needed
 //			if (!has(o.types, 'ttf')) {
@@ -303,10 +303,10 @@ export default function(grunt) {
 //			}
 //
 //			// Convert to WOFF2
-//			var woffFont = ttf2woff2(ttfFont);
+//			const woffFont = ttf2woff2(ttfFont);
 //
 //			// Save
-//			var woff2FontPath = wf.getFontPath(o, 'woff2');
+//			const woff2FontPath = wf.getFontPath(o, 'woff2');
 //			fs.writeFile(woff2FontPath, woffFont, function() {done();});
 //		}
 
@@ -317,7 +317,7 @@ export default function(grunt) {
 		 */
 		function generateStylesheets(done) {
 			// Convert codepoints to array of strings
-			var codepoints = [];
+			const codepoints = [];
 			_.each(o.glyphs, function(name) {
 				codepoints.push(o.codepoints[name].toString(16));
 			});
@@ -342,7 +342,7 @@ export default function(grunt) {
 			o.relativeFontPath = normalizePath(o.relativeFontPath);
 
 			// Generate font URLs to use in @font-face
-			var fontSrcs = [[], []];
+			const fontSrcs = [[], []];
 			o.order.forEach(function(type) {
 				if (!has(o.types, type)) return;
 				wf.fontsSrcsMap[type].forEach(function(font, idx) {
@@ -353,7 +353,7 @@ export default function(grunt) {
 			});
 
 			// Convert urls to strings that could be used in CSS
-			var fontSrcSeparator = option(wf.fontSrcSeparators, stylesheet);
+			const fontSrcSeparator = option(wf.fontSrcSeparators, stylesheet);
 			fontSrcs.forEach(function(font, idx) {
 				// o.fontSrc1, o.fontSrc2
 				o['fontSrc'+(idx+1)] = font.join(fontSrcSeparator);
@@ -361,21 +361,21 @@ export default function(grunt) {
 			o.fontRawSrcs = fontSrcs;
 
 			// Read JSON file corresponding to CSS template
-			var templateJson = readTemplate(o.template, o.syntax, '.json', true);
+			const templateJson = readTemplate(o.template, o.syntax, '.json', true);
 			if (templateJson) o = _.extend(o, JSON.parse(templateJson.template));
 
 			// Now override values with templateOptions
 			if (o.templateOptions) o = _.extend(o, o.templateOptions);
 
 			// Generate CSS
-			var ext = path.extname(o.template) || '.css';  // Use extension of o.template file if given, or default to .css
+			const ext = path.extname(o.template) || '.css';  // Use extension of o.template file if given, or default to .css
 			o.cssTemplate = readTemplate(o.template, o.syntax, ext);
-			var cssContext = _.extend(o, {
+			const cssContext = _.extend(o, {
 				iconsStyles: true,
 				stylesheet: stylesheet
 			});
 
-			var css = renderTemplate(o.cssTemplate, cssContext);
+			const css = renderTemplate(o.cssTemplate, cssContext);
 
 			// Save file
 			fs.writeFileSync(getCssFilePath(stylesheet), css);
@@ -391,7 +391,7 @@ export default function(grunt) {
 				return {};
 			}
 
-			var buffer = fs.readFileSync(o.codepointsFile);
+			const buffer = fs.readFileSync(o.codepointsFile);
 			return JSON.parse(buffer.toString());
 		}
 
@@ -400,7 +400,7 @@ export default function(grunt) {
 		 */
 		function saveCodepointsToFile(){
 			if (!o.codepointsFile) return;
-			var codepointsToString = JSON.stringify(o.codepoints, null, 4);
+			const codepointsToString = JSON.stringify(o.codepoints, null, 4);
 			try {
 				fs.writeFileSync(o.codepointsFile, codepointsToString);
 				logger.verbose('Codepoints saved to file "' + o.codepointsFile + '".');
@@ -413,7 +413,7 @@ export default function(grunt) {
 		 * Prepares base context for templates
 		 */
 		function prepareBaseTemplateContext() {
-			var context = _.extend({}, o);
+			const context = _.extend({}, o);
 			return context;
 		}
 
@@ -423,15 +423,15 @@ export default function(grunt) {
 		 */
 		function prepareHtmlTemplateContext() {
 
-			var context = prepareBaseTemplateContext();
+			let context = prepareBaseTemplateContext();
 
-			var htmlStyles;
+			let htmlStyles;
 
 			// Prepare relative font paths for injection into @font-face refs in HTML
-			var relativeRe = new RegExp(_s.escapeRegExp(o.relativeFontPath), 'g');
-			var htmlRelativeFontPath = normalizePath(path.relative(o.destHtml, o.dest));
-			var _fontSrc1 = o.fontSrc1.replace(relativeRe, htmlRelativeFontPath);
-			var _fontSrc2 = o.fontSrc2.replace(relativeRe, htmlRelativeFontPath);
+			const relativeRe = new RegExp(_s.escapeRegExp(o.relativeFontPath), 'g');
+			const htmlRelativeFontPath = normalizePath(path.relative(o.destHtml, o.dest));
+			const _fontSrc1 = o.fontSrc1.replace(relativeRe, htmlRelativeFontPath);
+			const _fontSrc2 = o.fontSrc2.replace(relativeRe, htmlRelativeFontPath);
 
 			context = _.extend(context, {
 				fontSrc1: _fontSrc1,
@@ -460,24 +460,24 @@ export default function(grunt) {
 		function generateCustomOutput(outputConfig) {
 
 			// Accesses context
-			var context = prepareBaseTemplateContext();
+			let context = prepareBaseTemplateContext();
 			context = _.extend(context, outputConfig.context);
 
 			// Prepares config attributes related to template filepath
-			var templatePath = outputConfig.template;
-			var extension = path.extname(templatePath);
-			var syntax = outputConfig.syntax || '';
+			const templatePath = outputConfig.template;
+			const extension = path.extname(templatePath);
+			const syntax = outputConfig.syntax || '';
 
 			// Renders template with given context
-			var template = readTemplate(templatePath, syntax, extension);
-			var output = renderTemplate(template, context);
+			const template = readTemplate(templatePath, syntax, extension);
+			const output = renderTemplate(template, context);
 
 			// Prepares config attributes related to destination filepath
-			var dest = outputConfig.dest || o.dest;
+			const dest = outputConfig.dest || o.dest;
 
-			var filepath;
-			var destParent;
-			var destName;
+			let filepath;
+			let destParent;
+			let destName;
 
 			if (path.extname(dest) === '') {
 				// If user specifies a directory, filename should be same as template
@@ -522,11 +522,11 @@ export default function(grunt) {
 				return;
 			}
 
-			var context = prepareHtmlTemplateContext();
+			const context = prepareHtmlTemplateContext();
 
 			// Generate HTML
 			var demoTemplate = readTemplate(o.htmlDemoTemplate, 'demo', '.html');
-			var demo = renderTemplate(demoTemplate, context);
+			const demo = renderTemplate(demoTemplate, context);
 
 			mkdirp(getDemoPath(), function(err) {
 				if (err) {
@@ -632,9 +632,9 @@ export default function(grunt) {
 		 */
 		function embedFont(fontFile) {
 			// Convert to data:uri
-			var dataUri = fs.readFileSync(fontFile, 'base64');
-			var type = path.extname(fontFile).substring(1);
-			var fontUrl = 'data:application/x-font-' + type + ';charset=utf-8;base64,' + dataUri;
+			const dataUri = fs.readFileSync(fontFile, 'base64');
+			const type = path.extname(fontFile).substring(1);
+			const fontUrl = 'data:application/x-font-' + type + ';charset=utf-8;base64,' + dataUri;
 
 			// Remove font file
 			fs.unlinkSync(fontFile);
@@ -671,9 +671,9 @@ export default function(grunt) {
 		 * @return {String}
 		 */
 		function generateFontSrc(type, font, stylesheet) {
-			var filename = template(o.fontFilename + font.ext, o);
+			const filename = template(o.fontFilename + font.ext, o);
 
-			var url;
+			let url;
 			if (font.embeddable && has(o.embed, type)) {
 				url = embedFont(path.join(o.dest, filename));
 			}
@@ -690,7 +690,7 @@ export default function(grunt) {
 				}
 			}
 
-			var src = 'url("' + url + '")';
+			let src = 'url("' + url + '")';
 
 			if (font.format) src += ' format("' + font.format + '")';
 
@@ -706,7 +706,7 @@ export default function(grunt) {
 		 * @return {Object} {filename: 'Template filename', template: 'Template code'}
 		 */
 		function readTemplate(template, syntax, ext, optional) {
-			var filename = template
+			const filename = template
 				? path.resolve(template.replace(path.extname(template), ext))
 				: path.join(import.meta.dirname, 'templates/' + syntax + ext)
 			;
@@ -730,7 +730,7 @@ export default function(grunt) {
 		 */
 		function renderTemplate(template, context) {
 			try {
-				var func = _.template(template.template);
+				const func = _.template(template.template);
 				return func(context);
 			}
 			catch (e) {
@@ -768,7 +768,7 @@ export default function(grunt) {
 		 * @return {String}
 		 */
 		function getCssFilePath(stylesheet) {
-			var cssFilePrefix = option(wf.cssFilePrefixes, stylesheet);
+			const cssFilePrefix = option(wf.cssFilePrefixes, stylesheet);
 			return path.join(option(o.destCssPaths, stylesheet), cssFilePrefix + o.fontBaseName + '.' + stylesheet);
 		}
 
@@ -779,7 +779,7 @@ export default function(grunt) {
 		 */
 		function getDemoFilePath() {
 			if (!o.htmlDemo) return null;
-			var name = o.htmlDemoFilename || o.fontBaseName;
+			const name = o.htmlDemoFilename || o.fontBaseName;
 			return path.join(o.destHtml, name + '.html');
 		}
 
@@ -799,7 +799,7 @@ export default function(grunt) {
 		 * @param {String} hash Hash.
 		 */
 		function saveHash(name, target, hash) {
-			var filepath = getHashPath(name, target);
+			const filepath = getHashPath(name, target);
 			mkdirp.sync(path.dirname(filepath));
 			fs.writeFileSync(filepath, hash);
 		}
@@ -812,7 +812,7 @@ export default function(grunt) {
 		 * @return {String}
 		 */
 		function readHash(name, target) {
-			var filepath = getHashPath(name, target);
+			const filepath = getHashPath(name, target);
 			if (fs.existsSync(filepath)) {
 				return fs.readFileSync(filepath, 'utf8');
 			}

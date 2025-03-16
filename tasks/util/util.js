@@ -90,7 +90,7 @@ export const fontFormats = 'ttf';
  * @return {Array}
  */
 export const generatedFontFiles = function(o) {
- 	var mask = '*.{' + o.types + '}';
+ 	const mask = '*.{' + o.types + '}';
 	return glob.sync(path.join(o.dest, o.fontFilename + mask));
 };
 

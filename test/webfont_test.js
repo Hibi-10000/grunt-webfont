@@ -11,9 +11,9 @@ function find(haystack, needle) {
 }
 
 function findDuplicates(haystack, needles) {
-	var sorted_arr = haystack.sort();
+	const sorted_arr = haystack.sort();
 
-	var results = [];
+	const results = [];
 	for (var i = 0; i < haystack.length - 1; i++) {
 		if (sorted_arr[i + 1] === sorted_arr[i]) {
 			results.push(sorted_arr[i]);

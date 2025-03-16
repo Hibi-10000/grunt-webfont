@@ -19,19 +19,19 @@ export default function(o, allDone) {
 	const logger = o.logger || winston;
 
 	// Copy source files to temporary directory
-	var tempDir = temp.mkdirSync();
+	const tempDir = temp.mkdirSync();
 	o.files.forEach(function(file) {
 		fs.writeFileSync(path.join(tempDir, o.rename(file)), fs.readFileSync(file));
 	});
 
 	// Run Fontforge
-	var args = [
+	const args = [
 		'fontforge',
 		'-script',
 		'"' + path.join(import.meta.dirname, 'fontforge/generate.py') + '"'
 	].join(' ');
 
-	var proc = exec(args, {maxBuffer: o.execMaxBuffer}, function(err, out, code) {
+	const proc = exec(args, { maxBuffer: o.execMaxBuffer }, function(err, out, code) {
 		if (err instanceof Error && err.code === 127) {
 			return fontforgeNotFound();
 		}
@@ -42,12 +42,12 @@ export default function(o, allDone) {
 
 			// Skip some fontforge output such as copyrights. Show warnings only when no font files was created
 			// or in verbose mode.
-			var success = !!wf.generatedFontFiles(o);
-			var notError = /(Copyright|License |with many parts BSD |Executable based on sources from|Library based on sources from|Based on source from git)/;
-			var version = /(Executable based on sources from|Library based on sources from)/;
-			var lines = err.split('\n');
+			const success = !!wf.generatedFontFiles(o);
+			const notError = /(Copyright|License |with many parts BSD |Executable based on sources from|Library based on sources from|Based on source from git)/;
+			//const version = /(Executable based on sources from|Library based on sources from)/;
+			const lines = err.split('\n');
 
-			var warn = [];
+			const warn = [];
 			lines.forEach(function(line) {
 				if (!line.match(notError) && !success) {
 					warn.push(line);
@@ -63,10 +63,10 @@ export default function(o, allDone) {
 		}
 
 		// Trim fontforge result
-		var json = out.replace(/^[^{]+/, '').replace(/[^}]+$/, '');
+		const json = out.replace(/^[^{]+/, '').replace(/[^}]+$/, '');
 
 		// Parse json
-		var result;
+		let result;
 		try {
 			result = JSON.parse(json);
 		}
@@ -111,7 +111,7 @@ export default function(o, allDone) {
 		return true;
 	});
 
-	var params = _.extend(o, {
+	const params = _.extend(o, {
 		inputDir: tempDir
 	});
 	proc.stdin.write(JSON.stringify(params));

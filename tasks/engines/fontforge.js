@@ -15,12 +15,12 @@ import _ from 'lodash';
 import winston from 'winston';
 import * as wf from '../util/util.js';
 
-export default function(o, allDone) {
+export default (o, allDone) => {
 	const logger = o.logger || winston;
 
 	// Copy source files to temporary directory
 	const tempDir = temp.mkdirSync();
-	o.files.forEach(function(file) {
+	o.files.forEach((file) => {
 		fs.writeFileSync(path.join(tempDir, o.rename(file)), fs.readFileSync(file));
 	});
 
@@ -31,7 +31,7 @@ export default function(o, allDone) {
 		'"' + path.join(import.meta.dirname, 'fontforge/generate.py') + '"'
 	].join(' ');
 
-	const proc = exec(args, { maxBuffer: o.execMaxBuffer }, function(err, out, code) {
+	const proc = exec(args, { maxBuffer: o.execMaxBuffer }, (err, out, code) => {
 		if (err instanceof Error && err.code === 127) {
 			return fontforgeNotFound();
 		}
@@ -48,7 +48,7 @@ export default function(o, allDone) {
 			const lines = err.split('\n');
 
 			const warn = [];
-			lines.forEach(function(line) {
+			lines.forEach((line) => {
 				if (!line.match(notError) && !success) {
 					warn.push(line);
 				}
@@ -87,19 +87,19 @@ export default function(o, allDone) {
 
 	// Send JSON with params
 	if (!proc) return;
-	proc.stdin.on('error', function(err) {
+	proc.stdin.on('error', (err) => {
 		if (err.code === 'EPIPE') {
 			fontforgeNotFound();
 		}
 	});
 
-	proc.stderr.on('data', function (data) {
+	proc.stderr.on('data', (data) => {
 		logger.verbose(data);
 	});
-	proc.stdout.on('data', function (data) {
+	proc.stdout.on('data', (data) => {
 		logger.verbose(data);
 	});
-	proc.on('exit', function (code, signal) {
+	proc.on('exit', (code, signal) => {
 		if (code !== 0) {
 			logger.log( // cannot use error() because it will stop execution of callback of exec (which shows error message)
 				"fontforge process has unexpectedly closed.\n" +
@@ -123,7 +123,7 @@ export default function(o, allDone) {
 		return false;
 	}
 
-	function fontforgeNotFound() {
+	const fontforgeNotFound = () => {
 		error('fontforge not found. Please install fontforge and all other requirements: ' + chalk.underline('https://github.com/sapegin/grunt-webfont#installation'));
 	}
 

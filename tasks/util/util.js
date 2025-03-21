@@ -89,8 +89,8 @@ export const fontFormats = 'ttf';
  * @param {Object} o Options.
  * @return {Array}
  */
-export const generatedFontFiles = function(o) {
- 	const mask = '*.{' + o.types + '}';
+export const generatedFontFiles = (o) => {
+	const mask = '*.{' + o.types + '}';
 	return glob.sync(path.join(o.dest, o.fontFilename + mask));
 };
 
@@ -101,6 +101,6 @@ export const generatedFontFiles = function(o) {
  * @param {String} type Font type (see `wf.fontFormats`).
  * @return {String}
  */
-export const getFontPath = function(o, type) {
+export const getFontPath = (o, type) => {
 	return path.join(o.dest, o.fontFilename + '.' + type);
 };

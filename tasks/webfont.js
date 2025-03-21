@@ -20,7 +20,7 @@ import * as wf from './util/util.js';
 
 import packageJson from '../package.json' with { type: "json" };
 
-export default function(grunt) {
+export default (grunt) => {
 	grunt.registerMultiTask('webfont', 'Compile separate SVG files to webfont', function() {
 
 		/**
@@ -134,7 +134,7 @@ export default function(grunt) {
 		o.fontFamilyName = template(options.fontFamilyName || o.fontBaseName, o);
 
 		// “Rename” files
-		o.glyphs = o.files.map(function(file) {
+		o.glyphs = o.files.map((file) => {
 			return o.rename(file).replace(path.extname(file), '');
 		});
 
@@ -143,7 +143,7 @@ export default function(grunt) {
 		let currentCodepoint = o.startCodepoint;
 		if (!o.codepoints) o.codepoints = {};
 		if (o.codepointsFile) o.codepoints = readCodepointsFromFile();
-		o.glyphs.forEach(function(name) {
+		o.glyphs.forEach((name) => {
 			if (!o.codepoints[name]) {
 				o.codepoints[name] = getNextCodepoint();
 			}
@@ -163,11 +163,11 @@ export default function(grunt) {
 			}
 			else {
 				generatedFiles.push(getDemoFilePath());
-				o.stylesheets.forEach(function(stylesheet) {
+				o.stylesheets.forEach((stylesheet) => {
 					generatedFiles.push(getCssFilePath(stylesheet));
 				});
 
-				regenerationNeeded = _.some(generatedFiles, function(filename) {
+				regenerationNeeded = _.some(generatedFiles, (filename) => {
 					if (!filename) return false;
 					if (!fs.existsSync(filename)) {
 						logger.verbose('File', filename, ' is missed.');
@@ -213,7 +213,7 @@ export default function(grunt) {
 		 */
 		function getHash() {
 			// Source SVG files contents
-			o.files.forEach(function(file) {
+			o.files.forEach((file) => {
 				md5.update(fs.readFileSync(file, 'utf8'));
 			});
 
@@ -240,7 +240,7 @@ export default function(grunt) {
 		 * @param {Function} done
 		 */
 		function createOutputDirs(done) {
-			o.stylesheets.forEach(function(stylesheet) {
+			o.stylesheets.forEach((stylesheet) => {
 				mkdirp.sync(option(o.destCssPaths, stylesheet));
 			});
 			mkdirp.sync(o.dest);
@@ -267,7 +267,7 @@ export default function(grunt) {
 		 * @param {Function} done
 		 */
 		function generateFont(done) {
-			fontforge(o, function(result) {
+			fontforge(o, (result) => {
 				if (result === false) {
 					// Font was not created, exit
 					completeTask();
@@ -318,7 +318,7 @@ export default function(grunt) {
 		function generateStylesheets(done) {
 			// Convert codepoints to array of strings
 			const codepoints = [];
-			_.each(o.glyphs, function(name) {
+			_.each(o.glyphs, (name) => {
 				codepoints.push(o.codepoints[name].toString(16));
 			});
 			o.codepoints = codepoints;
@@ -326,7 +326,7 @@ export default function(grunt) {
 			// Prepage glyph names to use as CSS classes
 			o.glyphs = _.map(o.glyphs, classnameize);
 
-			o.stylesheets.sort(function(a, b) {
+			o.stylesheets.sort((a, b) => {
 				return a === 'css' ? 1 : -1;
 			}).forEach(generateStylesheet);
 
@@ -343,9 +343,9 @@ export default function(grunt) {
 
 			// Generate font URLs to use in @font-face
 			const fontSrcs = [[], []];
-			o.order.forEach(function(type) {
+			o.order.forEach((type) => {
 				if (!has(o.types, type)) return;
-				wf.fontsSrcsMap[type].forEach(function(font, idx) {
+				wf.fontsSrcsMap[type].forEach((font, idx) => {
 					if (font) {
 						fontSrcs[idx].push(generateFontSrc(type, font, stylesheet));
 					}
@@ -354,7 +354,7 @@ export default function(grunt) {
 
 			// Convert urls to strings that could be used in CSS
 			const fontSrcSeparator = option(wf.fontSrcSeparators, stylesheet);
-			fontSrcs.forEach(function(font, idx) {
+			fontSrcs.forEach((font, idx) => {
 				// o.fontSrc1, o.fontSrc2
 				o['fontSrc'+(idx+1)] = font.join(fontSrcSeparator);
 			});
@@ -528,7 +528,7 @@ export default function(grunt) {
 			var demoTemplate = readTemplate(o.htmlDemoTemplate, 'demo', '.html');
 			const demo = renderTemplate(demoTemplate, context);
 
-			mkdirp(getDemoPath(), function(err) {
+			mkdirp(getDemoPath(), (err) => {
 				if (err) {
 					logger.log(err);
 					return;
@@ -746,7 +746,7 @@ export default function(grunt) {
 		 * @return {String}
 		 */
 		function template(tmpl, context) {
-			return tmpl.replace(/\{([^\}]+)\}/g, function(m, key) {
+			return tmpl.replace(/\{([^\}]+)\}/g, (m, key) => {
 				return context[key];
 			});
 		}

@@ -16,7 +16,7 @@ export const UNICODE_PUA_START = 0xF101;
 
 /**
  * @font-face’s src values generation rules.
- * @type {object}
+ * @type {{[type: string]: (false | { ext: string, format?: string, embeddable?: boolean })[]}}
  */
 export const fontsSrcsMap = {
 	//eot: [
@@ -63,7 +63,7 @@ export const fontsSrcsMap = {
 
 /**
  * CSS fileaname prefixes: _icons.scss.
- * @type {object}
+ * @type {{ _default: string }}
  */
 export const cssFilePrefixes = {
 	_default: '',
@@ -71,7 +71,7 @@ export const cssFilePrefixes = {
 
 /**
  * @font-face’s src parts seperators.
- * @type {object}
+ * @type {{ _default: string }}
  */
 export const fontSrcSeparators = {
 	_default: ',\n\t\t',
@@ -87,7 +87,7 @@ export const fontFormats = 'ttf';
  * Returns list of all generated font files.
  *
  * @param {object} o Options.
- * @return {Array}
+ * @return {string[]}
  */
 export const generatedFontFiles = (o) => {
 	const mask = '*.{' + o.types + '}';

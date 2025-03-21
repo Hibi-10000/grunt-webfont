@@ -558,9 +558,9 @@ export default (grunt) => {
 		/**
 		 * Convert a string of comma separated words into an array
 		 *
-		 * @param {string} val Input string
-		 * @param {string} defVal Default value
-		 * @return {Array}
+		 * @param {string | false} val Input string
+		 * @param {string | false} defVal Default value
+		 * @return {string[]}
 		 */
 		function optionToArray(val, defVal) {
 			if (val === undefined) {
@@ -578,8 +578,8 @@ export default (grunt) => {
 		/**
 		 * Check if a value exists in an array
 		 *
-		 * @param {Array} haystack Array to find the needle in
-		 * @param {Mixed} needle Value to find
+		 * @param {string[] | string} haystack Array to find the needle in
+		 * @param {string} needle Value to find
 		 * @return {boolean} Needle was found
 		 */
 		function has(haystack, needle) {
@@ -589,9 +589,9 @@ export default (grunt) => {
 		/**
 		 * Return a specified option if it exists in an object or `_default` otherwise
 		 *
-		 * @param {object} map Options object
+		 * @param {{ _default?: string, [key: string]: string }} map Options object
 		 * @param {string} key Option to find in the object
-		 * @return {Mixed}
+		 * @return {string}
 		 */
 		function option(map, key) {
 			if (key in map) {
@@ -741,7 +741,7 @@ export default (grunt) => {
 		/**
 		 * Basic template function: replaces {variables}
 		 *
-		 * @param {Template} tmpl Template code
+		 * @param {string} tmpl Template code
 		 * @param {object} context Values object
 		 * @return {string}
 		 */

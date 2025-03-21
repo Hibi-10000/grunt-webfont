@@ -15,6 +15,7 @@ import _ from 'lodash';
 import winston from 'winston';
 import * as wf from '../util/util.js';
 
+/** @type {(o: object, allDone: (result: { fontName: string } | false) => void) => void} */
 export default (o, allDone) => {
 	const logger = o.logger || winston;
 

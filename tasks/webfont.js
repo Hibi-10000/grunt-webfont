@@ -209,7 +209,7 @@ export default (grunt) => {
 		 * Calculate hash to flush browser cache.
 		 * Hash is based on source SVG files contents, task options and grunt-webfont version.
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		function getHash() {
 			// Source SVG files contents
@@ -336,7 +336,7 @@ export default (grunt) => {
 		/**
 		 * Generate CSS
 		 *
-		 * @param {String} stylesheet type: css, scss, ...
+		 * @param {string} stylesheet type: css, scss, ...
 		 */
 		function generateStylesheet(stylesheet) {
 			o.relativeFontPath = normalizePath(o.relativeFontPath);
@@ -558,8 +558,8 @@ export default (grunt) => {
 		/**
 		 * Convert a string of comma separated words into an array
 		 *
-		 * @param {String} val Input string
-		 * @param {String} defVal Default value
+		 * @param {string} val Input string
+		 * @param {string} defVal Default value
 		 * @return {Array}
 		 */
 		function optionToArray(val, defVal) {
@@ -580,7 +580,7 @@ export default (grunt) => {
 		 *
 		 * @param {Array} haystack Array to find the needle in
 		 * @param {Mixed} needle Value to find
-		 * @return {Boolean} Needle was found
+		 * @return {boolean} Needle was found
 		 */
 		function has(haystack, needle) {
 			return haystack.indexOf(needle) !== -1;
@@ -589,8 +589,8 @@ export default (grunt) => {
 		/**
 		 * Return a specified option if it exists in an object or `_default` otherwise
 		 *
-		 * @param {Object} map Options object
-		 * @param {String} key Option to find in the object
+		 * @param {object} map Options object
+		 * @param {string} key Option to find in the object
 		 * @return {Mixed}
 		 */
 		function option(map, key) {
@@ -605,7 +605,7 @@ export default (grunt) => {
 		/**
 		 * Find next unused codepoint.
 		 *
-		 * @return {Integer}
+		 * @return {number}
 		 */
 		function getNextCodepoint() {
 			while (_.invert(o.codepoints).hasOwnProperty(currentCodepoint)) {
@@ -617,8 +617,8 @@ export default (grunt) => {
 		/**
 		 * Check whether file is SVG or not
 		 *
-		 * @param {String} filepath File path
-		 * @return {Boolean}
+		 * @param {string} filepath File path
+		 * @return {boolean}
 		 */
 		function isSvgFile(filepath) {
 			return path.extname(filepath).toLowerCase() === '.svg';
@@ -627,8 +627,8 @@ export default (grunt) => {
 		/**
 		 * Convert font file to data:uri and remove source file
 		 *
-		 * @param {String} fontFile Font file path
-		 * @return {String} Base64 encoded string
+		 * @param {string} fontFile Font file path
+		 * @return {string} Base64 encoded string
 		 */
 		function embedFont(fontFile) {
 			// Convert to data:uri
@@ -645,8 +645,8 @@ export default (grunt) => {
 		/**
 		 * Append a slash to end of a filepath if it not exists and make all slashes forward
 		 *
-		 * @param {String} filepath File path
-		 * @return {String}
+		 * @param {string} filepath File path
+		 * @return {string}
 		 */
 		function normalizePath(filepath) {
 			if (!filepath.length) return filepath;
@@ -665,10 +665,10 @@ export default (grunt) => {
 		/**
 		 * Generate URL for @font-face
 		 *
-		 * @param {String} type Type of font
-		 * @param {Object} font URL or Base64 string
-		 * @param {String} stylesheet type: css, scss, ...
-		 * @return {String}
+		 * @param {string} type Type of font
+		 * @param {object} font URL or Base64 string
+		 * @param {string} stylesheet type: css, scss, ...
+		 * @return {string}
 		 */
 		function generateFontSrc(type, font, stylesheet) {
 			const filename = template(o.fontFilename + font.ext, o);
@@ -698,12 +698,12 @@ export default (grunt) => {
 		}
 
 		/**
-		 * Reat the template file
+		 * Read the template file
 		 *
-		 * @param {String} template Template file path
-		 * @param {String} syntax Syntax (bem, bootstrap, etc.)
-		 * @param {String} ext Extention of the template
-		 * @return {Object} {filename: 'Template filename', template: 'Template code'}
+		 * @param {string} template Template file path
+		 * @param {string} syntax Syntax (bem, bootstrap, etc.)
+		 * @param {string} ext Extension of the template
+		 * @return {object} {filename: 'Template filename', template: 'Template code'}
 		 */
 		function readTemplate(template, syntax, ext, optional) {
 			const filename = template
@@ -724,9 +724,9 @@ export default (grunt) => {
 		/**
 		 * Render template with error reporting
 		 *
-		 * @param {Object} template {filename: 'Template filename', template: 'Template code'}
-		 * @param {Object} context Template context
-		 * @return {String}
+		 * @param {object} template {filename: 'Template filename', template: 'Template code'}
+		 * @param {object} context Template context
+		 * @return {string}
 		 */
 		function renderTemplate(template, context) {
 			try {
@@ -742,8 +742,8 @@ export default (grunt) => {
 		 * Basic template function: replaces {variables}
 		 *
 		 * @param {Template} tmpl Template code
-		 * @param {Object} context Values object
-		 * @return {String}
+		 * @param {object} context Values object
+		 * @return {string}
 		 */
 		function template(tmpl, context) {
 			return tmpl.replace(/\{([^\}]+)\}/g, (m, key) => {
@@ -754,8 +754,8 @@ export default (grunt) => {
 		/**
 		 * Prepare string to use as CSS class name
 		 *
-		 * @param {String} str
-		 * @return {String}
+		 * @param {string} str
+		 * @return {string}
 		 */
 		function classnameize(str) {
 			return _s.trim(str).replace(/\s+/g, '-');
@@ -764,8 +764,8 @@ export default (grunt) => {
 		/**
 		 * Return path of CSS file.
 		 *
-		 * @param {String} stylesheet (css, scss, ...)
-		 * @return {String}
+		 * @param {string} stylesheet (css, scss, ...)
+		 * @return {string}
 		 */
 		function getCssFilePath(stylesheet) {
 			const cssFilePrefix = option(wf.cssFilePrefixes, stylesheet);
@@ -775,7 +775,7 @@ export default (grunt) => {
 		/**
 		 * Return path of HTML demo file or `null` if its generation was disabled.
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		function getDemoFilePath() {
 			if (!o.htmlDemo) return null;
@@ -794,9 +794,9 @@ export default (grunt) => {
 		/**
 		 * Save hash to cache file.
 		 *
-		 * @param {String} name Task name (webfont).
-		 * @param {String} target Task target name.
-		 * @param {String} hash Hash.
+		 * @param {string} name Task name (webfont).
+		 * @param {string} target Task target name.
+		 * @param {string} hash Hash.
 		 */
 		function saveHash(name, target, hash) {
 			const filepath = getHashPath(name, target);
@@ -807,9 +807,9 @@ export default (grunt) => {
 		/**
 		 * Read hash from cache file or `null` if file don’t exist.
 		 *
-		 * @param {String} name Task name (webfont).
-		 * @param {String} target Task target name.
-		 * @return {String}
+		 * @param {string} name Task name (webfont).
+		 * @param {string} target Task target name.
+		 * @return {string}
 		 */
 		function readHash(name, target) {
 			const filepath = getHashPath(name, target);
@@ -822,9 +822,9 @@ export default (grunt) => {
 		/**
 		 * Return path to cache file.
 		 *
-		 * @param {String} name Task name (webfont).
-		 * @param {String} target Task target name.
-		 * @return {String}
+		 * @param {string} name Task name (webfont).
+		 * @param {string} target Task target name.
+		 * @return {string}
 		 */
 		function getHashPath(name, target) {
 			return path.join(o.cache, name, target, 'hash');

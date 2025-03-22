@@ -4,7 +4,7 @@ const path = require('node:path');
 const loadGruntTasks = require('load-grunt-tasks');
 const webfont = require('./tasks/webfont.js').default;
 
-module.exports = (grunt) => {
+module.exports = (/** @type {import('grunt')} */grunt) => {
 	loadGruntTasks(grunt);
 
 	webfont(grunt);

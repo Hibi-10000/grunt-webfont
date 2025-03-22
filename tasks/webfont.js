@@ -20,7 +20,7 @@ import * as wf from './util/util.js';
 
 import packageJson from '../package.json' with { type: "json" };
 
-export default (grunt) => {
+export default (/** @type {import('grunt')} */grunt) => {
 	grunt.registerMultiTask('webfont', 'Compile separate SVG files to webfont', function() {
 
 		/**
@@ -37,13 +37,13 @@ export default (grunt) => {
 				grunt.log.writeln.apply(null, arguments);
 			},
 			verbose: function() {
-				grunt.verbose.writeln.apply(null, arguments);
+				grunt.log.verbose.writeln.apply(null, arguments);
 			}
 		};
 
 		const allDone = this.async();
 		const params = this.data;
-		const options = this.options();
+		const options = this.options(undefined);
 		const md5 = crypto.createHash('md5');
 
 		/*

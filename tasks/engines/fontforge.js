@@ -13,7 +13,6 @@ import temp from 'temp';
 import chalk from 'chalk';
 import _ from 'lodash';
 import winston from 'winston';
-import * as wf from '../util/util.js';
 
 /** @type {(o: object, allDone: (result: { fontName: string } | false) => void) => void} */
 export default (o, allDone) => {
@@ -42,28 +41,8 @@ export default (o, allDone) => {
 				error(err.message);
 				return;
 			}
-
-			// Skip some fontforge output such as copyrights. Show warnings only when no font files was created
-			// or in verbose mode.
-			const success = !!wf.generatedFontFiles(o);
-			const notError = /(Copyright|License |with many parts BSD |Executable based on sources from|Library based on sources from|Based on source from git)/;
-			//const version = /(Executable based on sources from|Library based on sources from)/;
-			const lines = err.split('\n');
-
-			const warn = [];
-			lines.forEach((line) => {
-				if (!line.match(notError) && !success) {
-					warn.push(line);
-				}
-				else {
-					logger.verbose(chalk.grey('fontforge: ') + line);
-				}
-			});
-
-			if (warn.length) {
-				error(warn.join('\n'));
-				return;
-			}
+			error('impossible error: ' + err);
+			return;
 		}
 
 		// Trim fontforge result
@@ -92,11 +71,6 @@ export default (o, allDone) => {
 
 	// Send JSON with params
 	if (!proc) return;
-	proc.stdin.on('error', (err) => {
-		if (err.code === 'EPIPE') {
-			fontforgeNotFound();
-		}
-	});
 
 	proc.stderr.on('data', (data) => {
 		logger.verbose(data);

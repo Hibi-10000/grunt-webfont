@@ -55,8 +55,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 * Check for `dest` param on either target config or global options object
 		 */
 		if (_.isUndefined(params.dest) && _.isUndefined(options.dest)) {
-			logger.warn('Required property ' + [this.name, this.target, 'dest'].join('.')
-				+ ' or ' + [this.name, this.target, 'options.dest'].join('.') + ' missing.');
+			logger.warn(`Required property ${this.name}.${this.target}.dest or ${this.name}.${this.target}.options.dest missing.`);
 		}
 
 		if (options.skip) {
@@ -177,7 +176,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 				});
 			}
 			if (!regenerationNeeded) {
-				logger.log('Font ' + chalk.cyan(o.fontName) + ' wasn’t changed since last run.');
+				logger.log(`Font ${chalk.cyan(o.fontName)} wasn’t changed since last run.`);
 				completeTask();
 				return;
 			}
@@ -356,7 +355,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 			const fontSrcSeparator = option(wf.fontSrcSeparators, stylesheet);
 			fontSrcs.forEach((font, idx) => {
 				// o.fontSrc1, o.fontSrc2
-				o['fontSrc'+(idx+1)] = font.join(fontSrcSeparator);
+				o[`fontSrc${idx + 1}`] = font.join(fontSrcSeparator);
 			});
 			o.fontRawSrcs = fontSrcs;
 
@@ -403,7 +402,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 			const codepointsToString = JSON.stringify(o.codepoints, null, 4);
 			try {
 				fs.writeFileSync(o.codepointsFile, codepointsToString);
-				logger.verbose('Codepoints saved to file "' + o.codepointsFile + '".');
+				logger.verbose(`Codepoints saved to file "${o.codepointsFile}".`);
 			} catch (err) {
 				logger.error(err.message);
 			}
@@ -546,7 +545,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 * @param {Function} done
 		 */
 		function printDone(done) {
-			logger.log('Font ' + chalk.cyan(o.fontName) + ' with ' + o.glyphs.length + ' glyphs created.');
+			logger.log(`Font ${chalk.cyan(o.fontName)} with ${o.glyphs.length} glyphs created.`);
 			done();
 		}
 
@@ -634,7 +633,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 			// Convert to data:uri
 			const dataUri = fs.readFileSync(fontFile, 'base64');
 			const type = path.extname(fontFile).substring(1);
-			const fontUrl = 'data:application/x-font-' + type + ';charset=utf-8;base64,' + dataUri;
+			const fontUrl = `data:application/x-font-${type};charset=utf-8;base64,${dataUri}`;
 
 			// Remove font file
 			fs.unlinkSync(fontFile);
@@ -682,17 +681,17 @@ export default (/** @type {import('grunt')} */grunt) => {
 				if (o.addHashes) {
 					if (url.indexOf('#iefix') === -1) {  // Do not add hashes for OldIE
 						// Put hash at the end of an URL or before #hash
-						url = url.replace(/(#|$)/, '?' + o.hash + '$1');
+						url = url.replace(/(#|$)/, `?${o.hash}$1`);
 					}
 					else {
-						url = url.replace(/(#|$)/, o.hash + '$1');
+						url = url.replace(/(#|$)/, `${o.hash}$1`);
 					}
 				}
 			}
 
-			let src = 'url("' + url + '")';
+			let src = `url("${url}")`;
 
-			if (font.format) src += ' format("' + font.format + '")';
+			if (font.format) src += ` format("${font.format}")`;
 
 			return src;
 		}
@@ -708,7 +707,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 		function readTemplate(template, syntax, ext, optional) {
 			const filename = template
 				? path.resolve(template.replace(path.extname(template), ext))
-				: path.join(import.meta.dirname, 'templates/' + syntax + ext)
+				: path.join(import.meta.dirname, `templates/${syntax}${ext}`)
 			;
 			if (fs.existsSync(filename)) {
 				return {
@@ -717,7 +716,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 				};
 			}
 			else if (!optional) {
-				return grunt.fail.fatal('Cannot find template at path: ' + filename);
+				return grunt.fail.fatal(`Cannot find template at path: ${filename}`);
 			}
 		}
 
@@ -734,7 +733,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 				return func(context);
 			}
 			catch (e) {
-				grunt.fail.fatal('Error while rendering template ' + template.filename + ': ' + e.message);
+				grunt.fail.fatal(`Error while rendering template ${template.filename}: ${e.message}`);
 			}
 		}
 
@@ -769,7 +768,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 */
 		function getCssFilePath(stylesheet) {
 			const cssFilePrefix = option(wf.cssFilePrefixes, stylesheet);
-			return path.join(option(o.destCssPaths, stylesheet), cssFilePrefix + o.fontBaseName + '.' + stylesheet);
+			return path.join(option(o.destCssPaths, stylesheet), `${cssFilePrefix}${o.fontBaseName}.${stylesheet}`);
 		}
 
 		/**
@@ -780,7 +779,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 		function getDemoFilePath() {
 			if (!o.htmlDemo) return null;
 			const name = o.htmlDemoFilename || o.fontBaseName;
-			return path.join(o.destHtml, name + '.html');
+			return path.join(o.destHtml, `${name}.html`);
 		}
 
 		/**

@@ -89,7 +89,7 @@ module.exports = (/** @type {import('grunt')} */grunt) => {
 					hashes: false
 				}
 			},
-			// #167: Ligatures with hypen don’t work
+			// #167: Ligatures with hyphen don’t work
 			ligatures: {
 				src: 'test/src_ligatures/*.svg',
 				dest: 'test/tmp/ligatures',

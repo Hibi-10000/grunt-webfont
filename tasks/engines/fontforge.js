@@ -28,7 +28,7 @@ export default (o, allDone) => {
 	const args = [
 		'fontforge',
 		'-script',
-		'"' + path.join(import.meta.dirname, 'fontforge/generate.py') + '"'
+		`"${path.join(import.meta.dirname, 'fontforge/generate.py')}"`
 	].join(' ');
 
 	const proc = exec(args, { maxBuffer: o.execMaxBuffer }, (err, out, code) => {
@@ -41,7 +41,7 @@ export default (o, allDone) => {
 				error(err.message);
 				return;
 			}
-			error('impossible error: ' + err);
+			error(`impossible error: ${err}`);
 			return;
 		}
 
@@ -54,11 +54,11 @@ export default (o, allDone) => {
 			result = JSON.parse(json);
 		}
 		catch (e) {
-			logger.verbose('Webfont did not receive a proper JSON result from Python script: ' + e);
+			logger.verbose(`Webfont did not receive a proper JSON result from Python script: ${e}`);
 			error(
 				'Something went wrong when running fontforge. Probably fontforge wasn’t installed correctly or one of your SVGs is too complicated for fontforge.\n\n' +
-				'1. Try to run Grunt in verbose mode: ' + chalk.bold('grunt --verbose webfont') + ' and see what fontforge says. Then search GitHub issues for the solution: ' + chalk.underline('https://github.com/sapegin/grunt-webfont/issues') + '.\n\n' +
-				'2. Try to use “node” engine instead of “fontforge”: ' + chalk.underline('https://github.com/sapegin/grunt-webfont#engine') + '\n\n' +
+				`1. Try to run Grunt in verbose mode: ${chalk.bold('grunt --verbose webfont')} and see what fontforge says. Then search GitHub issues for the solution: ${chalk.underline('https://github.com/sapegin/grunt-webfont/issues')}.\n\n` +
+				`2. Try to use “node” engine instead of “fontforge”: ${chalk.underline('https://github.com/sapegin/grunt-webfont#engine')}\n\n` +
 				'3. To find “bad” icon try to remove SVGs one by one until error disappears. Then try to simplify this SVG in Sketch, Illustrator, etc.\n\n'
 			);
 			return;
@@ -82,9 +82,9 @@ export default (o, allDone) => {
 		if (code !== 0) {
 			logger.log( // cannot use error() because it will stop execution of callback of exec (which shows error message)
 				"fontforge process has unexpectedly closed.\n" +
-				"1. Try to run grunt in verbose mode to see fontforge output: " + chalk.bold('grunt --verbose webfont') + ".\n" +
-				"2. If stderr maxBuffer exceeded try to increase " + chalk.bold('execMaxBuffer') + ", see " +
-					chalk.underline('https://github.com/sapegin/grunt-webfont#execMaxBuffer') + ". "
+				`1. Try to run grunt in verbose mode to see fontforge output: ${chalk.bold('grunt --verbose webfont')}.\n` +
+				`2. If stderr maxBuffer exceeded try to increase ${chalk.bold('execMaxBuffer')}, ` +
+				`see ${chalk.underline('https://github.com/sapegin/grunt-webfont#execMaxBuffer')}. `
 			);
 		}
 	});
@@ -101,7 +101,7 @@ export default (o, allDone) => {
 	}
 
 	const fontforgeNotFound = () => {
-		error('fontforge not found. Please install fontforge and all other requirements: ' + chalk.underline('https://github.com/sapegin/grunt-webfont#installation'));
+		error(`fontforge not found. Please install fontforge and all other requirements: ${chalk.underline('https://github.com/sapegin/grunt-webfont#installation')}`);
 	}
 
 };

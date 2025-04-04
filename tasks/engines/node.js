@@ -179,6 +179,7 @@
 // 	}
 //
 // 	function autohintTtfFont(font, done) {
+// 		temp.track();
 // 		var tempDir = temp.mkdirSync();
 // 		var originalFilepath = path.join(tempDir, 'font.ttf');
 // 		var hintedFilepath = path.join(tempDir, 'hinted.ttf');

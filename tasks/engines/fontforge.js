@@ -19,6 +19,7 @@ export default (o, allDone) => {
 	const logger = o.logger || winston;
 
 	// Copy source files to temporary directory
+	temp.track();
 	const tempDir = temp.mkdirSync();
 	o.files.forEach((file) => {
 		fs.writeFileSync(path.join(tempDir, o.rename(file)), fs.readFileSync(file));

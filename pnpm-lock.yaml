@@ -15,14 +15,14 @@ importers:
         specifier: ~7.0.6
         version: 7.0.6
       lodash:
-        specifier: ~4.17.21
+        specifier: ^4.17.21
         version: 4.17.21
       mkdirp:
         specifier: ~0.5.6
         version: 0.5.6
       temp:
-        specifier: ~0.8.4
-        version: 0.8.4
+        specifier: ^0.9.4
+        version: 0.9.4
       winston:
         specifier: ~2.1.1
         version: 2.1.1
@@ -46,8 +46,8 @@ importers:
         specifier: ^0.48.43
         version: 0.48.43
       '@types/temp':
-        specifier: ^0.8.34
-        version: 0.8.34
+        specifier: ^0.9.4
+        version: 0.9.4
       '@types/winston':
         specifier: 2.2.0
         version: 2.2.0
@@ -195,8 +195,8 @@ packages:
   '@types/stylus@0.48.43':
     resolution: {integrity: sha512-72dv/zdhuyXWVHUXG2VTPEQdOG+oen95/DNFx2aMFFaY6LoITI6PwEqf5x31JF49kp2w9hvUzkNfTGBIeg61LQ==}
 
-  '@types/temp@0.8.34':
-    resolution: {integrity: sha512-oLa9c5LHXgS6UimpEVp08De7QvZ+Dfu5bMQuWyMhf92Z26Q10ubEMOWy9OEfUdzW7Y/sDWVHmUaLFtmnX/2j0w==}
+  '@types/temp@0.9.4':
+    resolution: {integrity: sha512-+VfWIwrlept2VBTj7Y2wQnI/Xfscy1u8Pyj/puYwss6V1IblXn1x7S0S9eFh6KyBolgLCm+rUFzhFAbdkR691g==}
 
   '@types/winston@2.2.0':
     resolution: {integrity: sha512-o4r+qWUytg+aIoUdqa+r4VIvzJTHpt+z3GUr0Jra/wsolj0Xlwwsj9Gh69MzKBOtHUyV6h3FFn0+nQN7IrsAtg==}
@@ -1203,8 +1203,8 @@ packages:
     resolution: {integrity: sha512-d9iddt6YYGgyxJw5bjsN7UJUO1kGOtjSlNy/4PoGYAjQS5pAT/hzIoLf1bZCw+uUxRmZJh7Yy1aA7xKVRT9B4w==}
     engines: {node: '>=10'}
 
-  temp@0.8.4:
-    resolution: {integrity: sha512-s0ZZzd0BzYv5tLSptZooSjK8oj6C+c19p7Vqta9+6NPOf7r+fxq0cJe6/oN4LTC79sy5NY8ucOJNgwsKCSbfqg==}
+  temp@0.9.4:
+    resolution: {integrity: sha512-yYrrsWnrXMcdsnu/7YMYAofM1ktpL5By7vZhf15CrXijWWrEYZks5AXBudalfSWJLlnen/QUJUB5aoB0kqZUGA==}
     engines: {node: '>=6.0.0'}
 
   test-exclude@6.0.0:
@@ -1478,7 +1478,7 @@ snapshots:
     dependencies:
       '@types/node': 22.13.10
 
-  '@types/temp@0.8.34':
+  '@types/temp@0.9.4':
     dependencies:
       '@types/node': 22.13.10
 
@@ -2504,8 +2504,9 @@ snapshots:
     dependencies:
       diff: 4.0.2
 
-  temp@0.8.4:
+  temp@0.9.4:
     dependencies:
+      mkdirp: 0.5.6
       rimraf: 2.6.3
 
   test-exclude@6.0.0:

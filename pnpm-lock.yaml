@@ -24,8 +24,8 @@ importers:
         specifier: ~0.8.4
         version: 0.8.4
       underscore.string:
-        specifier: ~3.2.3
-        version: 3.2.3
+        specifier: ^3.3.6
+        version: 3.3.6
       winston:
         specifier: ~2.1.1
         version: 2.1.1
@@ -1241,9 +1241,6 @@ packages:
   unc-path-regex@0.1.2:
     resolution: {integrity: sha512-eXL4nmJT7oCpkZsHZUOJo8hcX3GbsiDOa0Qu9F646fi8dT3XuSVopVqAcEiVzSKKH7UoDti23wNX3qGFxcW5Qg==}
     engines: {node: '>=0.10.0'}
-
-  underscore.string@3.2.3:
-    resolution: {integrity: sha512-4FNx1KnBckIW9Z7XvptVBzhWZvyuaB9NC3fdqdAp6GIRY4r6eDAENOZx2dzPrriQVZctkTYw2J7Vi1vjHS2E3A==}
 
   underscore.string@3.3.6:
     resolution: {integrity: sha512-VoC83HWXmCrF6rgkyxS9GHv8W9Q5nhMKho+OadDJGzL2oDYbYEppBaCMH6pFlwLeqj2QS+hhkw2kpXkSdD1JxQ==}
@@ -2548,8 +2545,6 @@ snapshots:
       is-typedarray: 1.0.0
 
   unc-path-regex@0.1.2: {}
-
-  underscore.string@3.2.3: {}
 
   underscore.string@3.3.6:
     dependencies:

@@ -6,13 +6,16 @@ import grunt from 'grunt';
 import { parseString as parseXMLString } from 'xml2js';
 import * as wf from '../tasks/util/util.js';
 
+/** @type {(haystack: string, needle: string) => boolean} */
 function find(haystack, needle) {
 	return haystack.indexOf(needle) !== -1;
 }
 
+/** @type {(haystack: string[], needles?: never) => string[]} */
 function findDuplicates(haystack, needles) {
 	const sorted_arr = haystack.sort();
 
+	/** @type {string[]} */
 	const results = [];
 	for (var i = 0; i < haystack.length - 1; i++) {
 		if (sorted_arr[i + 1] === sorted_arr[i]) {
@@ -23,6 +26,7 @@ function findDuplicates(haystack, needles) {
 	return results;
 }
 
+/** @type {{ [key: string]: (test: import('nodeunit').Test) => void }} */
 export const webfont = {
 	test1: function(test) {
 		// All out files should be created and should not be empty

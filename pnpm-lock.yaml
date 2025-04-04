@@ -42,6 +42,9 @@ importers:
       '@types/node':
         specifier: ^22.13.10
         version: 22.13.10
+      '@types/nodeunit':
+        specifier: ^0.0.36
+        version: 0.0.36
       '@types/stylus':
         specifier: ^0.48.43
         version: 0.48.43
@@ -191,6 +194,9 @@ packages:
 
   '@types/node@22.13.10':
     resolution: {integrity: sha512-I6LPUvlRH+O6VRUqYOcMudhaIdUVWfsjnZavnsraHvpBwaEyMN29ry+0UVJhImYL16xsscu0aske3yA+uPOWfw==}
+
+  '@types/nodeunit@0.0.36':
+    resolution: {integrity: sha512-iExGCGik4zLyQUxyZE2ZIXBZk5GeIn4gDC3dU46JgvB/e8L+MGzSmyd5jv/UmUjQ4LL9d8wq3KrHUfLARtdFOg==}
 
   '@types/stylus@0.48.43':
     resolution: {integrity: sha512-72dv/zdhuyXWVHUXG2VTPEQdOG+oen95/DNFx2aMFFaY6LoITI6PwEqf5x31JF49kp2w9hvUzkNfTGBIeg61LQ==}
@@ -1473,6 +1479,8 @@ snapshots:
   '@types/node@22.13.10':
     dependencies:
       undici-types: 6.20.0
+
+  '@types/nodeunit@0.0.36': {}
 
   '@types/stylus@0.48.43':
     dependencies:

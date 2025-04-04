@@ -86,7 +86,7 @@ export const fontFormats = 'ttf';
 /**
  * Returns list of all generated font files.
  *
- * @param {object} o Options.
+ * @param {OptionsInternal} o Options.
  * @return {string[]}
  */
 export const generatedFontFiles = (o) => {
@@ -97,7 +97,7 @@ export const generatedFontFiles = (o) => {
 /**
  * Returns path to font of specified format.
  *
- * @param {object} o Options.
+ * @param {OptionsInternal} o Options.
  * @param {string} type Font type (see `wf.fontFormats`).
  * @return {string}
  */

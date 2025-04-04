@@ -42,7 +42,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 
 		const allDone = this.async();
 		const params = this.data;
-		const options = this.options(undefined);
+		const options = this.options(/** @type {Options} */(undefined));
 		const md5 = crypto.createHash('md5');
 
 		/*
@@ -76,6 +76,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 		}
 
 		// Options
+		/** @type {OptionsInternal} */
 		let o = {
 			logger: logger,
 			fontBaseName: options.font || 'icons',

@@ -14,7 +14,7 @@ import chalk from 'chalk';
 import _ from 'lodash';
 import winston from 'winston';
 
-/** @type {(o: object, allDone: (result: { fontName: string } | false) => void) => void} */
+/** @type {(o: OptionsInternal, allDone: (result: { fontName: string } | false) => void) => void} */
 export default (o, allDone) => {
 	const logger = o.logger || winston;
 

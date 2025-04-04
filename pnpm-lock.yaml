@@ -23,9 +23,6 @@ importers:
       temp:
         specifier: ~0.8.4
         version: 0.8.4
-      underscore.string:
-        specifier: ^3.3.6
-        version: 3.3.6
       winston:
         specifier: ~2.1.1
         version: 2.1.1
@@ -51,9 +48,6 @@ importers:
       '@types/temp':
         specifier: ^0.8.34
         version: 0.8.34
-      '@types/underscore.string':
-        specifier: ^0.0.41
-        version: 0.0.41
       '@types/winston':
         specifier: 2.2.0
         version: 2.2.0
@@ -203,12 +197,6 @@ packages:
 
   '@types/temp@0.8.34':
     resolution: {integrity: sha512-oLa9c5LHXgS6UimpEVp08De7QvZ+Dfu5bMQuWyMhf92Z26Q10ubEMOWy9OEfUdzW7Y/sDWVHmUaLFtmnX/2j0w==}
-
-  '@types/underscore.string@0.0.41':
-    resolution: {integrity: sha512-d5bdU/o9hkoBsAO/o1hIyqkFBBXKgx5eZYPydgBFR1lw/NKylOYcFGjpmLIue4t/MBmV34J3YOwJ4euQrjpBKw==}
-
-  '@types/underscore@1.13.0':
-    resolution: {integrity: sha512-L6LBgy1f0EFQZ+7uSA57+n2g/s4Qs5r06Vwrwn0/nuK1de+adz00NWaztRQ30aEqw5qOaWbPI8u2cGQ52lj6VA==}
 
   '@types/winston@2.2.0':
     resolution: {integrity: sha512-o4r+qWUytg+aIoUdqa+r4VIvzJTHpt+z3GUr0Jra/wsolj0Xlwwsj9Gh69MzKBOtHUyV6h3FFn0+nQN7IrsAtg==}
@@ -1493,12 +1481,6 @@ snapshots:
   '@types/temp@0.8.34':
     dependencies:
       '@types/node': 22.13.10
-
-  '@types/underscore.string@0.0.41':
-    dependencies:
-      '@types/underscore': 1.13.0
-
-  '@types/underscore@1.13.0': {}
 
   '@types/winston@2.2.0':
     dependencies:

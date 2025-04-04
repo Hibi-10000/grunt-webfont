@@ -14,7 +14,6 @@ import chalk from 'chalk';
 import mkdirp from 'mkdirp';
 //import ttf2woff2 from 'ttf2woff2';
 import _ from 'lodash';
-import _s from 'underscore.string';
 import fontforge from './engines/fontforge.js';
 import * as wf from './util/util.js';
 
@@ -427,7 +426,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 			let htmlStyles;
 
 			// Prepare relative font paths for injection into @font-face refs in HTML
-			const relativeRe = new RegExp(_s.escapeRegExp(o.relativeFontPath), 'g');
+			const relativeRe = new RegExp(_.escapeRegExp(o.relativeFontPath).replace(/[=!:\/]/g, '\\$&'), 'g');
 			const htmlRelativeFontPath = normalizePath(path.relative(o.destHtml, o.dest));
 			const _fontSrc1 = o.fontSrc1.replace(relativeRe, htmlRelativeFontPath);
 			const _fontSrc2 = o.fontSrc2.replace(relativeRe, htmlRelativeFontPath);
@@ -654,7 +653,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 			filepath = filepath.replace(/\\/g, '/');
 
 			// Make sure path ends with a slash
-			if (!_s.endsWith(filepath, '/')) {
+			if (!filepath.endsWith('/')) {
 				filepath += '/';
 			}
 
@@ -757,7 +756,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 * @return {string}
 		 */
 		function classnameize(str) {
-			return _s.trim(str).replace(/\s+/g, '-');
+			return str.trim().replace(/\s+/g, '-');
 		}
 
 		/**

@@ -9,10 +9,12 @@
     "noEmit": true,
     "allowJs": true,
     "checkJs": true,
+    //"strict": true,
 		"resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
   },
-	"include": ["tasks/*", "test/*.js"],
   "exclude": ["node_modules"],
 }

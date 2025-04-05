@@ -5,7 +5,7 @@
  */
 
 import path from 'node:path';
-import { glob } from 'glob';
+import { globSync } from 'glob';
 
 /**
  * Unicode Private Use Area start.
@@ -91,7 +91,7 @@ export const fontFormats = 'ttf';
  */
 export const generatedFontFiles = (o) => {
 	const mask = `*.{${o.types}}`;
-	return glob.sync(path.posix.join(o.dest, o.fontFilename + mask));
+	return globSync(path.posix.join(o.dest, o.fontFilename + mask));
 };
 
 /**

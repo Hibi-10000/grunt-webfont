@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { glob } from 'glob';
+import { globSync } from 'glob';
 import chalk from 'chalk';
 //import ttf2woff2 from 'ttf2woff2';
 import _ from 'lodash';
@@ -252,7 +252,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 */
 		function cleanOutputDir(done) {
 			const htmlDemoFileMask = path.posix.join(o.destCss, o.fontBaseName + '*.{css,html}');
-			const files = glob.sync(htmlDemoFileMask).concat(wf.generatedFontFiles(o));
+			const files = globSync(htmlDemoFileMask).concat(wf.generatedFontFiles(o));
 			files.forEach(file => {
 				fs.unlinkSync(file);
 			});

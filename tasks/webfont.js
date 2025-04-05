@@ -11,7 +11,6 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import glob from 'glob';
 import chalk from 'chalk';
-import { mkdirp } from 'mkdirp';
 //import ttf2woff2 from 'ttf2woff2';
 import _ from 'lodash';
 import fontforge from './engines/fontforge.js';
@@ -240,9 +239,9 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 */
 		function createOutputDirs(done) {
 			o.stylesheets.forEach((stylesheet) => {
-				mkdirp.sync(option(o.destCssPaths, stylesheet));
+				fs.mkdirSync(option(o.destCssPaths, stylesheet), { recursive: true });
 			});
-			mkdirp.sync(o.dest);
+			fs.mkdirSync(o.dest, { recursive: true });
 			done();
 		}
 
@@ -491,7 +490,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 			}
 
 			// Ensure existence of parent directory and output to file as desired
-			mkdirp.sync(destParent);
+			fs.mkdirSync(destParent, { recursive: true });
 			fs.writeFileSync(filepath, output);
 		}
 
@@ -527,12 +526,14 @@ export default (/** @type {import('grunt')} */grunt) => {
 			var demoTemplate = readTemplate(o.htmlDemoTemplate, 'demo', '.html');
 			const demo = renderTemplate(demoTemplate, context);
 
-			mkdirp(getDemoPath()).then(() => {
+			fs.mkdir(getDemoPath(), { recursive: true }, (err) => {
+				if (err) {
+					logger.log(err);
+					return;
+				}
 				// Save file
 				fs.writeFileSync(getDemoFilePath(), demo);
 				done();
-			}).catch((err) => {
-				logger.log(err);
 			});
 
 		}
@@ -797,7 +798,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 */
 		function saveHash(name, target, hash) {
 			const filepath = getHashPath(name, target);
-			mkdirp.sync(path.dirname(filepath));
+			fs.mkdirSync(path.dirname(filepath), { recursive: true });
 			fs.writeFileSync(filepath, hash);
 		}
 

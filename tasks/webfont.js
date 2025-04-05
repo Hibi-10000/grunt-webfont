@@ -11,7 +11,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import glob from 'glob';
 import chalk from 'chalk';
-import mkdirp from 'mkdirp';
+import { mkdirp } from 'mkdirp';
 //import ttf2woff2 from 'ttf2woff2';
 import _ from 'lodash';
 import fontforge from './engines/fontforge.js';
@@ -527,14 +527,12 @@ export default (/** @type {import('grunt')} */grunt) => {
 			var demoTemplate = readTemplate(o.htmlDemoTemplate, 'demo', '.html');
 			const demo = renderTemplate(demoTemplate, context);
 
-			mkdirp(getDemoPath(), (err) => {
-				if (err) {
-					logger.log(err);
-					return;
-				}
+			mkdirp(getDemoPath()).then(() => {
 				// Save file
 				fs.writeFileSync(getDemoFilePath(), demo);
 				done();
+			}).catch((err) => {
+				logger.log(err);
 			});
 
 		}

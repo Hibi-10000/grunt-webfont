@@ -184,15 +184,16 @@ export default (/** @type {import('grunt')} */grunt) => {
 
 		// Save new hash and run
 		saveHash(this.name, this.target, o.hash);
-		new Promise(createOutputDirs)
-			.then(() => new Promise(cleanOutputDir))
-			.then(() => new Promise(generateFont))
-			.then(() => new Promise(generateWoff2Font))
-			.then(() => new Promise(generateStylesheets))
-			.then(() => new Promise(generateDemoHtml))
-			.then(() => new Promise(generateCustomOutputs))
-			.then(() => new Promise(printDone))
-			.finally(completeTask);
+		(async () => {
+			createOutputDirs();
+			cleanOutputDir();
+			await new Promise(resolve => generateFont(resolve))
+			generateWoff2Font();
+			generateStylesheets();
+			await new Promise(resolve => generateDemoHtml(resolve));
+			generateCustomOutputs();
+			printDone();
+		})().finally(completeTask);
 
 		/**
 		 * Call callback function if it was specified in the options.
@@ -235,37 +236,31 @@ export default (/** @type {import('grunt')} */grunt) => {
 
 		/**
 		 * Create output directory
-		 *
-		 * @param {Function} done
 		 */
-		function createOutputDirs(done) {
+		function createOutputDirs() {
 			o.stylesheets.forEach((stylesheet) => {
 				fs.mkdirSync(option(o.destCssPaths, stylesheet), { recursive: true });
 			});
 			fs.mkdirSync(o.dest, { recursive: true });
-			done();
 		}
 
 		/**
 		 * Clean output directory
-		 *
-		 * @param {Function} done
 		 */
-		function cleanOutputDir(done) {
+		function cleanOutputDir() {
 			const htmlDemoFileMask = path.posix.join(o.destCss, o.fontBaseName + '*.{css,html}');
 			const files = globSync(htmlDemoFileMask).concat(wf.generatedFontFiles(o));
 			files.forEach(file => {
 				fs.unlinkSync(file);
 			});
-			done();
 		}
 
 		/**
 		 * Generate font using selected engine
 		 *
-		 * @param {Function} done
+		 * @param {(value: any) => void} resolve
 		 */
-		function generateFont(done) {
+		function generateFont(resolve) {
 			fontforge(o, (result) => {
 				if (result === false) {
 					// Font was not created, exit
@@ -277,18 +272,15 @@ export default (/** @type {import('grunt')} */grunt) => {
 					o = _.extend(o, result);
 				}
 
-				done();
+				resolve();
 			});
 		}
 
 		/**
 		 * Converts TTF font to WOFF2.
-		 *
-		 * @param {Function} done
 		 */
-		function generateWoff2Font(done) {
+		function generateWoff2Font() {
 			if (!has(o.types, 'woff2')) {
-				done();
 				return;
 			}
 
@@ -306,15 +298,13 @@ export default (/** @type {import('grunt')} */grunt) => {
 
 			// Save
 			const woff2FontPath = wf.getFontPath(o, 'woff2');
-			fs.writeFile(woff2FontPath, woffFont, function() {done();});
+			fs.writeFileSync(woff2FontPath, woffFont);
 		}
 
 		/**
 		 * Generate CSS
-		 *
-		 * @param {Function} done
 		 */
-		function generateStylesheets(done) {
+		function generateStylesheets() {
 			// Convert codepoints to array of strings
 			const codepoints = [];
 			_.each(o.glyphs, (name) => {
@@ -328,8 +318,6 @@ export default (/** @type {import('grunt')} */grunt) => {
 			o.stylesheets.sort((a, b) => {
 				return a === 'css' ? 1 : -1;
 			}).forEach(generateStylesheet);
-
-			done();
 		}
 
 		/**
@@ -499,25 +487,22 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 * Iterates over entries in the `options.customOutputs` object and,
 		 * on a config-by-config basis, generates the desired results.
 		 */
-		function generateCustomOutputs(done) {
-
+		function generateCustomOutputs() {
 			if (!o.customOutputs || o.customOutputs.length < 1) {
-				done();
 				return;
 			}
 
 			_.each(o.customOutputs, generateCustomOutput);
-			done();
 		}
 
 		/**
 		 * Generate HTML demo page
 		 *
-		 * @param {Function} done
+		 * @param {(value: any) => void} resolve
 		 */
-		function generateDemoHtml(done) {
+		function generateDemoHtml(resolve) {
 			if (!o.htmlDemo) {
-				done();
+				resolve();
 				return;
 			}
 
@@ -534,19 +519,16 @@ export default (/** @type {import('grunt')} */grunt) => {
 				}
 				// Save file
 				fs.writeFileSync(getDemoFilePath(), demo);
-				done();
+				resolve();
 			});
 
 		}
 
 		/**
 		 * Print log
-		 *
-		 * @param {Function} done
 		 */
-		function printDone(done) {
+		function printDone() {
 			logger.log(`Font ${chalk.cyan(o.fontName)} with ${o.glyphs.length} glyphs created.`);
-			done();
 		}
 
 

@@ -11,7 +11,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { globSync } from 'glob';
 import chalk from 'chalk';
-//import ttf2woff2 from 'ttf2woff2';
+import ttf2woff2 from 'ttf2woff2';
 import _ from 'lodash';
 import fontforge from './engines/fontforge.js';
 import * as wf from './util/util.js';
@@ -92,7 +92,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 			htmlDemoTemplate: options.htmlDemoTemplate,
 			htmlDemoFilename: options.htmlDemoFilename,
 			styles: optionToArray(options.styles, 'font,icon'),
-			types: 'ttf',
+			types: optionToArray(options.types, 'eot,woff,ttf'),
 			order: optionToArray(options.order, wf.fontFormats),
 			embed: options.embed === true ? ['woff'] : optionToArray(options.embed, false),
 			rename: options.rename || path.basename,
@@ -186,7 +186,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 		new Promise(createOutputDirs)
 			.then(() => new Promise(cleanOutputDir))
 			.then(() => new Promise(generateFont))
-			//.then(() => new Promise(generateWoff2Font))
+			.then(() => new Promise(generateWoff2Font))
 			.then(() => new Promise(generateStylesheets))
 			.then(() => new Promise(generateDemoHtml))
 			.then(() => new Promise(generateCustomOutputs))
@@ -280,33 +280,33 @@ export default (/** @type {import('grunt')} */grunt) => {
 			});
 		}
 
-//		/**
-//		 * Converts TTF font to WOFF2.
-//		 *
-//		 * @param {Function} done
-//		 */
-//		function generateWoff2Font(done) {
-//			if (!has(o.types, 'woff2')) {
-//				done();
-//				return;
-//			}
-//
-//			// Read TTF font
-//			const ttfFontPath = wf.getFontPath(o, 'ttf');
-//			const ttfFont = fs.readFileSync(ttfFontPath);
-//
-//			// Remove TTF font if not needed
-//			if (!has(o.types, 'ttf')) {
-//				fs.unlinkSync(ttfFontPath);
-//			}
-//
-//			// Convert to WOFF2
-//			const woffFont = ttf2woff2(ttfFont);
-//
-//			// Save
-//			const woff2FontPath = wf.getFontPath(o, 'woff2');
-//			fs.writeFile(woff2FontPath, woffFont, function() {done();});
-//		}
+		/**
+		 * Converts TTF font to WOFF2.
+		 *
+		 * @param {Function} done
+		 */
+		function generateWoff2Font(done) {
+			if (!has(o.types, 'woff2')) {
+				done();
+				return;
+			}
+
+			// Read TTF font
+			const ttfFontPath = wf.getFontPath(o, 'ttf');
+			const ttfFont = fs.readFileSync(ttfFontPath);
+
+			// Remove TTF font if not needed
+			if (!has(o.types, 'ttf')) {
+				fs.unlinkSync(ttfFontPath);
+			}
+
+			// Convert to WOFF2
+			const woffFont = ttf2woff2(ttfFont);
+
+			// Save
+			const woff2FontPath = wf.getFontPath(o, 'woff2');
+			fs.writeFile(woff2FontPath, woffFont, function() {done();});
+		}
 
 		/**
 		 * Generate CSS

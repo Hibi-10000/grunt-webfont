@@ -49,7 +49,7 @@
     "glob": "^11.0.1",
     "lodash": "^4.17.21",
     "temp": "^0.9.4",
-    "ttf2woff2": "~2.0.3",
+    "ttf2woff2": "^5.0.0",
     "winston": "^3.17.0"
   },
   "devDependencies": {

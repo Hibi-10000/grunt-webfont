@@ -11,6 +11,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { globSync } from 'glob';
 import chalk from 'chalk';
+// updates to v6 are blocked by https://github.com/nfroidure/ttf2woff2/issues/87
 import ttf2woff2 from 'ttf2woff2';
 import _ from 'lodash';
 import fontforge from './engines/fontforge.js';

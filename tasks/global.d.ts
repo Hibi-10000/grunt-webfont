@@ -1,4 +1,4 @@
-import { PathLike } from "fs";
+import type { PathLike } from 'fs';
 
 declare global {
     interface Logger {
@@ -37,6 +37,7 @@ declare global {
         htmlDemoTemplate: string,
         htmlDemoFilename: string,
         styles: string, //"foo,bar"
+		types: string, //"foo,bar"
         order: string, //"foo,bar"
         embed: boolean | string, //"foo,bar"
         rename: (path: string, suffix?: string) => string,
@@ -52,7 +53,7 @@ declare global {
         descent?: number,
         version?: string | boolean,
         cache: string,
-        callback: (filename: string, types: string, glyphs: string[], hash: string) => void,
+        callback: (filename: string, types: string[], glyphs: string[], hash: string) => void,
         customOutputs: CustomOutput[],
         execMaxBuffer: number,
 
@@ -78,7 +79,7 @@ declare global {
         htmlDemoTemplate: string,
         htmlDemoFilename: string,
         styles: string[],
-        types: string,
+        types: string[],
         order: string[],
         embed: string[],
         rename: (path: string, suffix?: string) => string,
@@ -94,7 +95,7 @@ declare global {
         descent: number,
         version: string | boolean,
         cache: string,
-        callback: (filename: string, types: string, glyphs: string[], hash: string) => void,
+        callback: (filename: string, types: string[], glyphs: string[], hash: string) => void,
         customOutputs: CustomOutput[],
         execMaxBuffer: number,
 

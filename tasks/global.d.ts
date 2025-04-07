@@ -41,6 +41,7 @@ declare global {
         order: string, //"foo,bar"
         embed: boolean | string, //"foo,bar"
         rename: (path: string, suffix?: string) => string,
+		engine: 'fontforge' | 'node',
         autoHint: boolean,
         codepoints: object | any[],
         codepointsFile: string | fs.PathLike,
@@ -83,6 +84,7 @@ declare global {
         order: string[],
         embed: string[],
         rename: (path: string, suffix?: string) => string,
+		engine: 'fontforge' | 'node',
         autoHint: boolean,
         codepoints: object | any[],
         codepointsFile: string | fs.PathLike,

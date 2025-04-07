@@ -520,7 +520,7 @@ export const webfont = {
 		var optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
 		var svg	= grunt.file.read('test/tmp/optimize_enabled/icons.svg');
 		if(svg.indexOf(optimizedPathSegment) === -1) {
-			test.fail(true, 'SVG element must be contains the optimized path');
+			test.fail(true, 'SVG element must be contains the optimized path', undefined, undefined);
 		}
 		test.done();
 	},
@@ -529,7 +529,7 @@ export const webfont = {
 		var optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
 		var svg	= grunt.file.read('test/tmp/optimize_disabled/icons.svg');
 		if(svg.indexOf(optimizedPathSegment) > -1) {
-			test.fail(true, 'SVG element must be contains the un-optimized path');
+			test.fail(true, 'SVG element must be contains the un-optimized path', undefined, undefined);
 		}
 		test.done();
 	},

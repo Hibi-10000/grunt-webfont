@@ -24,18 +24,18 @@ import * as wf from '../util/util.js';
 
 /** @type {(o: OptionsInternal, allDone: (result: { fontName: string } | false) => void) => void} */
 export default function(o, allDone) {
-	var logger = o.logger || winston;
+	const logger = o.logger || winston;
 
 	// @todo Ligatures
 
-	var fonts = {};
+	const fonts = {};
 
-	var generators = {
+	const generators = {
 		svg: function(done) {
-			var font = '';
-			var decoder = new StringDecoder('utf8');
+			let font = '';
+			const decoder = new StringDecoder('utf8');
 			svgFilesToStreams(o.files, function(streams) {
-				var stream = svgicons2svgfont(streams, {
+				const stream = svgicons2svgfont(streams, {
 					fontName: o.fontFamilyName,
 					fontHeight: o.fontHeight,
 					descent: o.descent,
@@ -56,7 +56,7 @@ export default function(o, allDone) {
 
 		ttf: function(done) {
 			getFont('svg', function(svgFont) {
-				var font = svg2ttf(svgFont, {});
+				let font = svg2ttf(svgFont, {});
 				font = Buffer.from(font.buffer);
 				autohintTtfFont(font, function(hintedFont) {
 					// ttfautohint is optional
@@ -71,7 +71,7 @@ export default function(o, allDone) {
 
 		woff: function(done) {
 			getFont('ttf', function(ttfFont) {
-				var font = ttf2woff(new Uint8Array(ttfFont), {});
+				let font = ttf2woff(new Uint8Array(ttfFont), {});
 				font = Buffer.from(font.buffer);
 				fonts.woff = font;
 				done(font);
@@ -85,18 +85,18 @@ export default function(o, allDone) {
 
 		eot: function(done) {
 			getFont('ttf', function(ttfFont) {
-				var fontb = ttf2eot(new Uint8Array(ttfFont));
-				var font = Buffer.from(fontb.buffer);
+				const fontb = ttf2eot(new Uint8Array(ttfFont));
+				const font = Buffer.from(fontb.buffer);
 				fonts.eot = font;
 				done(font);
 			});
 		}
 	};
 
-	var steps = [];
+	const steps = [];
 
 	// Font types
-	var typesToGenerate = o.types.slice();
+	const typesToGenerate = o.types.slice();
 	if ((o.types.indexOf('woff2') !== -1) && (o.types.indexOf('ttf') === -1)) typesToGenerate.push('ttf');
 	typesToGenerate.forEach(function(type) {
 		steps.push(createFontWriter(type));
@@ -136,16 +136,16 @@ export default function(o, allDone) {
 			}
 
 			function streamSVG(name, file) {
-				var stream = fs.createReadStream(file);
+				const stream = fs.createReadStream(file);
 				fileStreamed(name, stream);
 			}
 
 			function streamSVGO(name, file) {
-				var svg = fs.readFileSync(file, 'utf8');
-				var svgo = new SVGO();
+				const svg = fs.readFileSync(file, 'utf8');
+				const svgo = new SVGO();
 				try {
 					svgo.optimize(svg, function(res) {
-						var stream = new MemoryStream(res.data, {
+						const stream = new MemoryStream(res.data, {
 							writeable: false
 						});
 						fileStreamed(name, stream);
@@ -156,8 +156,8 @@ export default function(o, allDone) {
 				}
 			}
 
-			var idx = files.indexOf(file);
-			var name = o.glyphs[idx];
+			const idx = files.indexOf(file);
+			const name = o.glyphs[idx];
 
 			if(o.optimize === true) {
 				streamSVGO(name, file);
@@ -177,9 +177,9 @@ export default function(o, allDone) {
 
 	function autohintTtfFont(font, done) {
 		temp.track();
-		var tempDir = temp.mkdirSync();
-		var originalFilepath = path.join(tempDir, 'font.ttf');
-		var hintedFilepath = path.join(tempDir, 'hinted.ttf');
+		const tempDir = temp.mkdirSync();
+		const originalFilepath = path.join(tempDir, 'font.ttf');
+		const hintedFilepath = path.join(tempDir, 'hinted.ttf');
 
 		if (!o.autoHint){
 			done(false);
@@ -189,7 +189,7 @@ export default function(o, allDone) {
 		fs.writeFileSync(originalFilepath, font);
 
 		// Run ttfautohint
-		var args = [
+		const args = [
 			'ttfautohint',
 			'--symbol',
 			'--fallback-script=latn',
@@ -212,7 +212,7 @@ export default function(o, allDone) {
 			}
 
 			// Read hinted font back
-			var hintedFont = fs.readFileSync(hintedFilepath);
+			const hintedFont = fs.readFileSync(hintedFilepath);
 			done(hintedFont);
 		});
 	}

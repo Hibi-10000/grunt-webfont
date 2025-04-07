@@ -507,7 +507,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 			const context = prepareHtmlTemplateContext();
 
 			// Generate HTML
-			var demoTemplate = readTemplate(o.htmlDemoTemplate, 'demo', '.html');
+			const demoTemplate = readTemplate(o.htmlDemoTemplate, 'demo', '.html');
 			const demo = renderTemplate(demoTemplate, context);
 
 			try {

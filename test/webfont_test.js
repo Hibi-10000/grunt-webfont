@@ -404,6 +404,88 @@ export const webfont = {
 		test.done();
 	},
 
+	template_options: function(test) {
+		var svgs = grunt.file.expand('test/src/**.*');
+		var less = grunt.file.read('test/tmp/template_options/icons.less');
+		var html = grunt.file.read('test/tmp/template_options/icons.html');
+
+		test.ok(
+				find(less, '.glyph-icon {'),
+				'Class .glyph-icon should be in LESS file.'
+		);
+
+		// Every SVG file should have corresponding entry in LESS and HTML files
+		svgs.forEach(function(file) {
+			var id = path.basename(file, '.svg');
+			// test.ok(
+			// 		find(less, '.make-icon-' + id + ' {'),
+			// 		'Mixin .make-icon-' + id + ' should be in LESS file.'
+			// );
+			test.ok(
+					find(less, '.glyph_' + id + ' {'),
+					'Icon .glyph_' + id + ' should be in LESS file.'
+			);
+			test.ok(
+					find(html, '<div class="icons__item" data-name="' + id + '"><i class="glyph-icon glyph_' + id + '"></i> glyph_' + id + '</div>'),
+					'Icon .glyph_' + id + ' should be in HTML file.'
+			);
+		});
+
+		test.done();
+	},
+
+	node: function(test) {
+		// All out files should be created and should not be empty
+		'woff,ttf,eot'.split(',').forEach(function(type) {
+			var name = type.toUpperCase();
+			test.ok(fs.existsSync('test/tmp/node/icons.' + type), name + ' file created.');
+			test.ok(grunt.file.read('test/tmp/node/icons.' + type).length, name + ' file not empty.');
+		});
+
+		'css,html'.split(',').forEach(function(type) {
+			var name = type.toUpperCase();
+			test.ok(fs.existsSync('test/tmp/node/icons.' + type), name + ' file created.');
+			test.ok(grunt.file.read('test/tmp/node/icons.' + type).length, name + ' file not empty.');
+		});
+
+		var svgs = grunt.file.expand('test/src/**.*');
+		var css = grunt.file.read('test/tmp/node/icons.css');
+		var html = grunt.file.read('test/tmp/node/icons.html');
+
+		// CSS links to font files are correct
+		'woff,ttf,eot'.split(',').forEach(function(type) {
+			test.ok(
+				find(css, 'url("icons.' + type),
+				'File path ' + type + ' shound be in CSS file.'
+			);
+		});
+
+		// Double EOT (for IE9 compat mode)
+		test.ok(
+			find(css, 'src:url("icons.eot");'),
+			'First EOT declaration.'
+		);
+		test.ok(
+			find(css, 'src:url("icons.eot?#iefix") format("embedded-opentype"),'),
+			'Second EOT declaration.'
+		);
+
+		// Every SVG file should have corresponding entry in CSS and HTML files
+		svgs.forEach(function(file) {
+			var id = path.basename(file, '.svg');
+			test.ok(
+				find(css, '.icon_' + id + ':before'),
+				'Icon ' + id + ' shound be in CSS file.'
+			);
+			test.ok(
+				find(html, '<div class="icons__item" data-name="' + id + '"><i class="icon icon_' + id + '"></i> icon_' + id + '</div>'),
+				'Icon ' + id + ' shound be in HTML file.'
+			);
+		});
+
+		test.done();
+	},
+
 	ie7: function(test){
 		var css = grunt.file.read('test/tmp/ie7/icons.css');
 		var svgs = grunt.file.expand('test/src/*.svg');
@@ -431,6 +513,24 @@ export const webfont = {
 				'Icon ' + id + ' shound be in CSS file.'
 			);
 		});
+		test.done();
+	},
+
+	optimize_enabled: function(test){
+		var optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
+		var svg	= grunt.file.read('test/tmp/optimize_enabled/icons.svg');
+		if(svg.indexOf(optimizedPathSegment) === -1) {
+			test.fail(true, 'SVG element must be contains the optimized path');
+		}
+		test.done();
+	},
+
+	optimize_disabled: function(test){
+		var optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
+		var svg	= grunt.file.read('test/tmp/optimize_disabled/icons.svg');
+		if(svg.indexOf(optimizedPathSegment) > -1) {
+			test.fail(true, 'SVG element must be contains the un-optimized path');
+		}
 		test.done();
 	},
 
@@ -553,6 +653,48 @@ export const webfont = {
 		test.done();
 	},
 
+	woff2_node: function(test) {
+		// All out files should be created and should not be empty
+		'woff,woff2'.split(',').forEach(function(type) {
+			var name = type.toUpperCase();
+			test.ok(fs.existsSync('test/tmp/woff2_node/icons.' + type), name + ' file created.');
+			test.ok(grunt.file.read('test/tmp/woff2_node/icons.' + type).length, name + ' file not empty.');
+		});
+
+		// TTF file should be deleted
+		'ttf'.split(',').forEach(function(type) {
+			test.ok(!fs.existsSync('test/tmp/woff2_node/icons.' + type), type.toUpperCase() + ' file NOT created.');
+		});
+
+		'css,html'.split(',').forEach(function(type) {
+			var name = type.toUpperCase();
+			test.ok(fs.existsSync('test/tmp/woff2_node/icons.' + type), name + ' file created.');
+			test.ok(grunt.file.read('test/tmp/woff2_node/icons.' + type).length, name + ' file not empty.');
+		});
+
+		var svgs = grunt.file.expand('test/src/**.*');
+		var css = grunt.file.read('test/tmp/woff2_node/icons.css');
+		var html = grunt.file.read('test/tmp/woff2_node/icons.html');
+
+		// CSS links to font files are correct
+		'woff2,woff'.split(',').forEach(function(type) {
+			test.ok(
+				find(css, 'url("icons.' + type),
+				'File path ' + type + ' shound be in CSS file.'
+			);
+		});
+
+		// CSS links to TTF should not be created
+		'ttf'.split(',').forEach(function(type) {
+			test.ok(
+				!find(css, 'url("icons.' + type),
+				'File path ' + type + ' shound NOT be in CSS file.'
+			);
+		});
+
+		test.done();
+	},
+
 	target_overrides: function(test) {
 
 		var css = grunt.file.read('test/tmp/target_overrides_css/icons.css');
@@ -595,5 +737,19 @@ export const webfont = {
 
 		test.done();
 	},
+
+	filename_length: function(test) {
+
+		// File should have been created.
+		test.ok(fs.existsSync('test/tmp/filename_length/icons.css'));
+
+		// File should have been created.
+		test.ok(fs.existsSync('test/tmp/filename_length/icons.woff'));
+
+		// File should have been created.
+		test.ok(fs.existsSync('test/tmp/filename_length/icons.html'));
+
+		test.done();
+	}
 
 };

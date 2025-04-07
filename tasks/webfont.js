@@ -15,6 +15,7 @@ import chalk from 'chalk';
 import ttf2woff2 from 'ttf2woff2';
 import _ from 'lodash';
 import fontforge from './engines/fontforge.js';
+import node from './engines/node.js';
 import * as wf from './util/util.js';
 
 import packageJson from '../package.json' with { type: "json" };
@@ -97,6 +98,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 			order: optionToArray(options.order, wf.fontFormats),
 			embed: options.embed === true ? ['woff'] : optionToArray(options.embed, false),
 			rename: options.rename || path.basename,
+			engine: options.engine || 'fontforge',
 			autoHint: options.autoHint !== false,
 			codepoints: options.codepoints,
 			codepointsFile: options.codepointsFile,
@@ -259,7 +261,8 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 * Generate font using selected engine
 		 */
 		async function generateFont() {
-			await new Promise(resolve => fontforge(o, result => {
+			const f = o.engine === 'node' ? node : fontforge;
+			await new Promise(resolve => f(o, result => {
 				if (result === false) {
 					// Font was not created, exit
 					completeTask();

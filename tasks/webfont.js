@@ -187,10 +187,10 @@ export default (/** @type {import('grunt')} */grunt) => {
 		(async () => {
 			createOutputDirs();
 			cleanOutputDir();
-			await new Promise(resolve => generateFont(resolve))
+			await generateFont();
 			generateWoff2Font();
 			generateStylesheets();
-			await new Promise(resolve => generateDemoHtml(resolve));
+			await generateDemoHtml();
 			generateCustomOutputs();
 			printDone();
 		})().finally(completeTask);
@@ -257,11 +257,9 @@ export default (/** @type {import('grunt')} */grunt) => {
 
 		/**
 		 * Generate font using selected engine
-		 *
-		 * @param {(value: any) => void} resolve
 		 */
-		function generateFont(resolve) {
-			fontforge(o, (result) => {
+		async function generateFont() {
+			await new Promise(resolve => fontforge(o, result => {
 				if (result === false) {
 					// Font was not created, exit
 					completeTask();
@@ -273,7 +271,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 				}
 
 				resolve();
-			});
+			}));
 		}
 
 		/**
@@ -497,12 +495,9 @@ export default (/** @type {import('grunt')} */grunt) => {
 
 		/**
 		 * Generate HTML demo page
-		 *
-		 * @param {(value: any) => void} resolve
 		 */
-		function generateDemoHtml(resolve) {
+		async function generateDemoHtml() {
 			if (!o.htmlDemo) {
-				resolve();
 				return;
 			}
 
@@ -512,15 +507,16 @@ export default (/** @type {import('grunt')} */grunt) => {
 			var demoTemplate = readTemplate(o.htmlDemoTemplate, 'demo', '.html');
 			const demo = renderTemplate(demoTemplate, context);
 
-			fs.mkdir(getDemoPath(), { recursive: true }, (err) => {
+			try {
+				await fs.promises.mkdir(getDemoPath(), { recursive: true });
+			} catch (err) {
 				if (err) {
 					logger.log(err);
 					return;
 				}
-				// Save file
-				fs.writeFileSync(getDemoFilePath(), demo);
-				resolve();
-			});
+			}
+			// Save file
+			fs.writeFileSync(getDemoFilePath(), demo);
 
 		}
 

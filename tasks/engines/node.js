@@ -7,6 +7,7 @@
 'use strict';
 
 import fs from 'node:fs';
+import stream from 'node:stream';
 import path from 'node:path';
 import { exec } from 'node:child_process';
 import { StringDecoder } from 'node:string_decoder';
@@ -18,7 +19,6 @@ import svg2ttf from 'svg2ttf';
 import ttf2woff from 'ttf2woff';
 import ttf2eot from 'ttf2eot';
 import SVGO from 'svgo';
-import MemoryStream from 'memorystream';
 import winston from 'winston';
 import * as wf from '../util/util.js';
 
@@ -157,10 +157,8 @@ export default (o, allDone) => {
 				const svgo = new SVGO();
 				try {
 					svgo.optimize(svg, (/** @type {{ data: string }} */res) => {
-						const stream = new MemoryStream(res.data, {
-							writeable: false
-						});
-						fileStreamed(name, stream);
+						const strStream = stream.Readable.from(res.data);
+						fileStreamed(name, strStream);
 					});
 				} catch (err) {
 					logger.error('Can’t simplify SVG file with SVGO.\n\n' + err);

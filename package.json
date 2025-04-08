@@ -54,7 +54,6 @@
   },
   "optionalDependencies": {
     "async": "~1.5.2",
-    "memorystream": "~0.3.1",
     "svg2ttf": "~2.1.1",
     "svgicons2svgfont": "~1.1.0",
     "svgo": "~0.6.6",
@@ -65,7 +64,6 @@
     "@types/async": "^1.4.29",
     "@types/grunt": "^0.4.32",
     "@types/lodash": "^4.17.16",
-    "@types/memorystream": "^0.3.4",
     "@types/node": "^22.13.10",
     "@types/nodeunit": "^0.0.36",
     "@types/svg2ttf": "^5.0.3",

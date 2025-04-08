@@ -22,19 +22,21 @@ import MemoryStream from 'memorystream';
 import winston from 'winston';
 import * as wf from '../util/util.js';
 
-/** @type {(o: OptionsInternal, allDone: (result: { fontName: string } | false) => void) => void} */
+/** @type {(o: OptionsInternal, allDone: (result?: false) => void) => void} */
 export default (o, allDone) => {
 	const logger = o.logger || winston;
 
 	// @todo Ligatures
 
+	/** @type {{ svg?: string, ttf?: Buffer<any>, woff?: Buffer<any>, eot?: Buffer<any> }} */
 	const fonts = {};
 
 	const generators = {
-		svg: (done) => {
+		svg: (/** @type {(font: string) => void} */done) => {
 			let font = '';
 			const decoder = new StringDecoder('utf8');
 			svgFilesToStreams(o.files, (streams) => {
+				/** @type {import('node:stream').PassThrough} */
 				const stream = svgicons2svgfont(streams, {
 					fontName: o.fontFamilyName,
 					fontHeight: o.fontHeight,
@@ -54,10 +56,11 @@ export default (o, allDone) => {
 			});
 		},
 
-		ttf: (done) => {
-			getFont('svg', (svgFont) => {
-				let font = svg2ttf(svgFont, {});
-				font = Buffer.from(font.buffer);
+		ttf: (/** @type {(font: Buffer<any>) => void} */done) => {
+			getFont('svg', (/** @type {string} */svgFont) => {
+				const fontb = svg2ttf(svgFont, {});
+				/** @type {Buffer<ArrayBufferLike>} */
+				let font = Buffer.from(fontb.buffer);
 				autohintTtfFont(font, (hintedFont) => {
 					// ttfautohint is optional
 					if (hintedFont) {
@@ -69,10 +72,10 @@ export default (o, allDone) => {
 			});
 		},
 
-		woff: (done) => {
-			getFont('ttf', (ttfFont) => {
-				let font = ttf2woff(new Uint8Array(ttfFont), {});
-				font = Buffer.from(font.buffer);
+		woff: (/** @type {(font: Buffer<any>) => void} */done) => {
+			getFont('ttf', (/** @type {Buffer<any>} */ttfFont) => {
+				const fontb = ttf2woff(new Uint8Array(ttfFont), {});
+				const font = Buffer.from(fontb.buffer);
 				fonts.woff = font;
 				done(font);
 			});
@@ -83,8 +86,8 @@ export default (o, allDone) => {
 			done();
 		},
 
-		eot: (done) => {
-			getFont('ttf', (ttfFont) => {
+		eot: (/** @type {(font: Buffer<any>) => void} */done) => {
+			getFont('ttf', (/** @type {Buffer<any>} */ttfFont) => {
 				const fontb = ttf2eot(new Uint8Array(ttfFont));
 				const font = Buffer.from(fontb.buffer);
 				fonts.eot = font;
@@ -93,6 +96,7 @@ export default (o, allDone) => {
 		}
 	};
 
+	/** @type {((done: () => void) => void)[]} */
 	const steps = [];
 
 	// Font types
@@ -103,8 +107,9 @@ export default (o, allDone) => {
 	});
 
 	// Run!
-	async.waterfall(steps, allDone);
+	async.waterfall(steps, () => allDone());
 
+	/** @type {(type: string, done: (font: string | Buffer<any>) => void) => void} */
 	function getFont(type, done) {
 		if (fonts[type]) {
 			done(fonts[type]);
@@ -114,6 +119,7 @@ export default (o, allDone) => {
 		}
 	}
 
+	/** @type {(type: string) => (done: () => void) => void} */
 	function createFontWriter(type) {
 		return (done) => {
 			getFont(type, (font) => {
@@ -123,10 +129,14 @@ export default (o, allDone) => {
 		};
 	}
 
+	/** @type {(files: string[], done: (streams: { codepoint: number, name?: string, stream: NodeJS.ReadableStream }[]) => void) => void} */
 	function svgFilesToStreams(files, done) {
 
-		async.map(files, (file, fileDone) => {
+		async.map(files,
+		/** @type {(file: string, fileDone: (err, stream?: { codepoint: number, name?: string, stream: NodeJS.ReadableStream }) => void) => void} */
+		(file, fileDone) => {
 
+			/** @type {(name: string, stream: NodeJS.ReadableStream) => void} */
 			function fileStreamed(name, stream) {
 				fileDone(null, {
 					codepoint: o.codepoints[name],
@@ -135,16 +145,18 @@ export default (o, allDone) => {
 				});
 			}
 
+			/** @type {(name: string, file: string) => void} */
 			function streamSVG(name, file) {
 				const stream = fs.createReadStream(file);
 				fileStreamed(name, stream);
 			}
 
+			/** @type {(name: string, file: string) => void} */
 			function streamSVGO(name, file) {
 				const svg = fs.readFileSync(file, 'utf8');
 				const svgo = new SVGO();
 				try {
-					svgo.optimize(svg, (res) => {
+					svgo.optimize(svg, (/** @type {{ data: string }} */res) => {
 						const stream = new MemoryStream(res.data, {
 							writeable: false
 						});
@@ -164,7 +176,9 @@ export default (o, allDone) => {
 			} else {
 				streamSVG(name, file);
 			}
-		}, (err, streams) => {
+		},
+		/** @type {(err, streams: { codepoint: number, name?: string, stream: NodeJS.ReadableStream }[]) => void} */
+		(err, streams) => {
 			if (err) {
 				logger.error('Can’t stream SVG file.\n\n' + err);
 				allDone(false);
@@ -175,6 +189,7 @@ export default (o, allDone) => {
 		});
 	}
 
+	/** @type {(font: Buffer<any>, done: (hintedFont: Buffer<ArrayBufferLike> | false) => void) => void} */
 	function autohintTtfFont(font, done) {
 		temp.track();
 		const tempDir = temp.mkdirSync();

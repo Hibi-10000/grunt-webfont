@@ -23,7 +23,7 @@ import winston from 'winston';
 import * as wf from '../util/util.js';
 
 /** @type {(o: OptionsInternal, allDone: (result: { fontName: string } | false) => void) => void} */
-export default function(o, allDone) {
+export default (o, allDone) => {
 	const logger = o.logger || winston;
 
 	// @todo Ligatures
@@ -31,10 +31,10 @@ export default function(o, allDone) {
 	const fonts = {};
 
 	const generators = {
-		svg: function(done) {
+		svg: (done) => {
 			let font = '';
 			const decoder = new StringDecoder('utf8');
-			svgFilesToStreams(o.files, function(streams) {
+			svgFilesToStreams(o.files, (streams) => {
 				const stream = svgicons2svgfont(streams, {
 					fontName: o.fontFamilyName,
 					fontHeight: o.fontHeight,
@@ -44,21 +44,21 @@ export default function(o, allDone) {
 					log: logger.verbose.bind(logger),
 					error: logger.error.bind(logger)
 				});
-				stream.on('data', function(chunk) {
+				stream.on('data', (chunk) => {
 					font += decoder.write(chunk);
 				});
-				stream.on('end', function() {
+				stream.on('end', () => {
 					fonts.svg = font;
 					done(font);
 				});
 			});
 		},
 
-		ttf: function(done) {
-			getFont('svg', function(svgFont) {
+		ttf: (done) => {
+			getFont('svg', (svgFont) => {
 				let font = svg2ttf(svgFont, {});
 				font = Buffer.from(font.buffer);
-				autohintTtfFont(font, function(hintedFont) {
+				autohintTtfFont(font, (hintedFont) => {
 					// ttfautohint is optional
 					if (hintedFont) {
 						font = hintedFont;
@@ -69,8 +69,8 @@ export default function(o, allDone) {
 			});
 		},
 
-		woff: function(done) {
-			getFont('ttf', function(ttfFont) {
+		woff: (done) => {
+			getFont('ttf', (ttfFont) => {
 				let font = ttf2woff(new Uint8Array(ttfFont), {});
 				font = Buffer.from(font.buffer);
 				fonts.woff = font;
@@ -78,13 +78,13 @@ export default function(o, allDone) {
 			});
 		},
 
-		woff2: function(done) {
+		woff2: (done) => {
 			// Will be converted from TTF later
 			done();
 		},
 
-		eot: function(done) {
-			getFont('ttf', function(ttfFont) {
+		eot: (done) => {
+			getFont('ttf', (ttfFont) => {
 				const fontb = ttf2eot(new Uint8Array(ttfFont));
 				const font = Buffer.from(fontb.buffer);
 				fonts.eot = font;
@@ -98,7 +98,7 @@ export default function(o, allDone) {
 	// Font types
 	const typesToGenerate = o.types.slice();
 	if ((o.types.indexOf('woff2') !== -1) && (o.types.indexOf('ttf') === -1)) typesToGenerate.push('ttf');
-	typesToGenerate.forEach(function(type) {
+	typesToGenerate.forEach((type) => {
 		steps.push(createFontWriter(type));
 	});
 
@@ -115,8 +115,8 @@ export default function(o, allDone) {
 	}
 
 	function createFontWriter(type) {
-		return function(done) {
-			getFont(type, function(font) {
+		return (done) => {
+			getFont(type, (font) => {
 				fs.writeFileSync(wf.getFontPath(o, type), font);
 				done();
 			});
@@ -125,7 +125,7 @@ export default function(o, allDone) {
 
 	function svgFilesToStreams(files, done) {
 
-		async.map(files, function(file, fileDone) {
+		async.map(files, (file, fileDone) => {
 
 			function fileStreamed(name, stream) {
 				fileDone(null, {
@@ -144,13 +144,13 @@ export default function(o, allDone) {
 				const svg = fs.readFileSync(file, 'utf8');
 				const svgo = new SVGO();
 				try {
-					svgo.optimize(svg, function(res) {
+					svgo.optimize(svg, (res) => {
 						const stream = new MemoryStream(res.data, {
 							writeable: false
 						});
 						fileStreamed(name, stream);
 					});
-				} catch(err) {
+				} catch (err) {
 					logger.error('Can’t simplify SVG file with SVGO.\n\n' + err);
 					fileDone(err);
 				}
@@ -164,7 +164,7 @@ export default function(o, allDone) {
 			} else {
 				streamSVG(name, file);
 			}
-		}, function(err, streams) {
+		}, (err, streams) => {
 			if (err) {
 				logger.error('Can’t stream SVG file.\n\n' + err);
 				allDone(false);
@@ -199,7 +199,7 @@ export default function(o, allDone) {
 			hintedFilepath
 		].join(' ');
 
-		exec(args, {maxBuffer: o.execMaxBuffer}, function(err, out, code) {
+		exec(args, { maxBuffer: o.execMaxBuffer }, (err, out, code) => {
 			if (err) {
 				if (err.code === 127) {
 					logger.verbose('Hinting skipped, ttfautohint not found.');

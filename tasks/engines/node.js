@@ -102,12 +102,13 @@ export default (o, allDone) => {
 	// Font types
 	const typesToGenerate = o.types.slice();
 	if ((o.types.indexOf('woff2') !== -1) && (o.types.indexOf('ttf') === -1)) typesToGenerate.push('ttf');
-	typesToGenerate.forEach((type) => {
-		steps.push(createFontWriter(type));
-	});
-
-	// Run!
-	async.waterfall(steps, () => allDone());
+	(async () => {
+		for (const type of typesToGenerate) {
+			await new Promise(resolve => {
+				createFontWriter(type)(resolve);
+			});
+		}
+	})().finally(allDone);
 
 	/** @type {(type: string, done: (font: string | Buffer<any>) => void) => void} */
 	function getFont(type, done) {
@@ -119,7 +120,7 @@ export default (o, allDone) => {
 		}
 	}
 
-	/** @type {(type: string) => (done: () => void) => void} */
+	/** @type {(type: string) => (done: (value?: never) => void) => void} */
 	function createFontWriter(type) {
 		return (done) => {
 			getFont(type, (font) => {

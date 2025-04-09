@@ -104,6 +104,7 @@ export default (o, allDone) => {
 	if ((o.types.indexOf('woff2') !== -1) && (o.types.indexOf('ttf') === -1)) typesToGenerate.push('ttf');
 	(async () => {
 		for (const type of typesToGenerate) {
+			if (type === 'woff2') continue;
 			await new Promise(resolve => {
 				createFontWriter(type)(resolve);
 			});

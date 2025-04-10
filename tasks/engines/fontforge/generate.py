@@ -121,10 +121,10 @@ scriptPath = os.path.dirname(os.path.realpath(__file__))
 if 'woff' in args['types']:
 	generate(fontfile + '.woff')
 
-## EOT
-#if 'eot' in args['types']:
-#	# eotlitetool.py script to generate IE7-compatible .eot fonts
-#	call('python "%(path)s/../../bin/eotlitetool.py" "%(font)s.ttf" --output "%(font)s.eot"' % {'path': scriptPath, 'font': fontfile}, shell=True)
+# EOT
+if 'eot' in args['types']:
+	# eotlitetool.py script to generate IE7-compatible .eot fonts
+	call('python "%(path)s/../../bin/eotlitetool.py" "%(font)s.ttf" --output "%(font)s.eot"' % {'path': scriptPath, 'font': fontfile}, shell=True)
 
 # Delete TTF if not needed
 if (not 'ttf' in args['types']) and (not 'woff2' in args['types']):

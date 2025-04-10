@@ -19,6 +19,7 @@ import svg2ttf from 'svg2ttf';
 import ttf2woff from 'ttf2woff';
 import ttf2eot from 'ttf2eot';
 import SVGO from 'svgo';
+import which from 'which';
 import winston from 'winston';
 import * as wf from '../util/util.js';
 
@@ -191,6 +192,12 @@ export default (o, allDone) => {
 
 	/** @type {(font: Buffer<any>, done: (hintedFont: Buffer<ArrayBufferLike> | false) => void) => void} */
 	function autohintTtfFont(font, done) {
+		if (!which.sync('ttfautohint', { nothrow: true })) {
+			logger.verbose('Hinting skipped, ttfautohint not found.');
+			done(false);
+			return;
+		}
+
 		temp.track();
 		const tempDir = temp.mkdirSync();
 		const originalFilepath = path.join(tempDir, 'font.ttf');

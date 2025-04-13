@@ -132,11 +132,12 @@ export default (o, allDone) => {
 		};
 	}
 
-	/** @type {(files: string[], done: (streams: { codepoint: number, name?: string, stream: NodeJS.ReadableStream }[]) => void) => void} */
+	/** @typedef {{ codepoint: number, name?: string, stream: NodeJS.ReadableStream }} Stream */
+	/** @type {(files: string[], done: (streams: Stream[]) => void) => void} */
 	function svgFilesToStreams(files, done) {
 
 		async.map(files,
-		/** @type {(file: string, fileDone: (err, stream?: { codepoint: number, name?: string, stream: NodeJS.ReadableStream }) => void) => void} */
+		/** @type {(file: string, fileDone: (err, stream?: Stream) => void) => void} */
 		(file, fileDone) => {
 
 			/** @type {(name: string, stream: NodeJS.ReadableStream) => void} */
@@ -178,7 +179,7 @@ export default (o, allDone) => {
 				streamSVG(name, file);
 			}
 		},
-		/** @type {(err, streams: { codepoint: number, name?: string, stream: NodeJS.ReadableStream }[]) => void} */
+		/** @type {(err, streams: Stream[]) => void} */
 		(err, streams) => {
 			if (err) {
 				logger.error('Can’t stream SVG file.\n\n' + err);

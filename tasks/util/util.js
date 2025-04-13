@@ -10,13 +10,13 @@ import { globSync } from 'glob';
 /**
  * Unicode Private Use Area start.
  * http://en.wikipedia.org/wiki/Private_Use_(Unicode)
- * @type {number}
  */
 export const UNICODE_PUA_START = 0xF101;
 
+/** @typedef {(false | { ext: string, format?: string, embeddable?: boolean })[]} fontsSrcs */
 /**
  * @font-face’s src values generation rules.
- * @type {{[type: string]: (false | { ext: string, format?: string, embeddable?: boolean })[]}}
+ * @type {{eot: fontsSrcs, woff: fontsSrcs, woff2: fontsSrcs, ttf: fontsSrcs, svg: fontsSrcs}}
  */
 export const fontsSrcsMap = {
 	eot: [
@@ -63,7 +63,6 @@ export const fontsSrcsMap = {
 
 /**
  * CSS fileaname prefixes: _icons.scss.
- * @type {{ _default: string }}
  */
 export const cssFilePrefixes = {
 	_default: '',
@@ -71,7 +70,6 @@ export const cssFilePrefixes = {
 
 /**
  * @font-face’s src parts seperators.
- * @type {{ _default: string }}
  */
 export const fontSrcSeparators = {
 	_default: ',\n\t\t',
@@ -79,7 +77,6 @@ export const fontSrcSeparators = {
 
 /**
  * List of available font formats.
- * @type {string}
  */
 export const fontFormats = 'eot,woff2,woff,ttf,svg';
 
@@ -87,7 +84,6 @@ export const fontFormats = 'eot,woff2,woff,ttf,svg';
  * Returns list of all generated font files.
  *
  * @param {OptionsInternal} o Options.
- * @return {string[]}
  */
 export const generatedFontFiles = (o) => {
 	const mask = `*.{${o.types}}`;
@@ -99,7 +95,6 @@ export const generatedFontFiles = (o) => {
  *
  * @param {OptionsInternal} o Options.
  * @param {string} type Font type (see `wf.fontFormats`).
- * @return {string}
  */
 export const getFontPath = (o, type) => {
 	return path.join(o.dest, `${o.fontFilename}.${type}`);

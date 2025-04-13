@@ -11,7 +11,6 @@ import stream from 'node:stream';
 import path from 'node:path';
 import { exec } from 'node:child_process';
 import { StringDecoder } from 'node:string_decoder';
-import async from 'async';
 import temp from 'temp';
 import _ from 'lodash';
 import svgicons2svgfont from 'svgicons2svgfont';
@@ -136,9 +135,30 @@ export default (o, allDone) => {
 	/** @type {(files: string[], done: (streams: Stream[]) => void) => void} */
 	function svgFilesToStreams(files, done) {
 
-		async.map(files,
-		/** @type {(file: string, fileDone: (err, stream?: Stream) => void) => void} */
-		(file, fileDone) => {
+		/** @type {(arr: string[], iterator: (item: string, callback: (err: Error, result?: Stream) => void) => void, callback?: (err: Error, results?: Stream[]) => void) => Promise<void>} */
+		async function map(arr, iterator, callback) {
+			try {
+				/** @type {Stream[]} */
+				const results = [];
+				for (const value of arr) {
+					await new Promise((resolve) => {
+						iterator(value, (err, v) => {
+							if (err) {
+								callback(err);
+								return;
+							}
+							results.push(v);
+							resolve();
+						});
+					})
+				}
+				callback(null, results);
+			} catch (err) {
+				callback(err);
+			}
+		}
+
+		map(files, (file, fileDone) => {
 
 			/** @type {(name: string, stream: NodeJS.ReadableStream) => void} */
 			function fileStreamed(name, stream) {
@@ -178,9 +198,7 @@ export default (o, allDone) => {
 			} else {
 				streamSVG(name, file);
 			}
-		},
-		/** @type {(err, streams: Stream[]) => void} */
-		(err, streams) => {
+		}, (err, streams) => {
 			if (err) {
 				logger.error('Can’t stream SVG file.\n\n' + err);
 				allDone(false);

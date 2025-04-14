@@ -28,7 +28,7 @@ export default (o, allDone) => {
 
 	// @todo Ligatures
 
-	/** @type {{ svg?: string, ttf?: Buffer<any>, woff?: Buffer<any>, eot?: Buffer<any> }} */
+	/** @type {{ svg?: string, ttf?: Buffer, woff?: Buffer, eot?: Buffer }} */
 	const fonts = {};
 
 	const generators = {
@@ -56,10 +56,10 @@ export default (o, allDone) => {
 			});
 		},
 
-		ttf: (/** @type {(font: Buffer<any>) => void} */done) => {
+		ttf: (/** @type {(font: Buffer) => void} */done) => {
 			getFont('svg', (/** @type {string} */svgFont) => {
 				const fontb = svg2ttf(svgFont, {});
-				/** @type {Buffer<ArrayBufferLike>} */
+				/** @type {Buffer} */
 				let font = Buffer.from(fontb.buffer);
 				autohintTtfFont(font, (hintedFont) => {
 					// ttfautohint is optional
@@ -72,8 +72,8 @@ export default (o, allDone) => {
 			});
 		},
 
-		woff: (/** @type {(font: Buffer<any>) => void} */done) => {
-			getFont('ttf', (/** @type {Buffer<any>} */ttfFont) => {
+		woff: (/** @type {(font: Buffer) => void} */done) => {
+			getFont('ttf', (/** @type {Buffer} */ttfFont) => {
 				const fontb = ttf2woff(new Uint8Array(ttfFont), {});
 				const font = Buffer.from(fontb.buffer);
 				fonts.woff = font;
@@ -86,8 +86,8 @@ export default (o, allDone) => {
 			done();
 		},
 
-		eot: (/** @type {(font: Buffer<any>) => void} */done) => {
-			getFont('ttf', (/** @type {Buffer<any>} */ttfFont) => {
+		eot: (/** @type {(font: Buffer) => void} */done) => {
+			getFont('ttf', (/** @type {Buffer} */ttfFont) => {
 				const fontb = ttf2eot(new Uint8Array(ttfFont));
 				const font = Buffer.from(fontb.buffer);
 				fonts.eot = font;
@@ -111,7 +111,7 @@ export default (o, allDone) => {
 		}
 	})().finally(allDone);
 
-	/** @type {(type: string, done: (font: string | Buffer<any>) => void) => void} */
+	/** @type {(type: string, done: (font: string | Buffer) => void) => void} */
 	function getFont(type, done) {
 		if (fonts[type]) {
 			done(fonts[type]);
@@ -209,7 +209,7 @@ export default (o, allDone) => {
 		});
 	}
 
-	/** @type {(font: Buffer<any>, done: (hintedFont: Buffer<ArrayBufferLike> | false) => void) => void} */
+	/** @type {(font: Buffer, done: (hintedFont: Buffer | false) => void) => void} */
 	function autohintTtfFont(font, done) {
 		if (!which.sync('ttfautohint', { nothrow: true })) {
 			logger.verbose('Hinting skipped, ttfautohint not found.');

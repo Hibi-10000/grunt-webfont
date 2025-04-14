@@ -96,9 +96,6 @@ export default (o, allDone) => {
 		}
 	};
 
-	/** @type {((done: () => void) => void)[]} */
-	const steps = [];
-
 	// Font types
 	const typesToGenerate = o.types.slice();
 	if ((o.types.indexOf('woff2') !== -1) && (o.types.indexOf('ttf') === -1)) typesToGenerate.push('ttf');

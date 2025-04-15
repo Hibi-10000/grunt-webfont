@@ -17,7 +17,7 @@ import svgicons2svgfont from 'svgicons2svgfont';
 import svg2ttf from 'svg2ttf';
 import ttf2woff from 'ttf2woff';
 import ttf2eot from 'ttf2eot';
-import SVGO from 'svgo';
+import svgo from 'svgo';
 import which from 'which';
 import winston from 'winston';
 import * as wf from '../util/util.js';
@@ -200,12 +200,10 @@ export default (o, allDone) => {
 			/** @type {(name: string, file: string) => void} */
 			function streamSVGO(name, file) {
 				const svg = fs.readFileSync(file, 'utf8');
-				const svgo = new SVGO();
 				try {
-					svgo.optimize(svg, (/** @type {{ data: string }} */res) => {
-						const strStream = stream.Readable.from(res.data);
-						fileStreamed(name, strStream);
-					});
+					const optimized = svgo.optimize(svg).data;
+					const strStream = stream.Readable.from(optimized);
+					fileStreamed(name, strStream);
 				} catch (err) {
 					logger.error('Can’t simplify SVG file with SVGO.\n\n' + err);
 					fileDone(err);

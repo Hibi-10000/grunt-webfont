@@ -75,7 +75,7 @@ export default (o, allDone) => {
 		woff: (/** @type {(font: Buffer) => void} */done) => {
 			getFont('ttf', (/** @type {Buffer} */ttfFont) => {
 				const fontb = ttf2woff(new Uint8Array(ttfFont), {});
-				const font = Buffer.from(fontb.buffer);
+				const font = Buffer.from(fontb);
 				fonts.woff = font;
 				done(font);
 			});
@@ -89,7 +89,7 @@ export default (o, allDone) => {
 		eot: (/** @type {(font: Buffer) => void} */done) => {
 			getFont('ttf', (/** @type {Buffer} */ttfFont) => {
 				const fontb = ttf2eot(new Uint8Array(ttfFont));
-				const font = Buffer.from(fontb.buffer);
+				const font = Buffer.from(fontb);
 				fonts.eot = font;
 				done(font);
 			});

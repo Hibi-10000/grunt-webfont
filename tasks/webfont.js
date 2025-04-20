@@ -333,7 +333,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 
 			// Generate font URLs to use in @font-face
 			const fontSrcs = [[], []];
-			o.order.forEach((type) => {
+			o.order.forEach((/** @type {'eot'|'woff2'|'woff'|'ttf'|'svg'} */type) => {
 				if (!has(o.types, type)) return;
 				wf.fontsSrcsMap[type].forEach((font, idx) => {
 					if (font) {
@@ -648,7 +648,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 * Generate URL for @font-face
 		 *
 		 * @param {string} type Type of font
-		 * @param {object} font URL or Base64 string
+		 * @param {{ ext: string, format?: string, embeddable?: boolean }} font URL or Base64 string
 		 * @param {string} stylesheet type: css, scss, ...
 		 * @return {string}
 		 */
@@ -685,7 +685,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 * @param {string} template Template file path
 		 * @param {string} syntax Syntax (bem, bootstrap, etc.)
 		 * @param {string} ext Extension of the template
-		 * @return {object} {filename: 'Template filename', template: 'Template code'}
+		 * @return {{filename: string, template: string}} {filename: 'Template filename', template: 'Template code'}
 		 */
 		function readTemplate(template, syntax, ext, optional) {
 			const filename = template
@@ -699,15 +699,15 @@ export default (/** @type {import('grunt')} */grunt) => {
 				};
 			}
 			else if (!optional) {
-				return grunt.fail.fatal(`Cannot find template at path: ${filename}`);
+				grunt.fail.fatal(`Cannot find template at path: ${filename}`);
 			}
 		}
 
 		/**
 		 * Render template with error reporting
 		 *
-		 * @param {object} template {filename: 'Template filename', template: 'Template code'}
-		 * @param {object} context Template context
+		 * @param {{filename: string, template: string}} template {filename: 'Template filename', template: 'Template code'}
+		 * @param {OptionsInternal} context Template context
 		 * @return {string}
 		 */
 		function renderTemplate(template, context) {
@@ -724,7 +724,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 * Basic template function: replaces {variables}
 		 *
 		 * @param {string} tmpl Template code
-		 * @param {object} context Values object
+		 * @param {OptionsInternal} context Values object
 		 * @return {string}
 		 */
 		function template(tmpl, context) {

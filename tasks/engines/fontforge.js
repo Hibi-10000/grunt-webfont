@@ -96,8 +96,8 @@ export default (o, allDone) => {
 	proc.stdin.write(JSON.stringify(params));
 	proc.stdin.end();
 
-	function error() {
-		logger.error.apply(null, arguments);
+	const error = (/** @type {any[]} */...args) => {
+		logger.error.apply(null, args);
 		allDone(false);
 	}
 

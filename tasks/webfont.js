@@ -25,19 +25,21 @@ export default (/** @type {import('grunt')} */grunt) => {
 
 		/**
 		 * Winston to Grunt logger adapter.
+		 *
+		 * @type {Logger}
 		 */
 		const logger = {
-			warn: function() {
-				grunt.log.warn.apply(null, arguments);
+			warn: (...args) => {
+				grunt.log.warn.apply(null, args);
 			},
-			error: function() {
-				grunt.warn.apply(null, arguments);
+			error: (...args) => {
+				grunt.warn.apply(null, args);
 			},
-			log: function() {
-				grunt.log.writeln.apply(null, arguments);
+			log: (...args) => {
+				grunt.log.writeln.apply(null, args);
 			},
-			verbose: function() {
-				grunt.log.verbose.writeln.apply(null, arguments);
+			verbose: (...args) => {
+				grunt.log.verbose.writeln.apply(null, args);
 			}
 		};
 

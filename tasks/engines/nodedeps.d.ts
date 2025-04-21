@@ -7,11 +7,11 @@ declare module 'ttf2eot' {
 
 declare module 'ttf2woff' {
 	export default function ttf2woff(ttf: UInt8Array, options?: {
-        /**
-         * Woff Extended Metadata Block
-         *
-         * See https://www.w3.org/TR/WOFF/#Metadata
-         */
+		/**
+		 * Woff Extended Metadata Block
+		 *
+		 * See https://www.w3.org/TR/WOFF/#Metadata
+		 */
 		metadata?: string | undefined;
 	}): UInt8Array;
 }

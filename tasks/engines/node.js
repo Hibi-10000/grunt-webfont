@@ -160,7 +160,7 @@ export default (o, allDone) => {
 					}
 				}
 				function only_once(/** @type {(err: Error) => void} */fn) {
-				    return (/** @type {Error} */err) => {
+					return (/** @type {Error} */err) => {
 						if (fn === null) throw new Error("Callback was already called.");
 						fn(err);
 						fn = null;

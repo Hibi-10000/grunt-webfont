@@ -363,7 +363,7 @@ const task = function(grunt) {
 		if (o.templateOptions) o = _.extend(o, o.templateOptions);
 
 		// Generate CSS
-		const ext = path.extname(o.template) || '.css';  // Use extension of o.template file if given, or default to .css
+		const ext = path.extname(o.template) || '.css'; // Use extension of o.template file if given, or default to .css
 		o.cssTemplate = readTemplate(o.template, o.syntax, ext);
 		const cssContext = _.extend(o, {
 			iconsStyles: true,
@@ -667,7 +667,7 @@ const task = function(grunt) {
 		else {
 			url = o.relativeFontPath + filename;
 			if (o.addHashes) {
-				if (url.indexOf('#iefix') === -1) {  // Do not add hashes for OldIE
+				if (url.indexOf('#iefix') === -1) { // Do not add hashes for OldIE
 					// Put hash at the end of an URL or before #hash
 					url = url.replace(/(#|$)/, `?${o.hash}$1`);
 				}

@@ -10,7 +10,7 @@
     "allowJs": true,
     "checkJs": true,
     //"strict": true,
-		"resolveJsonModule": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "erasableSyntaxOnly": true,

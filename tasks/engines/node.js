@@ -187,10 +187,10 @@ export default (o, allDone) => {
 				};
 			}
 
-			/** @type {(name: string, file: string) => void} */
+			/** @type {(name: string, file: string) => Stream} */
 			function streamSVG(name, file) {
 				const stream = fs.createReadStream(file);
-				fileDone(null, fileStreamed(name, stream));
+				return fileStreamed(name, stream);
 			}
 
 			/** @type {(name: string, file: string) => void} */
@@ -212,7 +212,7 @@ export default (o, allDone) => {
 			if (o.optimize === true) {
 				streamSVGO(name, file);
 			} else {
-				streamSVG(name, file);
+				fileDone(null, streamSVG(name, file));
 			}
 		}, (err, streams) => {
 			if (err) {

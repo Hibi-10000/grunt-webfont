@@ -193,16 +193,16 @@ export default (o, allDone) => {
 				return fileStreamed(name, stream);
 			}
 
-			/** @type {(name: string, file: string) => void} */
+			/** @type {(name: string, file: string) => Stream} */
 			function streamSVGO(name, file) {
 				const svg = fs.readFileSync(file, 'utf8');
 				try {
 					const optimized = svgo.optimize(svg).data;
 					const strStream = stream.Readable.from(optimized);
-					fileDone(null, fileStreamed(name, strStream));
+					return fileStreamed(name, strStream);
 				} catch (err) {
 					logger.error('Can’t simplify SVG file with SVGO.\n\n' + err);
-					fileDone(err);
+					throw err;
 				}
 			}
 
@@ -210,7 +210,15 @@ export default (o, allDone) => {
 			const name = o.glyphs[idx];
 
 			if (o.optimize === true) {
-				streamSVGO(name, file);
+				/** @type {Stream} */
+				let stream;
+				try {
+					stream = streamSVGO(name, file)
+				} catch (err) {
+					fileDone(err);
+					return;
+				}
+				fileDone(null, stream);
 			} else {
 				fileDone(null, streamSVG(name, file));
 			}

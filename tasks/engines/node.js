@@ -178,19 +178,19 @@ export default (o, allDone) => {
 
 		map(files, (file, fileDone) => {
 
-			/** @type {(name: string, stream: NodeJS.ReadableStream) => void} */
+			/** @type {(name: string, stream: NodeJS.ReadableStream) => Stream} */
 			function fileStreamed(name, stream) {
-				fileDone(null, {
+				return {
 					codepoint: o.codepoints[name],
 					name: name,
 					stream: stream
-				});
+				};
 			}
 
 			/** @type {(name: string, file: string) => void} */
 			function streamSVG(name, file) {
 				const stream = fs.createReadStream(file);
-				fileStreamed(name, stream);
+				fileDone(null, fileStreamed(name, stream));
 			}
 
 			/** @type {(name: string, file: string) => void} */
@@ -199,7 +199,7 @@ export default (o, allDone) => {
 				try {
 					const optimized = svgo.optimize(svg).data;
 					const strStream = stream.Readable.from(optimized);
-					fileStreamed(name, strStream);
+					fileDone(null, fileStreamed(name, strStream));
 				} catch (err) {
 					logger.error('Can’t simplify SVG file with SVGO.\n\n' + err);
 					fileDone(err);
@@ -209,7 +209,7 @@ export default (o, allDone) => {
 			const idx = files.indexOf(file);
 			const name = o.glyphs[idx];
 
-			if(o.optimize === true) {
+			if (o.optimize === true) {
 				streamSVGO(name, file);
 			} else {
 				streamSVG(name, file);

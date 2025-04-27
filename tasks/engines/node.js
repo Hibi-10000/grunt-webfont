@@ -130,11 +130,7 @@ export default (o, allDone) => {
 
 		/** @type {(arr: string[], iterator: (item: string) => Stream) => Stream[]} */
 		function map(arr, iterator) {
-			const results = [];
-			for (const value of arr) {
-				results.push(iterator(value));
-			}
-			return results;
+			return arr.map((value) => iterator(value))
 		}
 
 		try {

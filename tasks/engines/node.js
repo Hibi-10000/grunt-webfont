@@ -95,7 +95,7 @@ export default (o, allDone) => {
 	(async () => {
 		for (const type of typesToGenerate) {
 			if (type === 'woff2') continue;
-			await createFontWriter(type)();
+			await createFontWriter(type);
 		}
 	})().finally(allDone);
 
@@ -123,12 +123,10 @@ export default (o, allDone) => {
 		}
 	}
 
-	/** @type {(type: string) => () => Promise<void>} */
-	function createFontWriter(type) {
-		return async () => {
-			const font = await getFont(type)
-			fs.writeFileSync(wf.getFontPath(o, type), font);
-		};
+	/** @type {(type: string) => Promise<void>} */
+	async function createFontWriter(type) {
+		const font = await getFont(type)
+		fs.writeFileSync(wf.getFontPath(o, type), font);
 	}
 
 	/** @typedef {{ codepoint: number, name?: string, stream: NodeJS.ReadableStream }} Stream */

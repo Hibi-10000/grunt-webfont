@@ -128,7 +128,7 @@ export default (o, allDone) => {
 	/** @type {(files: string[], done: (streams: Stream[]) => void) => void} */
 	function svgFilesToStreams(files, done) {
 
-		/** @type {(arr: string[], iterator: (item: string) => Stream, callback?: (err: Error, results?: Stream[]) => void) => void} */
+		/** @type {(arr: string[], iterator: (item: string) => Stream, callback?: (err: Error) => void) => Stream[]} */
 		function map(arr, iterator, callback) {
 			callback = _once(callback);
 			const results = [];
@@ -136,9 +136,9 @@ export default (o, allDone) => {
 				for (const value of arr) {
 					results.push(iterator(value));
 				}
-				callback(null, results);
+				return results;
 			} catch (err) {
-				callback(err, results);
+				callback(err);
 			}
 		}
 		/** @type {(fn: (err: Error, results?: Stream[]) => void) => (err: Error, results?: Stream[]) => void} */
@@ -150,7 +150,7 @@ export default (o, allDone) => {
 			};
 		}
 
-		map(files, (file) => {
+		const streams = map(files, (file) => {
 
 			/** @type {(name: string, stream: NodeJS.ReadableStream) => Stream} */
 			function fileStreamed(name, stream) {
@@ -188,15 +188,13 @@ export default (o, allDone) => {
 			} else {
 				return streamSVG(name, file);
 			}
-		}, (err, streams) => {
+		}, (err) => {
 			if (err) {
 				logger.error('Can’t stream SVG file.\n\n' + err);
 				allDone(false);
 			}
-			else {
-				done(streams);
-			}
 		});
+		done(streams);
 	}
 
 	/** @type {(font: Uint8Array, done: (hintedFont: Buffer | false) => void) => void} */

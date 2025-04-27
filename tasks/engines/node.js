@@ -9,6 +9,7 @@
 import fs from 'node:fs';
 import stream from 'node:stream';
 import path from 'node:path';
+import util from 'node:util';
 import { exec } from 'node:child_process';
 import { StringDecoder } from 'node:string_decoder';
 import temp from 'temp';
@@ -57,7 +58,7 @@ export default (o, allDone) => {
 		ttf: (/** @type {(font: Uint8Array) => void} */done) => {
 			getFont('svg', (/** @type {string} */svgFont) => {
 				let font = svg2ttf(svgFont, {}).buffer;
-				autohintTtfFont(font, (hintedFont) => {
+				autohintTtfFont(font).then((hintedFont) => {
 					// ttfautohint is optional
 					if (hintedFont) {
 						font = hintedFont;
@@ -171,12 +172,11 @@ export default (o, allDone) => {
 		}
 	}
 
-	/** @type {(font: Uint8Array, done: (hintedFont: Buffer | false) => void) => void} */
-	function autohintTtfFont(font, done) {
+	/** @type {(font: Uint8Array) => Promise<Buffer | false>} */
+	async function autohintTtfFont(font) {
 		if (!which.sync('ttfautohint', { nothrow: true })) {
 			logger.verbose('Hinting skipped, ttfautohint not found.');
-			done(false);
-			return;
+			return false;
 		}
 
 		temp.track();
@@ -185,8 +185,7 @@ export default (o, allDone) => {
 		const hintedFilepath = path.join(tempDir, 'hinted.ttf');
 
 		if (!o.autoHint){
-			done(false);
-			return;
+			return false;
 		}
 		// Save original font to temporary directory
 		fs.writeFileSync(originalFilepath, font);
@@ -202,22 +201,19 @@ export default (o, allDone) => {
 			hintedFilepath
 		].join(' ');
 
-		exec(args, { maxBuffer: o.execMaxBuffer }, (err, out, code) => {
-			if (err) {
-				if (err.code === 127) {
-					logger.verbose('Hinting skipped, ttfautohint not found.');
-					done(false);
-					return;
-				}
-				logger.error('Can’t run ttfautohint.\n\n' + err.message);
-				done(false);
-				return;
+		const execPromise = util.promisify(exec);
+		try {
+			await execPromise(args, { maxBuffer: o.execMaxBuffer });
+		} catch (err) {
+			if (err.code === 127) {
+				logger.verbose('Hinting skipped, ttfautohint not found.');
+				return false;
 			}
-
-			// Read hinted font back
-			const hintedFont = fs.readFileSync(hintedFilepath);
-			done(hintedFont);
-		});
+			logger.error('Can’t run ttfautohint.\n\n' + err.message);
+			return false;
+		}
+		const hintedFont = fs.readFileSync(hintedFilepath);
+		return hintedFont;
 	}
 
 };

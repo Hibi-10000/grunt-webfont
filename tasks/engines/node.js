@@ -128,12 +128,17 @@ export default (o, allDone) => {
 	/** @type {(files: string[], done: (streams: Stream[]) => void) => void} */
 	function svgFilesToStreams(files, done) {
 
-		/** @type {(arr: string[], iterator: (item: string, callback: (err: Error) => void) => void, callback?: (err: Error, results?: Stream[]) => void) => void} */
+		/** @type {(arr: string[], iterator: (item: string) => Stream, callback?: (err: Error, results?: Stream[]) => void) => void} */
 		function map(arr, iterator, callback) {
 			callback = _once(callback);
 			const results = [];
 			eachOf(arr, (value, callback) => {
-				results.push(iterator(value, (err) => callback(err)));
+				try {
+					results.push(iterator(value));
+					callback();
+				} catch (err) {
+					callback(err);
+				}
 			}, (err) => {
 				callback(err, results);
 			});
@@ -150,19 +155,19 @@ export default (o, allDone) => {
 
 			if (completed === 0) callback(null);
 
-				function done(/** @type {Error} */err) {
-					completed--;
-					if (err) {
-						callback(err);
-					}
+			function done(/** @type {Error} */err) {
+				completed--;
+				if (err) {
+					callback(err);
 				}
-				function only_once(/** @type {(err: Error) => void} */fn) {
-					return (/** @type {Error} */err) => {
-						if (fn === null) throw new Error("Callback was already called.");
-						fn(err);
-						fn = null;
-					};
-				}
+			}
+			function only_once(/** @type {(err: Error) => void} */fn) {
+				return (/** @type {Error} */err) => {
+					if (fn === null) throw new Error("Callback was already called.");
+					fn(err);
+					fn = null;
+				};
+			}
 		};
 		/** @type {(fn: (err: Error, results?: Stream[]) => void) => (err: Error, results?: Stream[]) => void} */
 		function _once(fn) {
@@ -173,7 +178,7 @@ export default (o, allDone) => {
 			};
 		}
 
-		map(files, (file, fileDone) => {
+		map(files, (file) => {
 
 			/** @type {(name: string, stream: NodeJS.ReadableStream) => Stream} */
 			function fileStreamed(name, stream) {
@@ -207,12 +212,7 @@ export default (o, allDone) => {
 			const name = o.glyphs[idx];
 
 			if (o.optimize === true) {
-				try {
-					return streamSVGO(name, file)
-				} catch (err) {
-					fileDone(err);
-					return null;
-				}
+				return streamSVGO(name, file)
 			} else {
 				return streamSVG(name, file);
 			}

@@ -49,23 +49,25 @@ export default (o, allDone) => {
 			stream.on('data', (chunk) => {
 				font += decoder.write(chunk);
 			});
-			stream.on('end', () => {
-				fonts.svg = font;
-				done(font);
+			await new Promise((resolve) => {
+				stream.on('end', () => {
+					fonts.svg = font;
+					resolve();
+				});
 			});
+			done(font);
 		},
 
 		ttf: async (/** @type {(font: Uint8Array) => void} */done) => {
 			const svgFont = await getFont('svg')
 			let font = svg2ttf(svgFont, {}).buffer;
-			autohintTtfFont(font).then((hintedFont) => {
-				// ttfautohint is optional
-				if (hintedFont) {
-					font = hintedFont;
-				}
-				fonts.ttf = font;
-				done(font);
-			});
+			const hintedFont = await autohintTtfFont(font)
+			// ttfautohint is optional
+			if (hintedFont) {
+				font = hintedFont;
+			}
+			fonts.ttf = font;
+			done(font);
 		},
 
 		woff: async (/** @type {(font: Uint8Array) => void} */done) => {

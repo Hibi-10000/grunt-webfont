@@ -35,24 +35,23 @@ export default (o, allDone) => {
 		svg: (/** @type {(font: string) => void} */done) => {
 			let font = '';
 			const decoder = new StringDecoder('utf8');
-			svgFilesToStreams(o.files, (streams) => {
-				/** @type {import('node:stream').PassThrough} */
-				const stream = svgicons2svgfont(streams, {
-					fontName: o.fontFamilyName,
-					fontHeight: o.fontHeight,
-					descent: o.descent,
-					normalize: o.normalize,
-					round: o.round,
-					log: logger.verbose.bind(logger),
-					error: logger.error.bind(logger)
-				});
-				stream.on('data', (chunk) => {
-					font += decoder.write(chunk);
-				});
-				stream.on('end', () => {
-					fonts.svg = font;
-					done(font);
-				});
+			const streams = svgFilesToStreams(o.files);
+			/** @type {import('node:stream').PassThrough} */
+			const stream = svgicons2svgfont(streams, {
+				fontName: o.fontFamilyName,
+				fontHeight: o.fontHeight,
+				descent: o.descent,
+				normalize: o.normalize,
+				round: o.round,
+				log: logger.verbose.bind(logger),
+				error: logger.error.bind(logger)
+			});
+			stream.on('data', (chunk) => {
+				font += decoder.write(chunk);
+			});
+			stream.on('end', () => {
+				fonts.svg = font;
+				done(font);
 			});
 		},
 
@@ -125,10 +124,10 @@ export default (o, allDone) => {
 	}
 
 	/** @typedef {{ codepoint: number, name?: string, stream: NodeJS.ReadableStream }} Stream */
-	/** @type {(files: string[], done: (streams: Stream[]) => void) => void} */
-	function svgFilesToStreams(files, done) {
+	/** @type {(files: string[]) => Stream[]} */
+	function svgFilesToStreams(files) {
 		try {
-			const streams = files.map((file) => {
+			return files.map((file) => {
 
 				/** @type {(name: string, stream: NodeJS.ReadableStream) => Stream} */
 				function fileStreamed(name, stream) {
@@ -167,7 +166,6 @@ export default (o, allDone) => {
 					return streamSVG(name, file);
 				}
 			});
-			done(streams);
 		} catch (err) {
 			logger.error('Can’t stream SVG file.\n\n' + err);
 			allDone(false);

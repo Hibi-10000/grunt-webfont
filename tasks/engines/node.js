@@ -36,7 +36,6 @@ export default (o, allDone) => {
 			let font = '';
 			const decoder = new StringDecoder('utf8');
 			const streams = svgFilesToStreams(o.files);
-			/** @type {import('node:stream').PassThrough} */
 			const stream = svgicons2svgfont(streams, {
 				fontName: o.fontFamilyName,
 				fontHeight: o.fontHeight,

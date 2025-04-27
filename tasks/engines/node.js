@@ -33,7 +33,7 @@ export default (o, allDone) => {
 	const fonts = {};
 
 	const generators = {
-		svg: async (/** @type {(font: string) => void} */done) => {
+		svg: async () => {
 			let font = '';
 			const decoder = new StringDecoder('utf8');
 			const streams = svgFilesToStreams(o.files);
@@ -55,10 +55,10 @@ export default (o, allDone) => {
 					resolve();
 				});
 			});
-			done(font);
+			return font;
 		},
 
-		ttf: async (/** @type {(font: Uint8Array) => void} */done) => {
+		ttf: async () => {
 			const svgFont = await getFont('svg')
 			let font = svg2ttf(svgFont, {}).buffer;
 			const hintedFont = await autohintTtfFont(font)
@@ -67,26 +67,25 @@ export default (o, allDone) => {
 				font = hintedFont;
 			}
 			fonts.ttf = font;
-			done(font);
+			return font;
 		},
 
-		woff: async (/** @type {(font: Uint8Array) => void} */done) => {
+		woff: async () => {
 			const ttfFont = await getFont('ttf')
 			const font = ttf2woff(ttfFont, {});
 			fonts.woff = font;
-			done(font);
+			return font;
 		},
 
-		woff2: async (done) => {
+		woff2: async () => {
 			// Will be converted from TTF later
-			done();
 		},
 
-		eot: async (/** @type {(font: Uint8Array) => void} */done) => {
+		eot: async () => {
 			const ttfFont = await getFont('ttf')
 			const font = ttf2eot(ttfFont);
 			fonts.eot = font;
-			done(font);
+			return font;
 		}
 	};
 
@@ -96,9 +95,7 @@ export default (o, allDone) => {
 	(async () => {
 		for (const type of typesToGenerate) {
 			if (type === 'woff2') continue;
-			await new Promise(resolve => {
-				createFontWriter(type)(resolve);
-			});
+			await createFontWriter(type)();
 		}
 	})().finally(allDone);
 
@@ -122,16 +119,15 @@ export default (o, allDone) => {
 			return fonts[type];
 		}
 		else {
-			return await new Promise(generators[type]);
+			return await generators[type]();
 		}
 	}
 
-	/** @type {(type: string) => (done: (value?: never) => void) => Promise<void>} */
+	/** @type {(type: string) => () => Promise<void>} */
 	function createFontWriter(type) {
-		return async (done) => {
+		return async () => {
 			const font = await getFont(type)
 			fs.writeFileSync(wf.getFontPath(o, type), font);
-			done();
 		};
 	}
 

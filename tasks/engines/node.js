@@ -132,43 +132,15 @@ export default (o, allDone) => {
 		function map(arr, iterator, callback) {
 			callback = _once(callback);
 			const results = [];
-			eachOf(arr, (value, callback) => {
-				try {
+			try {
+				for (const value of arr) {
 					results.push(iterator(value));
-					callback();
-				} catch (err) {
-					callback(err);
 				}
-			}, (err) => {
+				callback(null, results);
+			} catch (err) {
 				callback(err, results);
-			});
+			}
 		}
-		/** @type {(object: string[], iterator: (item: any, callback?: (err?: Error) => void) => void, callback: (err?: Error) => void) => void} */
-		function eachOf(object, iterator, callback) {
-			callback = _once(callback);
-			let completed = 0;
-
-			for (const obj of object) {
-				completed += 1;
-				iterator(obj, only_once(done));
-			}
-
-			if (completed === 0) callback(null);
-
-			function done(/** @type {Error} */err) {
-				completed--;
-				if (err) {
-					callback(err);
-				}
-			}
-			function only_once(/** @type {(err: Error) => void} */fn) {
-				return (/** @type {Error} */err) => {
-					if (fn === null) throw new Error("Callback was already called.");
-					fn(err);
-					fn = null;
-				};
-			}
-		};
 		/** @type {(fn: (err: Error, results?: Stream[]) => void) => (err: Error, results?: Stream[]) => void} */
 		function _once(fn) {
 			return (err, results) => {

@@ -128,73 +128,60 @@ export default (o, allDone) => {
 	/** @type {(files: string[], done: (streams: Stream[]) => void) => void} */
 	function svgFilesToStreams(files, done) {
 
-		/** @type {(arr: string[], iterator: (item: string) => Stream, callback?: (err: Error) => void) => Stream[]} */
-		function map(arr, iterator, callback) {
-			callback = _once(callback);
+		/** @type {(arr: string[], iterator: (item: string) => Stream) => Stream[]} */
+		function map(arr, iterator) {
 			const results = [];
-			try {
-				for (const value of arr) {
-					results.push(iterator(value));
-				}
-				return results;
-			} catch (err) {
-				callback(err);
+			for (const value of arr) {
+				results.push(iterator(value));
 			}
-		}
-		/** @type {(fn: (err: Error, results?: Stream[]) => void) => (err: Error, results?: Stream[]) => void} */
-		function _once(fn) {
-			return (err, results) => {
-				if (fn === null) return;
-				fn(err, results);
-				fn = null;
-			};
+			return results;
 		}
 
-		const streams = map(files, (file) => {
+		try {
+			const streams = map(files, (file) => {
 
-			/** @type {(name: string, stream: NodeJS.ReadableStream) => Stream} */
-			function fileStreamed(name, stream) {
-				return {
-					codepoint: o.codepoints[name],
-					name: name,
-					stream: stream
-				};
-			}
-
-			/** @type {(name: string, file: string) => Stream} */
-			function streamSVG(name, file) {
-				const stream = fs.createReadStream(file);
-				return fileStreamed(name, stream);
-			}
-
-			/** @type {(name: string, file: string) => Stream} */
-			function streamSVGO(name, file) {
-				const svg = fs.readFileSync(file, 'utf8');
-				try {
-					const optimized = svgo.optimize(svg).data;
-					const strStream = stream.Readable.from(optimized);
-					return fileStreamed(name, strStream);
-				} catch (err) {
-					logger.error('Can’t simplify SVG file with SVGO.\n\n' + err);
-					throw err;
+				/** @type {(name: string, stream: NodeJS.ReadableStream) => Stream} */
+				function fileStreamed(name, stream) {
+					return {
+						codepoint: o.codepoints[name],
+						name: name,
+						stream: stream
+					};
 				}
-			}
 
-			const idx = files.indexOf(file);
-			const name = o.glyphs[idx];
+				/** @type {(name: string, file: string) => Stream} */
+				function streamSVG(name, file) {
+					const stream = fs.createReadStream(file);
+					return fileStreamed(name, stream);
+				}
 
-			if (o.optimize === true) {
-				return streamSVGO(name, file)
-			} else {
-				return streamSVG(name, file);
-			}
-		}, (err) => {
-			if (err) {
-				logger.error('Can’t stream SVG file.\n\n' + err);
-				allDone(false);
-			}
-		});
-		done(streams);
+				/** @type {(name: string, file: string) => Stream} */
+				function streamSVGO(name, file) {
+					const svg = fs.readFileSync(file, 'utf8');
+					try {
+						const optimized = svgo.optimize(svg).data;
+						const strStream = stream.Readable.from(optimized);
+						return fileStreamed(name, strStream);
+					} catch (err) {
+						logger.error('Can’t simplify SVG file with SVGO.\n\n' + err);
+						throw err;
+					}
+				}
+
+				const idx = files.indexOf(file);
+				const name = o.glyphs[idx];
+
+				if (o.optimize === true) {
+					return streamSVGO(name, file)
+				} else {
+					return streamSVG(name, file);
+				}
+			});
+			done(streams);
+		} catch (err) {
+			logger.error('Can’t stream SVG file.\n\n' + err);
+			allDone(false);
+		}
 	}
 
 	/** @type {(font: Uint8Array, done: (hintedFont: Buffer | false) => void) => void} */

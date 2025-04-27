@@ -127,14 +127,8 @@ export default (o, allDone) => {
 	/** @typedef {{ codepoint: number, name?: string, stream: NodeJS.ReadableStream }} Stream */
 	/** @type {(files: string[], done: (streams: Stream[]) => void) => void} */
 	function svgFilesToStreams(files, done) {
-
-		/** @type {(arr: string[], iterator: (item: string) => Stream) => Stream[]} */
-		function map(arr, iterator) {
-			return arr.map((value) => iterator(value))
-		}
-
 		try {
-			const streams = map(files, (file) => {
+			const streams = files.map((file) => {
 
 				/** @type {(name: string, stream: NodeJS.ReadableStream) => Stream} */
 				function fileStreamed(name, stream) {

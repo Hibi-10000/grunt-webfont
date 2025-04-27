@@ -56,7 +56,7 @@ export default (o, allDone) => {
 		},
 
 		ttf: (/** @type {(font: Uint8Array) => void} */done) => {
-			getFont('svg', (/** @type {string} */svgFont) => {
+			getFont('svg').then((/** @type {string} */svgFont) => {
 				let font = svg2ttf(svgFont, {}).buffer;
 				autohintTtfFont(font).then((hintedFont) => {
 					// ttfautohint is optional
@@ -70,7 +70,7 @@ export default (o, allDone) => {
 		},
 
 		woff: (/** @type {(font: Uint8Array) => void} */done) => {
-			getFont('ttf', (/** @type {Uint8Array} */ttfFont) => {
+			getFont('ttf').then((/** @type {Uint8Array} */ttfFont) => {
 				const font = ttf2woff(ttfFont, {});
 				fonts.woff = font;
 				done(font);
@@ -83,7 +83,7 @@ export default (o, allDone) => {
 		},
 
 		eot: (/** @type {(font: Uint8Array) => void} */done) => {
-			getFont('ttf', (/** @type {Uint8Array} */ttfFont) => {
+			getFont('ttf').then((/** @type {Uint8Array} */ttfFont) => {
 				const font = ttf2eot(ttfFont);
 				fonts.eot = font;
 				done(font);
@@ -103,20 +103,20 @@ export default (o, allDone) => {
 		}
 	})().finally(allDone);
 
-	/** @type {(type: string, done: (font: string | Uint8Array) => void) => void} */
-	function getFont(type, done) {
+	/** @type {(type: string) => Promise<string | Uint8Array>} */
+	async function getFont(type) {
 		if (fonts[type]) {
-			done(fonts[type]);
+			return fonts[type];
 		}
 		else {
-			generators[type](done);
+			return await new Promise(generators[type]);
 		}
 	}
 
 	/** @type {(type: string) => (done: (value?: never) => void) => void} */
 	function createFontWriter(type) {
 		return (done) => {
-			getFont(type, (font) => {
+			getFont(type).then((font) => {
 				fs.writeFileSync(wf.getFontPath(o, type), font);
 				done();
 			});

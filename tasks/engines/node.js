@@ -128,15 +128,12 @@ export default (o, allDone) => {
 	/** @type {(files: string[], done: (streams: Stream[]) => void) => void} */
 	function svgFilesToStreams(files, done) {
 
-		/** @type {(arr: string[], iterator: (item: string, callback: (err: Error, result?: Stream) => void) => void, callback?: (err: Error, results?: Stream[]) => void) => void} */
+		/** @type {(arr: string[], iterator: (item: string, callback: (err: Error) => void) => void, callback?: (err: Error, results?: Stream[]) => void) => void} */
 		function map(arr, iterator, callback) {
 			callback = _once(callback);
 			const results = [];
 			eachOf(arr, (value, callback) => {
-				iterator(value, (err, v) => {
-					results.push(v);
-					callback(err);
-				});
+				results.push(iterator(value, (err) => callback(err)));
 			}, (err) => {
 				callback(err, results);
 			});
@@ -210,17 +207,14 @@ export default (o, allDone) => {
 			const name = o.glyphs[idx];
 
 			if (o.optimize === true) {
-				/** @type {Stream} */
-				let stream;
 				try {
-					stream = streamSVGO(name, file)
+					return streamSVGO(name, file)
 				} catch (err) {
 					fileDone(err);
-					return;
+					return null;
 				}
-				fileDone(null, stream);
 			} else {
-				fileDone(null, streamSVG(name, file));
+				return streamSVG(name, file);
 			}
 		}, (err, streams) => {
 			if (err) {

@@ -36,6 +36,33 @@ export default (o, allDone) => {
 	const execPromise = util.promisify(exec);
 	const promise = execPromise(args, { maxBuffer: o.execMaxBuffer });
 	const proc = promise.child;
+
+	// Send JSON with params
+	if (!proc) return;
+
+	proc.stderr.on('data', (data) => {
+		logger.verbose(data);
+	});
+	proc.stdout.on('data', (data) => {
+		logger.verbose(data);
+	});
+	proc.on('exit', (code, signal) => {
+		if (code !== 0) {
+			logger.log( // cannot use error() because it will stop execution of callback of exec (which shows error message)
+				"fontforge process has unexpectedly closed.\n" +
+				`1. Try to run grunt in verbose mode to see fontforge output: ${chalk.bold('grunt --verbose webfont')}.\n` +
+				`2. If stderr maxBuffer exceeded try to increase ${chalk.bold('execMaxBuffer')}, ` +
+				`see ${chalk.underline('https://github.com/sapegin/grunt-webfont#execMaxBuffer')}. `
+			);
+		}
+	});
+
+	const params = _.extend(o, {
+		inputDir: tempDir
+	});
+	proc.stdin.write(JSON.stringify(params));
+	proc.stdin.end();
+
 	(async () => {
 		let out;
 		try {
@@ -77,32 +104,6 @@ export default (o, allDone) => {
 			fontName: path.basename(result.file)
 		});
 	})();
-
-	// Send JSON with params
-	if (!proc) return;
-
-	proc.stderr.on('data', (data) => {
-		logger.verbose(data);
-	});
-	proc.stdout.on('data', (data) => {
-		logger.verbose(data);
-	});
-	proc.on('exit', (code, signal) => {
-		if (code !== 0) {
-			logger.log( // cannot use error() because it will stop execution of callback of exec (which shows error message)
-				"fontforge process has unexpectedly closed.\n" +
-				`1. Try to run grunt in verbose mode to see fontforge output: ${chalk.bold('grunt --verbose webfont')}.\n` +
-				`2. If stderr maxBuffer exceeded try to increase ${chalk.bold('execMaxBuffer')}, ` +
-				`see ${chalk.underline('https://github.com/sapegin/grunt-webfont#execMaxBuffer')}. `
-			);
-		}
-	});
-
-	const params = _.extend(o, {
-		inputDir: tempDir
-	});
-	proc.stdin.write(JSON.stringify(params));
-	proc.stdin.end();
 
 	const error = (/** @type {any[]} */...args) => {
 		logger.error.apply(null, args);

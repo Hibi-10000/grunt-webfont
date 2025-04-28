@@ -16,8 +16,8 @@ import _ from 'lodash';
 import winston from 'winston';
 import * as wf from '../util/util.js';
 
-/** @type {(o: OptionsInternal, allDone: (result: { fontName: string } | false) => void) => void} */
-export default (o, allDone) => {
+/** @type {(o: OptionsInternal, allDone: (result: { fontName: string } | false) => void) => Promise<void>} */
+export default async (o, allDone) => {
 	const logger = o.logger || winston;
 
 	// Copy source files to temporary directory
@@ -64,73 +64,71 @@ export default (o, allDone) => {
 	proc.stdin.write(JSON.stringify(params));
 	proc.stdin.end();
 
-	(async () => {
-		let out;
-		try {
-			out = (await promise).stdout;
-		} catch (err) {
-			/** @typedef {import('node:child_process').ExecException} ExecException */
-			if (err instanceof Error && (/** @type {ExecException} */(err)).code === 127) {
-				logger.error(`fontforge not found. Please install fontforge and all other requirements: ${chalk.underline('https://github.com/sapegin/grunt-webfont#installation')}`);
-				allDone(false);
-				return;
-			}
-			if (err instanceof Error) {
-				logger.error(err.message);
-				allDone(false);
-				return;
-			}
-			logger.error(`probably an impossible error`);
-
-			// Skip some fontforge output such as copyrights. Show warnings only when no font files was created
-			// or in verbose mode.
-			const success = !!wf.generatedFontFiles(o);
-			const notError = /(Copyright|License |with many parts BSD |Executable based on sources from|Library based on sources from|Based on source from git)/;
-			//const version = /(Executable based on sources from|Library based on sources from)/;
-			const lines = err.split('\n');
-
-			const warn = [];
-			lines.forEach((line) => {
-				if (!line.match(notError) && !success) {
-					warn.push(line);
-				}
-				else {
-					logger.verbose(chalk.grey('fontforge: ') + line);
-				}
-			});
-
-			if (warn.length) {
-				logger.error(warn.join('\n'));
-				allDone(false);
-				return;
-			}
-			logger.error(`impossible error: ${err}`);
+	let out;
+	try {
+		out = (await promise).stdout;
+	} catch (err) {
+		/** @typedef {import('node:child_process').ExecException} ExecException */
+		if (err instanceof Error && (/** @type {ExecException} */(err)).code === 127) {
+			logger.error(`fontforge not found. Please install fontforge and all other requirements: ${chalk.underline('https://github.com/sapegin/grunt-webfont#installation')}`);
 			allDone(false);
 			return;
 		}
-
-		// Trim fontforge result
-		const json = out.replace(/^[^{]+/, '').replace(/[^}]+$/, '');
-
-		// Parse json
-		let result;
-		try {
-			result = JSON.parse(json);
-		}
-		catch (e) {
-			logger.verbose(`Webfont did not receive a proper JSON result from Python script: ${e}`);
-			logger.error(
-				'Something went wrong when running fontforge. Probably fontforge wasn’t installed correctly or one of your SVGs is too complicated for fontforge.\n\n' +
-				`1. Try to run Grunt in verbose mode: ${chalk.bold('grunt --verbose webfont')} and see what fontforge says. Then search GitHub issues for the solution: ${chalk.underline('https://github.com/sapegin/grunt-webfont/issues')}.\n\n` +
-				`2. Try to use “node” engine instead of “fontforge”: ${chalk.underline('https://github.com/sapegin/grunt-webfont#engine')}\n\n` +
-				'3. To find “bad” icon try to remove SVGs one by one until error disappears. Then try to simplify this SVG in Sketch, Illustrator, etc.\n\n'
-			);
+		if (err instanceof Error) {
+			logger.error(err.message);
 			allDone(false);
 			return;
 		}
+		logger.error(`probably an impossible error`);
 
-		allDone({
-			fontName: path.basename(result.file)
+		// Skip some fontforge output such as copyrights. Show warnings only when no font files was created
+		// or in verbose mode.
+		const success = !!wf.generatedFontFiles(o);
+		const notError = /(Copyright|License |with many parts BSD |Executable based on sources from|Library based on sources from|Based on source from git)/;
+		//const version = /(Executable based on sources from|Library based on sources from)/;
+		const lines = err.split('\n');
+
+		const warn = [];
+		lines.forEach((line) => {
+			if (!line.match(notError) && !success) {
+				warn.push(line);
+			}
+			else {
+				logger.verbose(chalk.grey('fontforge: ') + line);
+			}
 		});
-	})();
+
+		if (warn.length) {
+			logger.error(warn.join('\n'));
+			allDone(false);
+			return;
+		}
+		logger.error(`impossible error: ${err}`);
+		allDone(false);
+		return;
+	}
+
+	// Trim fontforge result
+	const json = out.replace(/^[^{]+/, '').replace(/[^}]+$/, '');
+
+	// Parse json
+	let result;
+	try {
+		result = JSON.parse(json);
+	}
+	catch (e) {
+		logger.verbose(`Webfont did not receive a proper JSON result from Python script: ${e}`);
+		logger.error(
+			'Something went wrong when running fontforge. Probably fontforge wasn’t installed correctly or one of your SVGs is too complicated for fontforge.\n\n' +
+			`1. Try to run Grunt in verbose mode: ${chalk.bold('grunt --verbose webfont')} and see what fontforge says. Then search GitHub issues for the solution: ${chalk.underline('https://github.com/sapegin/grunt-webfont/issues')}.\n\n` +
+			`2. Try to use “node” engine instead of “fontforge”: ${chalk.underline('https://github.com/sapegin/grunt-webfont#engine')}\n\n` +
+			'3. To find “bad” icon try to remove SVGs one by one until error disappears. Then try to simplify this SVG in Sketch, Illustrator, etc.\n\n'
+		);
+		allDone(false);
+		return;
+	}
+
+	allDone({
+		fontName: path.basename(result.file)
+	});
 };

@@ -23,8 +23,8 @@ import which from 'which';
 import winston from 'winston';
 import * as wf from '../util/util.js';
 
-/** @type {(o: OptionsInternal, allDone: (result?: false) => void) => void} */
-export default (o, allDone) => {
+/** @type {(o: OptionsInternal, allDone: (result?: false) => void) => Promise<void>} */
+export default async (o, allDone) => {
 	const logger = o.logger || winston;
 
 	// @todo Ligatures
@@ -92,18 +92,16 @@ export default (o, allDone) => {
 	// Font types
 	const typesToGenerate = o.types.slice();
 	if ((o.types.indexOf('woff2') !== -1) && (o.types.indexOf('ttf') === -1)) typesToGenerate.push('ttf');
-	(async () => {
-		try {
-			for (const type of typesToGenerate) {
-				if (type === 'woff2') continue;
-				await createFontWriter(type);
-			}
-		} catch (err) {
-			allDone(false);
-			return;
+	try {
+		for (const type of typesToGenerate) {
+			if (type === 'woff2') continue;
+			await createFontWriter(type);
 		}
-		allDone();
-	})();
+	} catch (e) {
+		allDone(false);
+		return;
+	}
+	allDone();
 
 	/**
 	 * @overload

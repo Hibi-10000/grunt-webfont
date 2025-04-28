@@ -71,7 +71,7 @@ export default (o, allDone) => {
 		} catch (err) {
 			/** @typedef {import('node:child_process').ExecException} ExecException */
 			if (err instanceof Error && (/** @type {ExecException} */(err)).code === 127) {
-				fontforgeNotFound();
+				logger.error(`fontforge not found. Please install fontforge and all other requirements: ${chalk.underline('https://github.com/sapegin/grunt-webfont#installation')}`);
 				allDone(false);
 				return;
 			}
@@ -133,9 +133,4 @@ export default (o, allDone) => {
 			fontName: path.basename(result.file)
 		});
 	})();
-
-	const fontforgeNotFound = () => {
-		logger.error(`fontforge not found. Please install fontforge and all other requirements: ${chalk.underline('https://github.com/sapegin/grunt-webfont#installation')}`);
-	}
-
 };

@@ -76,7 +76,7 @@ export default (o, allDone) => {
 				return;
 			}
 			if (err instanceof Error) {
-				error(err.message);
+				logger.error(err.message);
 				allDone(false);
 				return;
 			}
@@ -100,11 +100,11 @@ export default (o, allDone) => {
 			});
 
 			if (warn.length) {
-				error(warn.join('\n'));
+				logger.error(warn.join('\n'));
 				allDone(false);
 				return;
 			}
-			error(`impossible error: ${err}`);
+			logger.error(`impossible error: ${err}`);
 			allDone(false);
 			return;
 		}
@@ -119,7 +119,7 @@ export default (o, allDone) => {
 		}
 		catch (e) {
 			logger.verbose(`Webfont did not receive a proper JSON result from Python script: ${e}`);
-			error(
+			logger.error(
 				'Something went wrong when running fontforge. Probably fontforge wasn’t installed correctly or one of your SVGs is too complicated for fontforge.\n\n' +
 				`1. Try to run Grunt in verbose mode: ${chalk.bold('grunt --verbose webfont')} and see what fontforge says. Then search GitHub issues for the solution: ${chalk.underline('https://github.com/sapegin/grunt-webfont/issues')}.\n\n` +
 				`2. Try to use “node” engine instead of “fontforge”: ${chalk.underline('https://github.com/sapegin/grunt-webfont#engine')}\n\n` +
@@ -134,12 +134,8 @@ export default (o, allDone) => {
 		});
 	})();
 
-	const error = (/** @type {any[]} */...args) => {
-		logger.error.apply(null, args);
-	}
-
 	const fontforgeNotFound = () => {
-		error(`fontforge not found. Please install fontforge and all other requirements: ${chalk.underline('https://github.com/sapegin/grunt-webfont#installation')}`);
+		logger.error(`fontforge not found. Please install fontforge and all other requirements: ${chalk.underline('https://github.com/sapegin/grunt-webfont#installation')}`);
 	}
 
 };

@@ -8,6 +8,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import util from 'node:util';
 import { exec } from 'node:child_process';
 import temp from 'temp';
 import chalk from 'chalk';
@@ -32,19 +33,23 @@ export default (o, allDone) => {
 		`"${path.join(import.meta.dirname, 'fontforge/generate.py')}"`
 	].join(' ');
 
-	const proc = exec(args, { maxBuffer: o.execMaxBuffer }, (err, out, code) => {
-		if (err instanceof Error && err.code === 127) {
+	const execPromise = util.promisify(exec);
+	const promise = execPromise(args, { maxBuffer: o.execMaxBuffer });
+	const proc = promise.child;
+	promise.catch((err) => {
+		/** @typedef {import('node:child_process').ExecException} ExecException */
+		if (err instanceof Error && (/** @type {ExecException} */(err)).code === 127) {
 			fontforgeNotFound();
 			return;
 		}
-		else if (err) {
-			if (err instanceof Error) {
-				error(err.message);
-				return;
-			}
-			error(`impossible error: ${err}`);
+		if (err instanceof Error) {
+			error(err.message);
 			return;
 		}
+		error(`impossible error: ${err}`);
+		return;
+	});
+	promise.then(({ stdout: out }) => {
 
 		// Trim fontforge result
 		const json = out.replace(/^[^{]+/, '').replace(/[^}]+$/, '');

@@ -49,7 +49,8 @@ export default (o, allDone) => {
 		error(`impossible error: ${err}`);
 		return;
 	});
-	promise.then(({ stdout: out }) => {
+	(async () => {
+		const { stdout: out } = await promise;
 
 		// Trim fontforge result
 		const json = out.replace(/^[^{]+/, '').replace(/[^}]+$/, '');
@@ -73,7 +74,7 @@ export default (o, allDone) => {
 		allDone({
 			fontName: path.basename(result.file)
 		});
-	});
+	})();
 
 	// Send JSON with params
 	if (!proc) return;

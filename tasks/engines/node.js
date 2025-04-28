@@ -97,7 +97,7 @@ export default (o, allDone) => {
 			if (type === 'woff2') continue;
 			await createFontWriter(type);
 		}
-	})().finally(allDone);
+	})().catch(() => allDone(false)).finally(allDone);
 
 	/**
 	 * @overload
@@ -174,7 +174,7 @@ export default (o, allDone) => {
 			});
 		} catch (err) {
 			logger.error('Can’t stream SVG file.\n\n' + err);
-			allDone(false);
+			throw err;
 		}
 	}
 

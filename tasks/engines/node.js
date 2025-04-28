@@ -123,15 +123,13 @@ export default (o, allDone) => {
 		}
 	}
 
-	/** @type {(type: string) => Promise<void>} */
-	async function createFontWriter(type) {
+	async function createFontWriter(/** @type {string} */type) {
 		const font = await getFont(type)
 		fs.writeFileSync(wf.getFontPath(o, type), font);
 	}
 
 	/** @typedef {{ codepoint: number, name?: string, stream: NodeJS.ReadableStream }} Stream */
-	/** @type {(files: string[]) => Stream[]} */
-	function svgFilesToStreams(files) {
+	function svgFilesToStreams(/** @type {string[]} */files) {
 		try {
 			return files.map((file) => {
 
@@ -178,8 +176,7 @@ export default (o, allDone) => {
 		}
 	}
 
-	/** @type {(font: Uint8Array) => Promise<Buffer | false>} */
-	async function autohintTtfFont(font) {
+	async function autohintTtfFont(/** @type {Uint8Array} */font) {
 		if (!which.sync('ttfautohint', { nothrow: true })) {
 			logger.verbose('Hinting skipped, ttfautohint not found.');
 			return false;

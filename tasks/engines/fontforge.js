@@ -72,10 +72,12 @@ export default (o, allDone) => {
 			/** @typedef {import('node:child_process').ExecException} ExecException */
 			if (err instanceof Error && (/** @type {ExecException} */(err)).code === 127) {
 				fontforgeNotFound();
+				allDone(false);
 				return;
 			}
 			if (err instanceof Error) {
 				error(err.message);
+				allDone(false);
 				return;
 			}
 			logger.error(`probably an impossible error`);
@@ -99,9 +101,11 @@ export default (o, allDone) => {
 
 			if (warn.length) {
 				error(warn.join('\n'));
+				allDone(false);
 				return;
 			}
 			error(`impossible error: ${err}`);
+			allDone(false);
 			return;
 		}
 
@@ -121,6 +125,7 @@ export default (o, allDone) => {
 				`2. Try to use “node” engine instead of “fontforge”: ${chalk.underline('https://github.com/sapegin/grunt-webfont#engine')}\n\n` +
 				'3. To find “bad” icon try to remove SVGs one by one until error disappears. Then try to simplify this SVG in Sketch, Illustrator, etc.\n\n'
 			);
+			allDone(false);
 			return;
 		}
 
@@ -131,7 +136,6 @@ export default (o, allDone) => {
 
 	const error = (/** @type {any[]} */...args) => {
 		logger.error.apply(null, args);
-		allDone(false);
 	}
 
 	const fontforgeNotFound = () => {

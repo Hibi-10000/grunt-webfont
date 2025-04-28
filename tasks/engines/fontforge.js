@@ -36,21 +36,23 @@ export default (o, allDone) => {
 	const execPromise = util.promisify(exec);
 	const promise = execPromise(args, { maxBuffer: o.execMaxBuffer });
 	const proc = promise.child;
-	promise.catch((err) => {
-		/** @typedef {import('node:child_process').ExecException} ExecException */
-		if (err instanceof Error && (/** @type {ExecException} */(err)).code === 127) {
-			fontforgeNotFound();
-			return;
-		}
-		if (err instanceof Error) {
-			error(err.message);
-			return;
-		}
-		error(`impossible error: ${err}`);
-		return;
-	});
 	(async () => {
-		const { stdout: out } = await promise;
+		let out;
+		try {
+			out = (await promise).stdout;
+		} catch (err) {
+			/** @typedef {import('node:child_process').ExecException} ExecException */
+			if (err instanceof Error && (/** @type {ExecException} */(err)).code === 127) {
+				fontforgeNotFound();
+				return;
+			}
+			if (err instanceof Error) {
+				error(err.message);
+				return;
+			}
+			error(`impossible error: ${err}`);
+			return;
+		}
 
 		// Trim fontforge result
 		const json = out.replace(/^[^{]+/, '').replace(/[^}]+$/, '');

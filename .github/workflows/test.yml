@@ -24,10 +24,13 @@ jobs:
         node-version: 22
         cache: 'pnpm'
 
-    - name: apt install
+    - name: Run apt install
       run: sudo apt install fontforge ttfautohint
 
-    - run: pnpm install --force
+    - name: Run pnpm install
+      run: |
+        pnpm install
+        pnpm install --force
 
     - name: Run tests
       run: |

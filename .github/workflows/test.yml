@@ -1,0 +1,34 @@
+name: test
+
+on:
+  push:
+    branches:
+      - esm
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: ^10
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: 'pnpm'
+
+    - name: apt install
+      run: sudo apt install fontforge ttfautohint
+
+    - run: pnpm install --force
+
+    - name: Run tests
+      run: |
+        pnpm test

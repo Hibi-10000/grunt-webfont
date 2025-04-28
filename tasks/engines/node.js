@@ -93,11 +93,17 @@ export default (o, allDone) => {
 	const typesToGenerate = o.types.slice();
 	if ((o.types.indexOf('woff2') !== -1) && (o.types.indexOf('ttf') === -1)) typesToGenerate.push('ttf');
 	(async () => {
-		for (const type of typesToGenerate) {
-			if (type === 'woff2') continue;
-			await createFontWriter(type);
+		try {
+			for (const type of typesToGenerate) {
+				if (type === 'woff2') continue;
+				await createFontWriter(type);
+			}
+		} catch (err) {
+			allDone(false);
+			return;
 		}
-	})().catch(() => allDone(false)).finally(allDone);
+		allDone();
+	})();
 
 	/**
 	 * @overload

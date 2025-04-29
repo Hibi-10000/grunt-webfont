@@ -269,19 +269,16 @@ const task = function(grunt) {
 	 */
 	async function generateFont() {
 		const f = o.engine === 'node' ? node : fontforge;
-		await new Promise(resolve => f(o, result => {
-			if (result === false) {
-				// Font was not created, exit
-				completeTask();
-				return;
-			}
+		const result = await f(o);
+		if (result === false) {
+			// Font was not created, exit
+			completeTask();
+			return;
+		}
 
-			if (result) {
-				o = _.extend(o, result);
-			}
-
-			resolve();
-		}));
+		if (result) {
+			o = _.extend(o, result);
+		}
 	}
 
 	/**

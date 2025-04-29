@@ -16,8 +16,8 @@ import _ from 'lodash';
 import winston from 'winston';
 import * as wf from '../util/util.js';
 
-/** @type {(o: OptionsInternal, allDone: (result: { fontName: string } | false) => void) => Promise<void>} */
-export default async (o, allDone) => {
+/** @type {(o: OptionsInternal) => Promise<{ fontName: string } | false>} */
+export default async (o) => {
 	const logger = o.logger || winston;
 
 	// Copy source files to temporary directory
@@ -71,13 +71,11 @@ export default async (o, allDone) => {
 		/** @typedef {import('node:child_process').ExecException} ExecException */
 		if (err instanceof Error && (/** @type {ExecException} */(err)).code === 127) {
 			logger.error(`fontforge not found. Please install fontforge and all other requirements: ${chalk.underline('https://github.com/sapegin/grunt-webfont#installation')}`);
-			allDone(false);
-			return;
+			return false;
 		}
 		if (err instanceof Error) {
 			logger.error(err.message);
-			allDone(false);
-			return;
+			return false;
 		}
 		logger.error(`probably an impossible error`);
 
@@ -100,12 +98,10 @@ export default async (o, allDone) => {
 
 		if (warn.length) {
 			logger.error(warn.join('\n'));
-			allDone(false);
-			return;
+			return false;
 		}
 		logger.error(`impossible error: ${err}`);
-		allDone(false);
-		return;
+		return false;
 	}
 
 	// Trim fontforge result
@@ -124,11 +120,10 @@ export default async (o, allDone) => {
 			`2. Try to use “node” engine instead of “fontforge”: ${chalk.underline('https://github.com/sapegin/grunt-webfont#engine')}\n\n` +
 			'3. To find “bad” icon try to remove SVGs one by one until error disappears. Then try to simplify this SVG in Sketch, Illustrator, etc.\n\n'
 		);
-		allDone(false);
-		return;
+		return false;
 	}
 
-	allDone({
+	return {
 		fontName: path.basename(result.file)
-	});
+	};
 };

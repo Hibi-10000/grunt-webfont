@@ -23,8 +23,8 @@ import which from 'which';
 import winston from 'winston';
 import * as wf from '../util/util.js';
 
-/** @type {(o: OptionsInternal, allDone: (result?: false) => void) => Promise<void>} */
-export default async (o, allDone) => {
+/** @type {(o: OptionsInternal) => Promise<false>} */
+export default async (o) => {
 	const logger = o.logger || winston;
 
 	// @todo Ligatures
@@ -98,10 +98,8 @@ export default async (o, allDone) => {
 			await createFontWriter(type);
 		}
 	} catch (e) {
-		allDone(false);
-		return;
+		return false;
 	}
-	allDone();
 
 	/**
 	 * @overload

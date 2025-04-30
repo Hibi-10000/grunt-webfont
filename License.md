@@ -1,6 +1,7 @@
 The MIT License
 ===============
 
+Copyright © 2025 Hibi_10000
 Copyright © 2014 Artem Sapegin, http://sapegin.me
 
 Permission is hereby granted, free of charge, to any person obtaining

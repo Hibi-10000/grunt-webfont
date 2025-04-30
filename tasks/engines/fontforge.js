@@ -39,7 +39,7 @@ export default async (o) => {
 	const proc = promise.child;
 
 	// Send JSON with params
-	if (!proc) return;
+	if (!proc) throw new TypeError('process is null');
 
 	proc.stderr.on('data', (data) => {
 		logger.verbose(data);

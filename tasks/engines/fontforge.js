@@ -90,8 +90,7 @@ export default async (o) => {
 		lines.forEach((line) => {
 			if (!line.match(notError) && !success) {
 				warn.push(line);
-			}
-			else {
+			} else {
 				logger.verbose(chalk.grey('fontforge: ') + line);
 			}
 		});
@@ -111,8 +110,7 @@ export default async (o) => {
 	let result;
 	try {
 		result = JSON.parse(json);
-	}
-	catch (e) {
+	} catch (e) {
 		logger.verbose(`Webfont did not receive a proper JSON result from Python script: ${e}`);
 		logger.error(
 			'Something went wrong when running fontforge. Probably fontforge wasn’t installed correctly or one of your SVGs is too complicated for fontforge.\n\n' +

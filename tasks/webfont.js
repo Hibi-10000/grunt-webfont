@@ -168,8 +168,7 @@ const task = function(grunt) {
 		const generatedFiles = wf.generatedFontFiles(o);
 		if (!generatedFiles.length){
 			regenerationNeeded = true;
-		}
-		else {
+		} else {
 			generatedFiles.push(getDemoFilePath());
 			o.stylesheets.forEach((stylesheet) => {
 				generatedFiles.push(getCssFilePath(stylesheet));
@@ -476,8 +475,7 @@ const task = function(grunt) {
 			destParent = dest;
 			destName = path.basename(outputConfig.template);
 			filepath = path.join(dest, destName);
-		}
-		else {
+		} else {
 			// If user specifies a file, that is our filepath
 			destParent = path.dirname(dest);
 			filepath = dest;
@@ -580,8 +578,7 @@ const task = function(grunt) {
 	function option(map, key) {
 		if (key in map) {
 			return map[key];
-		}
-		else {
+		} else {
 			return map._default;
 		}
 	}
@@ -660,15 +657,13 @@ const task = function(grunt) {
 		let url;
 		if (font.embeddable && has(o.embed, type)) {
 			url = embedFont(path.join(o.dest, filename));
-		}
-		else {
+		} else {
 			url = o.relativeFontPath + filename;
 			if (o.addHashes) {
 				if (url.indexOf('#iefix') === -1) { // Do not add hashes for OldIE
 					// Put hash at the end of an URL or before #hash
 					url = url.replace(/(#|$)/, `?${o.hash}$1`);
-				}
-				else {
+				} else {
 					url = url.replace(/(#|$)/, `${o.hash}$1`);
 				}
 			}
@@ -699,8 +694,7 @@ const task = function(grunt) {
 				filename: filename,
 				template: fs.readFileSync(filename, 'utf8')
 			};
-		}
-		else if (!optional) {
+		} else if (!optional) {
 			grunt.fail.fatal(`Cannot find template at path: ${filename}`);
 		}
 	}
@@ -716,8 +710,7 @@ const task = function(grunt) {
 		try {
 			const func = _.template(template.template);
 			return func(context);
-		}
-		catch (e) {
+		} catch (e) {
 			grunt.fail.fatal(`Error while rendering template ${template.filename}: ${e.message}`);
 		}
 	}

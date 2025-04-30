@@ -119,8 +119,7 @@ export default async (o) => {
 	async function getFont(type) {
 		if (fonts[type]) {
 			return fonts[type];
-		}
-		else {
+		} else {
 			return await generators[type]();
 		}
 	}

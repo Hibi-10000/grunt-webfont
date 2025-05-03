@@ -13,12 +13,11 @@ import { exec } from 'node:child_process';
 import temp from 'temp';
 import chalk from 'chalk';
 import _ from 'lodash';
-import winston from 'winston';
 import * as wf from '../util/util.js';
 
 /** @type {(o: OptionsInternal) => Promise<{ fontName: string } | false>} */
 export default async (o) => {
-	const logger = o.logger || winston;
+	const logger = o.logger || wf.consolaLogger;
 
 	// Copy source files to temporary directory
 	temp.track();
@@ -42,14 +41,14 @@ export default async (o) => {
 	if (!proc) throw new TypeError('process is null');
 
 	proc.stderr.on('data', (data) => {
-		logger.verbose(data);
+		logger.log.verbose(data);
 	});
 	proc.stdout.on('data', (data) => {
-		logger.verbose(data);
+		logger.log.verbose(data);
 	});
 	proc.on('exit', (code, signal) => {
 		if (code !== 0) {
-			logger.log( // cannot use error() because it will stop execution of callback of exec (which shows error message)
+			logger.log.log( // cannot use error() because it will stop execution of callback of exec (which shows error message)
 				"fontforge process has unexpectedly closed.\n" +
 				`1. Try to run grunt in verbose mode to see fontforge output: ${chalk.bold('grunt --verbose webfont')}.\n` +
 				`2. If stderr maxBuffer exceeded try to increase ${chalk.bold('execMaxBuffer')}, ` +
@@ -70,14 +69,14 @@ export default async (o) => {
 	} catch (err) {
 		/** @typedef {import('node:child_process').ExecException} ExecException */
 		if (err instanceof Error && (/** @type {ExecException} */(err)).code === 127) {
-			logger.error(`fontforge not found. Please install fontforge and all other requirements: ${chalk.underline('https://github.com/sapegin/grunt-webfont#installation')}`);
+			logger.log.error(`fontforge not found. Please install fontforge and all other requirements: ${chalk.underline('https://github.com/sapegin/grunt-webfont#installation')}`);
 			return false;
 		}
 		if (err instanceof Error) {
-			logger.error(err.message);
+			logger.log.error(err.message);
 			return false;
 		}
-		logger.error(`probably an impossible error`);
+		logger.log.error(`probably an impossible error`);
 
 		// Skip some fontforge output such as copyrights. Show warnings only when no font files was created
 		// or in verbose mode.
@@ -92,15 +91,15 @@ export default async (o) => {
 			if (!line.match(notError) && !success) {
 				warn.push(line);
 			} else {
-				logger.verbose(chalk.grey('fontforge: ') + line);
+				logger.log.verbose(chalk.grey('fontforge: ') + line);
 			}
 		});
 
 		if (warn.length) {
-			logger.error(warn.join('\n'));
+			logger.log.error(warn.join('\n'));
 			return false;
 		}
-		logger.error(`impossible error: ${err}`);
+		logger.log.error(`impossible error: ${err}`);
 		return false;
 	}
 
@@ -113,8 +112,8 @@ export default async (o) => {
 	try {
 		result = JSON.parse(json);
 	} catch (e) {
-		logger.verbose(`Webfont did not receive a proper JSON result from Python script: ${e}`);
-		logger.error(
+		logger.log.verbose(`Webfont did not receive a proper JSON result from Python script: ${e}`);
+		logger.log.error(
 			'Something went wrong when running fontforge. Probably fontforge wasn’t installed correctly or one of your SVGs is too complicated for fontforge.\n\n' +
 			`1. Try to run Grunt in verbose mode: ${chalk.bold('grunt --verbose webfont')} and see what fontforge says. Then search GitHub issues for the solution: ${chalk.underline('https://github.com/sapegin/grunt-webfont/issues')}.\n\n` +
 			`2. Try to use “node” engine instead of “fontforge”: ${chalk.underline('https://github.com/sapegin/grunt-webfont#engine')}\n\n` +

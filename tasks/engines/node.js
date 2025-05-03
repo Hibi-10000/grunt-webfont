@@ -20,12 +20,11 @@ import ttf2woff from 'ttf2woff';
 import ttf2eot from 'ttf2eot';
 import svgo from 'svgo';
 import which from 'which';
-import winston from 'winston';
 import * as wf from '../util/util.js';
 
 /** @type {(o: OptionsInternal) => Promise<false>} */
 export default async (o) => {
-	const logger = o.logger || winston;
+	const logger = o.logger || wf.consolaLogger;
 
 	// @todo Ligatures
 
@@ -43,8 +42,8 @@ export default async (o) => {
 				descent: o.descent,
 				normalize: o.normalize,
 				round: o.round,
-				log: logger.verbose.bind(logger),
-				error: logger.error.bind(logger)
+				log: logger.log.verbose.bind(logger),
+				error: logger.log.error.bind(logger)
 			});
 			stream.on('data', (chunk) => {
 				font += decoder.write(chunk);
@@ -158,7 +157,7 @@ export default async (o) => {
 						const strStream = stream.Readable.from(optimized);
 						return fileStreamed(name, strStream);
 					} catch (err) {
-						logger.error('Can’t simplify SVG file with SVGO.\n\n' + err);
+						logger.log.error('Can’t simplify SVG file with SVGO.\n\n' + err);
 						throw err;
 					}
 				}
@@ -173,14 +172,14 @@ export default async (o) => {
 				}
 			});
 		} catch (err) {
-			logger.error('Can’t stream SVG file.\n\n' + err);
+			logger.log.error('Can’t stream SVG file.\n\n' + err);
 			throw err;
 		}
 	}
 
 	async function autohintTtfFont(/** @type {Uint8Array} */font) {
 		if (!which.sync('ttfautohint', { nothrow: true })) {
-			logger.verbose('Hinting skipped, ttfautohint not found.');
+			logger.log.verbose('Hinting skipped, ttfautohint not found.');
 			return false;
 		}
 
@@ -211,10 +210,10 @@ export default async (o) => {
 			await execPromise(args, { maxBuffer: o.execMaxBuffer });
 		} catch (err) {
 			if (err.code === 127) {
-				logger.verbose('Hinting skipped, ttfautohint not found.');
+				logger.log.verbose('Hinting skipped, ttfautohint not found.');
 				return false;
 			}
-			logger.error('Can’t run ttfautohint.\n\n' + err.message);
+			logger.log.error('Can’t run ttfautohint.\n\n' + err.message);
 			return false;
 		}
 		const hintedFont = fs.readFileSync(hintedFilepath);

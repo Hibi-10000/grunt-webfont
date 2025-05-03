@@ -1,10 +1,16 @@
 /// <reference types="node" />
 
 interface Logger {
-	warn: (...args: any[]) => void,
-	error: (...args: any[]) => void,
-	log: (...args: any[]) => void,
-	verbose: (...args: any[]) => void,
+	log: {
+		error: (...args: any[]) => void,
+		warn: (...args: any[]) => void,
+		log: (...args: any[]) => void,
+		verbose: (...args: any[]) => void,
+	},
+	fail: {
+		fatal: (...args: any[]) => void,
+		warn?: (...args: any[]) => void,
+	},
 }
 
 interface CustomOutput {

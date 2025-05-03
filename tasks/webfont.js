@@ -23,22 +23,29 @@ import packageJson from '../package.json' with { type: "json" };
 export default (/** @type {import('grunt')} */grunt) => {
 	grunt.registerMultiTask('webfont', 'Compile separate SVG files to webfont', function() {
 		/**
-		 * Winston to Grunt logger adapter.
+		 * Consola to Grunt logger adapter.
 		 *
 		 * @type {Logger}
 		 */
 		const logger = {
-			warn: (...args) => {
-				grunt.log.warn.apply(null, args);
+			log: {
+				warn: (...args) => {
+					grunt.log.warn.apply(null, args);
+				},
+				error: (...args) => {
+					grunt.warn.apply(null, args);
+				},
+				log: (...args) => {
+					grunt.log.writeln.apply(null, args);
+				},
+				verbose: (...args) => {
+					grunt.log.verbose.writeln.apply(null, args);
+				},
 			},
-			error: (...args) => {
-				grunt.warn.apply(null, args);
-			},
-			log: (...args) => {
-				grunt.log.writeln.apply(null, args);
-			},
-			verbose: (...args) => {
-				grunt.log.verbose.writeln.apply(null, args);
+			fail: {
+				fatal: (...args) => {
+					grunt.fail.fatal.apply(null, args);
+				},
 			},
 		};
 
@@ -51,20 +58,20 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 */
 		this.requiresConfig([this.name, this.target, 'src'].join('.'));
 
-		task(grunt, this.name, this.target, this.filesSrc, logger, allDone, params, options);
+		task(this.name, this.target, this.filesSrc, logger, allDone, params, options);
 	});
 };
 
-/** @type {(grunt: import('grunt'), name: string, target: string, filesSrc: string[], logger: Logger, allDone: () => void, params: Config, options: Options) => void} */
-const task = (grunt, name, target, filesSrc, logger, allDone, params, options) => {
-	if (!logger) logger = consola;
+/** @type {(name: string, target: string, filesSrc: string[], logger: Logger, allDone: () => void, params: Config, options: Options) => void} */
+const task = (name, target, filesSrc, logger, allDone, params, options) => {
+	if (!logger) logger = wf.consolaLogger;
 	const md5 = crypto.createHash('md5');
 
 	/*
 	 * Check for `dest` param on either target config or global options object
 	 */
 	if (_.isUndefined(params.dest) && _.isUndefined(options.dest)) {
-		logger.warn(`Required property ${name}.${target}.dest or ${name}.${target}.options.dest missing.`);
+		logger.log.warn(`Required property ${name}.${target}.dest or ${name}.${target}.options.dest missing.`);
 	}
 
 	if (options.skip) {
@@ -75,7 +82,7 @@ const task = (grunt, name, target, filesSrc, logger, allDone, params, options) =
 	// Source files
 	const files = _.filter(filesSrc, isSvgFile);
 	if (!files.length) {
-		logger.warn('Specified empty list of source SVG files.');
+		logger.log.warn('Specified empty list of source SVG files.');
 		completeTask();
 		return;
 	}
@@ -162,9 +169,9 @@ const task = (grunt, name, target, filesSrc, logger, allDone, params, options) =
 
 	// Check if we need to generate font
 	const previousHash = readHash(name, target);
-	logger.verbose('New hash:', o.hash, '- previous hash:', previousHash);
+	logger.log.verbose('New hash:', o.hash, '- previous hash:', previousHash);
 	if (o.hash === previousHash) {
-		logger.verbose('Config and source files weren’t changed since last run, checking resulting files...');
+		logger.log.verbose('Config and source files weren’t changed since last run, checking resulting files...');
 		let regenerationNeeded = false;
 
 		const generatedFiles = wf.generatedFontFiles(o);
@@ -179,14 +186,14 @@ const task = (grunt, name, target, filesSrc, logger, allDone, params, options) =
 			regenerationNeeded = _.some(generatedFiles, (filename) => {
 				if (!filename) return false;
 				if (!fs.existsSync(filename)) {
-					logger.verbose('File', filename, ' is missed.');
+					logger.log.verbose('File', filename, ' is missed.');
 					return true;
 				}
 				return false;
 			});
 		}
 		if (!regenerationNeeded) {
-			logger.log(`Font ${chalk.cyan(o.fontName)} wasn’t changed since last run.`);
+			logger.log.log(`Font ${chalk.cyan(o.fontName)} wasn’t changed since last run.`);
 			completeTask();
 			return;
 		}
@@ -379,7 +386,7 @@ const task = (grunt, name, target, filesSrc, logger, allDone, params, options) =
 	function readCodepointsFromFile(){
 		if (!o.codepointsFile) return {};
 		if (!fs.existsSync(o.codepointsFile)){
-			logger.verbose('Codepoints file not found');
+			logger.log.verbose('Codepoints file not found');
 			return {};
 		}
 
@@ -395,9 +402,9 @@ const task = (grunt, name, target, filesSrc, logger, allDone, params, options) =
 		const codepointsToString = JSON.stringify(o.codepoints, null, 4);
 		try {
 			fs.writeFileSync(o.codepointsFile, codepointsToString);
-			logger.verbose(`Codepoints saved to file "${o.codepointsFile}".`);
+			logger.log.verbose(`Codepoints saved to file "${o.codepointsFile}".`);
 		} catch (err) {
-			logger.error(err.message);
+			logger.log.error(err.message);
 		}
 	}
 
@@ -519,7 +526,7 @@ const task = (grunt, name, target, filesSrc, logger, allDone, params, options) =
 			await fs.promises.mkdir(getDemoPath(), { recursive: true });
 		} catch (err) {
 			if (err) {
-				logger.log(err);
+				logger.log.log(err);
 				return;
 			}
 		}
@@ -532,7 +539,7 @@ const task = (grunt, name, target, filesSrc, logger, allDone, params, options) =
 	 * Print log
 	 */
 	function printDone() {
-		logger.log(`Font ${chalk.cyan(o.fontName)} with ${o.glyphs.length} glyphs created.`);
+		logger.log.log(`Font ${chalk.cyan(o.fontName)} with ${o.glyphs.length} glyphs created.`);
 	}
 
 
@@ -699,7 +706,7 @@ const task = (grunt, name, target, filesSrc, logger, allDone, params, options) =
 				template: fs.readFileSync(filename, 'utf8')
 			};
 		} else if (!optional) {
-			grunt.fail.fatal(`Cannot find template at path: ${filename}`);
+			logger.fail.fatal(`Cannot find template at path: ${filename}`);
 		}
 	}
 
@@ -715,7 +722,7 @@ const task = (grunt, name, target, filesSrc, logger, allDone, params, options) =
 			const func = _.template(template.template);
 			return func(context);
 		} catch (e) {
-			grunt.fail.fatal(`Error while rendering template ${template.filename}: ${e.message}`);
+			logger.fail.fatal(`Error while rendering template ${template.filename}: ${e.message}`);
 		}
 	}
 

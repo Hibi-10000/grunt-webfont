@@ -6,6 +6,18 @@
 
 import path from 'node:path';
 import { globSync } from 'glob';
+import { consola } from 'consola';
+
+/** @type {Logger} */
+export const consolaLogger = {
+	log: consola,
+	fail: {
+		fatal: (...args) => {
+			consola.fatal.apply(null, args);
+			process.exit(1);
+		}
+	},
+}
 
 /**
  * Unicode Private Use Area start.

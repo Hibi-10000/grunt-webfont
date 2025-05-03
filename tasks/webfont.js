@@ -22,47 +22,49 @@ import packageJson from '../package.json' with { type: "json" };
 
 export default (/** @type {import('grunt')} */grunt) => {
 	grunt.registerMultiTask('webfont', 'Compile separate SVG files to webfont', function() {
-		task.call(this, grunt);
+		/**
+		 * Winston to Grunt logger adapter.
+		 *
+		 * @type {Logger}
+		 */
+		const logger = {
+			warn: (...args) => {
+				grunt.log.warn.apply(null, args);
+			},
+			error: (...args) => {
+				grunt.warn.apply(null, args);
+			},
+			log: (...args) => {
+				grunt.log.writeln.apply(null, args);
+			},
+			verbose: (...args) => {
+				grunt.log.verbose.writeln.apply(null, args);
+			},
+		};
+
+		const allDone = grunt.task.current.async();
+		const params = this.data;
+		const options = this.options(/** @type {Options} */(undefined));
+
+		/*
+		 * Check for `src` param on target config
+		 */
+		this.requiresConfig([this.name, this.target, 'src'].join('.'));
+
+		task(grunt, this.name, this.target, this.filesSrc, logger, allDone, params, options);
 	});
 };
 
-/** @type {(this: grunt.task.IMultiTask<Config>, grunt: import('grunt')) => void} */
-const task = function(grunt) {
-	/**
-	 * Winston to Grunt logger adapter.
-	 *
-	 * @type {Logger}
-	 */
-	const logger = {
-		warn: (...args) => {
-			grunt.log.warn.apply(null, args);
-		},
-		error: (...args) => {
-			grunt.warn.apply(null, args);
-		},
-		log: (...args) => {
-			grunt.log.writeln.apply(null, args);
-		},
-		verbose: (...args) => {
-			grunt.log.verbose.writeln.apply(null, args);
-		}
-	};
-
-	const allDone = grunt.task.current.async();
-	const params = this.data;
-	const options = this.options(/** @type {Options} */(undefined));
+/** @type {(grunt: import('grunt'), name: string, target: string, filesSrc: string[], logger: Logger, allDone: () => void, params: Config, options: Options) => void} */
+const task = (grunt, name, target, filesSrc, logger, allDone, params, options) => {
+	if (!logger) logger = consola;
 	const md5 = crypto.createHash('md5');
-
-	/*
-	 * Check for `src` param on target config
-	 */
-	this.requiresConfig([this.name, this.target, 'src'].join('.'));
 
 	/*
 	 * Check for `dest` param on either target config or global options object
 	 */
 	if (_.isUndefined(params.dest) && _.isUndefined(options.dest)) {
-		logger.warn(`Required property ${this.name}.${this.target}.dest or ${this.name}.${this.target}.options.dest missing.`);
+		logger.warn(`Required property ${name}.${target}.dest or ${name}.${target}.options.dest missing.`);
 	}
 
 	if (options.skip) {
@@ -71,7 +73,7 @@ const task = function(grunt) {
 	}
 
 	// Source files
-	const files = _.filter(this.filesSrc, isSvgFile);
+	const files = _.filter(filesSrc, isSvgFile);
 	if (!files.length) {
 		logger.warn('Specified empty list of source SVG files.');
 		completeTask();
@@ -159,7 +161,7 @@ const task = function(grunt) {
 	if (o.codepointsFile) saveCodepointsToFile();
 
 	// Check if we need to generate font
-	const previousHash = readHash(this.name, this.target);
+	const previousHash = readHash(name, target);
 	logger.verbose('New hash:', o.hash, '- previous hash:', previousHash);
 	if (o.hash === previousHash) {
 		logger.verbose('Config and source files weren’t changed since last run, checking resulting files...');
@@ -191,7 +193,7 @@ const task = function(grunt) {
 	}
 
 	// Save new hash and run
-	saveHash(this.name, this.target, o.hash);
+	saveHash(name, target, o.hash);
 	(async () => {
 		createOutputDirs();
 		cleanOutputDir();

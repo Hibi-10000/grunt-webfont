@@ -35,7 +35,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 				error: (...args) => {
 					grunt.warn.apply(null, args);
 				},
-				log: (...args) => {
+				info: (...args) => {
 					grunt.log.writeln.apply(null, args);
 				},
 				verbose: (...args) => {
@@ -193,7 +193,7 @@ const task = (name, target, filesSrc, logger, allDone, params, options) => {
 			});
 		}
 		if (!regenerationNeeded) {
-			logger.log.log(`Font ${chalk.cyan(o.fontName)} wasn’t changed since last run.`);
+			logger.log.info(`Font ${chalk.cyan(o.fontName)} wasn’t changed since last run.`);
 			completeTask();
 			return;
 		}
@@ -526,7 +526,7 @@ const task = (name, target, filesSrc, logger, allDone, params, options) => {
 			await fs.promises.mkdir(getDemoPath(), { recursive: true });
 		} catch (err) {
 			if (err) {
-				logger.log.log(err);
+				logger.log.info(err);
 				return;
 			}
 		}
@@ -539,7 +539,7 @@ const task = (name, target, filesSrc, logger, allDone, params, options) => {
 	 * Print log
 	 */
 	function printDone() {
-		logger.log.log(`Font ${chalk.cyan(o.fontName)} with ${o.glyphs.length} glyphs created.`);
+		logger.log.info(`Font ${chalk.cyan(o.fontName)} with ${o.glyphs.length} glyphs created.`);
 	}
 
 

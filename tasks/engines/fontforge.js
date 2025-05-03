@@ -48,7 +48,7 @@ export default async (o) => {
 	});
 	proc.on('exit', (code, signal) => {
 		if (code !== 0) {
-			logger.log.log( // cannot use error() because it will stop execution of callback of exec (which shows error message)
+			logger.log.info( // cannot use error() because it will stop execution of callback of exec (which shows error message)
 				"fontforge process has unexpectedly closed.\n" +
 				`1. Try to run grunt in verbose mode to see fontforge output: ${chalk.bold('grunt --verbose webfont')}.\n` +
 				`2. If stderr maxBuffer exceeded try to increase ${chalk.bold('execMaxBuffer')}, ` +

@@ -335,23 +335,20 @@ const task = function(grunt) {
 		o.relativeFontPath = normalizePath(o.relativeFontPath);
 
 		// Generate font URLs to use in @font-face
-		const fontSrcs = [[], []];
+		/** @type {{ 0: string[], 1: string[] }} */
+		const fontSrcs = { 0: [], 1: [] };
 		o.order.forEach((/** @type {'eot'|'woff2'|'woff'|'ttf'|'svg'} */type) => {
 			if (!has(o.types, type)) return;
-			wf.fontsSrcsMap[type].forEach((font, idx) => {
-				if (font) {
-					fontSrcs[idx].push(generateFontSrc(type, font, stylesheet));
-				}
-			});
+			const fontSrc1 = wf.fontsSrcsMap[type][0];
+			if (fontSrc1) fontSrcs[0].push(generateFontSrc(type, fontSrc1, stylesheet));
+			fontSrcs[1].push(generateFontSrc(type, wf.fontsSrcsMap[type][1], stylesheet));
 		});
 
 		// Convert urls to strings that could be used in CSS
 		const fontSrcSeparator = option(wf.fontSrcSeparators, stylesheet);
-		fontSrcs.forEach((font, idx) => {
-			// o.fontSrc1, o.fontSrc2
-			o[`fontSrc${idx + 1}`] = font.join(fontSrcSeparator);
-		});
-		o.fontRawSrcs = fontSrcs;
+		o.fontSrc1 = fontSrcs[0].join(fontSrcSeparator);
+		o.fontSrc2 = fontSrcs[1].join(fontSrcSeparator);
+		o.fontRawSrcs = [fontSrcs[0], fontSrcs[1]];
 
 		// Read JSON file corresponding to CSS template
 		const templateJson = readTemplate(o.template, o.syntax, '.json', true);

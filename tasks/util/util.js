@@ -13,52 +13,50 @@ import { globSync } from 'glob';
  */
 export const UNICODE_PUA_START = 0xF101;
 
-/** @typedef {(false | { ext: string, format?: string, embeddable?: boolean })[]} fontsSrcs */
 /**
  * @font-face’s src values generation rules.
- * @type {{eot: fontsSrcs, woff: fontsSrcs, woff2: fontsSrcs, ttf: fontsSrcs, svg: fontsSrcs}}
  */
 export const fontsSrcsMap = {
-	eot: [
-		{
-			ext: '.eot'
+	eot: {
+		0: {
+			ext: '.eot',
 		},
-		{
+		1: {
 			ext: '.eot?#iefix',
-			format: 'embedded-opentype'
-		}
-	],
-	woff: [
-		false,
-		{
+			format: 'embedded-opentype',
+		},
+	},
+	woff: {
+		0: /** @type {false} */(false),
+		1: {
 			ext: '.woff',
 			format: 'woff',
-			embeddable: true
+			embeddable: true,
 		},
-	],
-	woff2: [
-		false,
-		{
+	},
+	woff2: {
+		0: /** @type {false} */(false),
+		1: {
 			ext: '.woff2',
 			format: 'woff2',
-			embeddable: true
+			embeddable: true,
 		},
-	],
-	ttf: [
-		false,
-		{
+	},
+	ttf: {
+		0: /** @type {false} */(false),
+		1: {
 			ext: '.ttf',
 			format: 'truetype',
-			embeddable: true
+			embeddable: true,
 		},
-	],
-	svg: [
-		false,
-		{
+	},
+	svg: {
+		0: /** @type {false} */(false),
+		1: {
 			ext: '.svg#{fontBaseName}',
-			format: 'svg'
+			format: 'svg',
 		},
-	]
+	},
 };
 
 /**

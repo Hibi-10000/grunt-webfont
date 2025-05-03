@@ -49,7 +49,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 			},
 		};
 
-		const allDone = grunt.task.current.async();
+		const allDone = this.async();
 		const params = this.data;
 		const options = this.options(/** @type {Options} */(undefined));
 
@@ -58,12 +58,12 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 */
 		this.requiresConfig([this.name, this.target, 'src'].join('.'));
 
-		task(this.name, this.target, this.filesSrc, logger, allDone, params, options);
+		webfont(this.name, this.target, this.filesSrc, logger, params, options).finally(allDone);
 	});
 };
 
-/** @type {(name: string, target: string, filesSrc: string[], logger: Logger, allDone: () => void, params: Config, options: Options) => void} */
-const task = (name, target, filesSrc, logger, allDone, params, options) => {
+/** @type {(name: string, target: string, filesSrc: string[], logger: Logger, params: Config, options: Options) => Promise<void>} */
+export const webfont = async (name, target, filesSrc, logger, params, options) => {
 	if (!logger) logger = wf.consolaLogger;
 	const md5 = crypto.createHash('md5');
 
@@ -201,7 +201,7 @@ const task = (name, target, filesSrc, logger, allDone, params, options) => {
 
 	// Save new hash and run
 	saveHash(name, target, o.hash);
-	(async () => {
+	try {
 		createOutputDirs();
 		cleanOutputDir();
 		await generateFont();
@@ -210,7 +210,9 @@ const task = (name, target, filesSrc, logger, allDone, params, options) => {
 		await generateDemoHtml();
 		generateCustomOutputs();
 		printDone();
-	})().finally(completeTask);
+	} finally {
+		completeTask();
+	}
 
 	/**
 	 * Call callback function if it was specified in the options.
@@ -219,7 +221,6 @@ const task = (name, target, filesSrc, logger, allDone, params, options) => {
 		if (o && _.isFunction(o.callback)) {
 			o.callback(o.fontName, o.types, o.glyphs, o.hash);
 		}
-		allDone();
 	}
 
 	/**

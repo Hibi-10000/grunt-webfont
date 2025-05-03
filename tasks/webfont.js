@@ -26,7 +26,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 	});
 };
 
-/** @type {(this: grunt.task.IMultiTask, grunt: import('grunt')) => void} */
+/** @type {(this: grunt.task.IMultiTask<Config>, grunt: import('grunt')) => void} */
 const task = function(grunt) {
 	/**
 	 * Winston to Grunt logger adapter.
@@ -310,10 +310,12 @@ const task = function(grunt) {
 	 */
 	function generateStylesheets() {
 		// Convert codepoints to array of strings
+		/** @type {string[]} */
 		const codepoints = [];
 		_.each(o.glyphs, (name) => {
 			codepoints.push(o.codepoints[name].toString(16));
 		});
+		//@ts-ignore
 		o.codepoints = codepoints;
 
 		// Prepage glyph names to use as CSS classes

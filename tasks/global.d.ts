@@ -19,7 +19,10 @@ interface Configs {
 }
 
 interface Config {
-	options: Options,
+	src: string,
+	dest?: string,
+	destCss?: string,
+	options?: Options,
 }
 
 interface Options {
@@ -42,7 +45,7 @@ interface Options {
 	rename: (path: string, suffix?: string) => string,
 	engine: 'fontforge' | 'node',
 	autoHint: boolean,
-	codepoints: object | any[],
+	codepoints: { [key: string]: number },
 	codepointsFile: string | fs.PathLike,
 	startCodepoint: number,
 	ie7: boolean,
@@ -85,7 +88,7 @@ interface OptionsInternal {
 	rename: (path: string, suffix?: string) => string,
 	engine: 'fontforge' | 'node',
 	autoHint: boolean,
-	codepoints: object | any[],
+	codepoints: { [key: string]: number },
 	codepointsFile: string | fs.PathLike,
 	startCodepoint: number,
 	ie7: boolean,
@@ -115,7 +118,7 @@ interface OptionsInternal {
 	fontFamilyName?: string,
 	fontSrc1?: string,
 	fontSrc2?: string,
-	fontRawSrcs?: any[][],
+	fontRawSrcs?: string[][],
 	cssTemplate?: {
 		filename: string,
 		template: string, //html code

@@ -131,7 +131,7 @@ module.exports = (/** @type {import('grunt')} */grunt) => {
 				dest: 'test/tmp/duplicate_names',
 				options: {
 					hashes: false,
-					rename: function(name) {
+					rename: (/** @type {string} */name) => {
 						return [path.basename(path.dirname(name)), path.basename(name)].join('-');
 					}
 				}

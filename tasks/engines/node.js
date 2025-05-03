@@ -95,6 +95,7 @@ export default async (o) => {
 	try {
 		for (const type of typesToGenerate) {
 			if (type === 'woff2') continue;
+			//@ts-ignore
 			await createFontWriter(type);
 		}
 	} catch (e) {
@@ -107,14 +108,14 @@ export default async (o) => {
 	 * @returns {Promise<string>}
 	 *
 	 * @overload
-	 * @param {'ttf' | 'woff' | 'eot'} type
+	 * @param {'eot' | 'woff' | 'ttf'} type
 	 * @returns {Promise<Uint8Array>}
 	 *
 	 * @overload
-	 * @param {string} type
+	 * @param {'eot' | 'woff' | 'ttf' | 'svg'} type
 	 * @returns {Promise<string | Uint8Array>}
 	 *
-	 * @type {(type: string) => Promise<string | Uint8Array>}
+	 * @type {(type: 'eot'|'woff'|'ttf'|'svg') => Promise<string | Uint8Array>}
 	 */
 	async function getFont(type) {
 		if (fonts[type]) {
@@ -124,7 +125,7 @@ export default async (o) => {
 		}
 	}
 
-	async function createFontWriter(/** @type {string} */type) {
+	async function createFontWriter(/** @type {'eot'|'woff'|'ttf'|'svg'} */type) {
 		const font = await getFont(type)
 		fs.writeFileSync(wf.getFontPath(o, type), font);
 	}

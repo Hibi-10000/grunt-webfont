@@ -442,10 +442,12 @@ const task = function(grunt) {
 		return context;
 	}
 
-	/*
+	/**
 	 * Iterator function used as callback by looping construct below to
 	 * render "custom output" via mini configuration objects specified in
 	 * the array `options.customOutputs`.
+	 *
+	 * @param {CustomOutput} outputConfig
 	 */
 	function generateCustomOutput(outputConfig) {
 
@@ -681,7 +683,8 @@ const task = function(grunt) {
 	 * @param {string} template Template file path
 	 * @param {string} syntax Syntax (bem, bootstrap, etc.)
 	 * @param {string} ext Extension of the template
-	 * @return {{filename: string, template: string}} {filename: 'Template filename', template: 'Template code'}
+	 * @param {boolean} [optional]
+	 * @return {{ filename: string, template: string }} {filename: 'Template filename', template: 'Template code'}
 	 */
 	function readTemplate(template, syntax, ext, optional) {
 		const filename = template
@@ -701,7 +704,7 @@ const task = function(grunt) {
 	/**
 	 * Render template with error reporting
 	 *
-	 * @param {{filename: string, template: string}} template {filename: 'Template filename', template: 'Template code'}
+	 * @param {{ filename: string, template: string }} template {filename: 'Template filename', template: 'Template code'}
 	 * @param {OptionsInternal} context Template context
 	 * @return {string}
 	 */
@@ -722,7 +725,7 @@ const task = function(grunt) {
 	 * @return {string}
 	 */
 	function template(tmpl, context) {
-		return tmpl.replace(/\{([^\}]+)\}/g, (m, key) => {
+		return tmpl.replace(/\{([^\}]+)\}/g, (m, /** @type {keyof OptionsInternal} */key) => {
 			return context[key];
 		});
 	}

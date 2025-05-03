@@ -84,8 +84,9 @@ export default async (o) => {
 		const success = !!wf.generatedFontFiles(o);
 		const notError = /(Copyright|License |with many parts BSD |Executable based on sources from|Library based on sources from|Based on source from git)/;
 		//const version = /(Executable based on sources from|Library based on sources from)/;
-		const lines = err.split('\n');
+		const lines = (/** @type {string} */(err)).split('\n');
 
+		/** @type {string[]} */
 		const warn = [];
 		lines.forEach((line) => {
 			if (!line.match(notError) && !success) {
@@ -107,6 +108,7 @@ export default async (o) => {
 	const json = out.replace(/^[^{]+/, '').replace(/[^}]+$/, '');
 
 	// Parse json
+	/** @type {{ file: string }} */
 	let result;
 	try {
 		result = JSON.parse(json);

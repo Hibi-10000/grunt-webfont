@@ -11,14 +11,14 @@ import { consola } from 'consola';
 /** @type {Logger} */
 export const consolaLogger = {
 	log: {
-		error: consola.error,
-		warn: consola.warn,
-		info: consola.info,
-		verbose: consola.verbose,
+		error: consola.error.raw,
+		warn: consola.warn.raw,
+		info: consola.info.raw,
+		verbose: consola.verbose.raw,
 	},
 	fail: {
 		fatal: (...args) => {
-			consola.fatal.apply(null, args);
+			consola.fatal.raw(...args);
 			process.exit(1);
 		}
 	},

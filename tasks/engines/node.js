@@ -4,7 +4,6 @@
  * @requires ttfautohint 1.00+ (optional)
  * @author Artem Sapegin (http://sapegin.me)
  */
-'use strict';
 
 import fs from 'node:fs';
 import stream from 'node:stream';

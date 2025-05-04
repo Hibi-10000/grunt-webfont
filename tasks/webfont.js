@@ -4,7 +4,6 @@
  * @requires ttfautohint
  * @author Artem Sapegin (http://sapegin.me)
  */
-'use strict';
 
 import fs from 'node:fs';
 import path from 'node:path';

@@ -4,7 +4,6 @@
  * @requires fontforge, ttfautohint 1.00+ (optional), eotlitetool.py
  * @author Artem Sapegin (http://sapegin.me)
  */
-'use strict';
 
 import fs from 'node:fs';
 import path from 'node:path';

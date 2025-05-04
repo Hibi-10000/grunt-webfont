@@ -8,7 +8,7 @@ module.exports = (/** @type {import('grunt')} */grunt) => {
 	webfont(grunt);
 
 	grunt.initConfig({
-		webfont: {
+		webfont: /** @type {Configs} */({
 			test1: {
 				src: 'test/src/*.svg',
 				dest: 'test/tmp/test1',
@@ -296,7 +296,7 @@ module.exports = (/** @type {import('grunt')} */grunt) => {
 					types: 'woff'
 				}
 			},
-		},
+		}),
 		nodeunit: {
 			all: ['test/webfont_test.js']
 		},

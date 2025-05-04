@@ -10,7 +10,12 @@ import { consola } from 'consola';
 
 /** @type {Logger} */
 export const consolaLogger = {
-	log: consola,
+	log: {
+		error: consola.error,
+		warn: consola.warn,
+		info: consola.info,
+		verbose: consola.verbose,
+	},
 	fail: {
 		fatal: (...args) => {
 			consola.fatal.apply(null, args);

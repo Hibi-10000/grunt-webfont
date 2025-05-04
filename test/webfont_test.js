@@ -528,11 +528,12 @@ export const webfont = {
 		// Generated SVG font should have glyphs at the overidden codepoints
 		resultSVG.forEach(function(file) {
 			var svgSource = grunt.file.read(file);
+			/** @type {{ unicode: string }[]} */
 			var glyphs = [];
 
 			parseXMLString(svgSource, function(err, result) {
 				// Normalise glyphs into JS objects
-				result.svg.defs[0].font[0].glyph.forEach(function(glyph) {
+				result.svg.defs[0].font[0].glyph.forEach(function(/** @type {{ $: { unicode: string, "glyph-name": string } }} */glyph) {
 					if (glyph.$['glyph-name'].length === 1) { // Skip non-characters (.notdef, .null, etc.)
 						glyphs.push(glyph.$);
 					}
@@ -578,10 +579,11 @@ export const webfont = {
 
 		var svgFont = grunt.file.read('test/tmp/folders/icons.svg');
 		var paths = JSON.parse(grunt.file.read('test/src_folders/paths.json'));
+		/** @type {{ unicode: string, d: string, "glyph-name": string }[]} */
 		var glyphs = [];
 		parseXMLString(svgFont, function(err, result) {
 			// Normalise glyphs into JS objects
-			result.svg.defs[0].font[0].glyph.forEach(function(glyph) {
+			result.svg.defs[0].font[0].glyph.forEach(function(/** @type {{ $: { unicode: string, d: string, "glyph-name": string } }} */glyph) {
 				if (/^uni/.test(glyph.$['glyph-name'])) { // Skip non-characters (.notdef, .null, etc.)
 					glyphs.push(glyph.$);
 				}

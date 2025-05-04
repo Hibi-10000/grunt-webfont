@@ -57,12 +57,12 @@ export default (/** @type {import('grunt')} */grunt) => {
 		 */
 		this.requiresConfig([this.name, this.target, 'src'].join('.'));
 
-		webfont(this.name, this.target, this.filesSrc, logger, params, options).finally(allDone);
+		webfont(this.name, this.target, this.filesSrc, params, options, logger).finally(allDone);
 	});
 };
 
-/** @type {(name: string, target: string, filesSrc: string[], logger: Logger, params: Config, options: Options) => Promise<void>} */
-export const webfont = async (name, target, filesSrc, logger, params, options) => {
+/** @type {(name: string, target: string, filesSrc: string[], params: Config, options: Options, logger?: Logger) => Promise<void>} */
+export const webfont = async (name, target, filesSrc, params, options, logger) => {
 	if (!logger) logger = wf.consolaLogger;
 	const md5 = crypto.createHash('md5');
 

@@ -1,13 +1,15 @@
 import test from "node:test";
 
-import fs from "node:fs";
+import { rmSync } from "node:fs";
 import path from "node:path";
 import { globSync } from "glob";
 
 import { webfont } from "../tasks/webfont.js";
 import { webfont as webfontTests } from "./webfont_test.js";
 
-fs.rmSync('test/tmp', { recursive: true, force: true });
+const cleanTmp = () => rmSync('test/tmp', { recursive: true, force: true });
+
+cleanTmp();
 
 /** @type {Configs} */
 const configs = {
@@ -340,12 +342,13 @@ await test('webfont', { concurrency: true }, async (t) => {
 	///** @type {((value?: never) => void)[]} */
 	//const resolves = [];
 	for (const key in webfontTests) {
+		const webfontTest = webfontTests[key];
 		tests.push(t.test(key, async (t) => {
 			//await new Promise((resolve) => {
 			//	resolves.push(resolve);
 			//});
 			await new Promise(async (resolve) =>
-				webfontTests[key](nodeUnit_Test(t, resolve))
+				webfontTest(nodeUnit_Test(t, resolve))
 			);
 		}));
 	}
@@ -354,4 +357,4 @@ await test('webfont', { concurrency: true }, async (t) => {
 	await Promise.allSettled(tests);
 });
 
-fs.rmSync('test/tmp', { recursive: true, force: true });
+cleanTmp();

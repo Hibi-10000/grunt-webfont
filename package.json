@@ -38,7 +38,8 @@
   "main": "tasks/webfont.js",
   "type": "module",
   "scripts": {
-    "test": "grunt --stack"
+    "test:node": "node --test ./test/webfont.test.js",
+    "test:grunt": "grunt --stack"
   },
   "engines": {
     "node": ">=22",

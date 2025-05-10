@@ -42,7 +42,7 @@ export default async (o) => {
 				normalize: o.normalize,
 				round: o.round,
 				log: logger.log.verbose.bind(logger),
-				error: logger.log.error.bind(logger)
+				error: logger.log.error.bind(logger),
 			});
 			stream.on('data', (chunk) => {
 				font += decoder.write(chunk);
@@ -138,7 +138,7 @@ export default async (o) => {
 					return {
 						codepoint: o.codepoints[name],
 						name: name,
-						stream: stream
+						stream: stream,
 					};
 				}
 

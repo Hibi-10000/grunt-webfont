@@ -128,7 +128,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		cache: options.cache || path.join(import.meta.dirname, '..', '.cache'),
 		callback: options.callback,
 		customOutputs: options.customOutputs,
-		execMaxBuffer: options.execMaxBuffer || 1024 * 200
+		execMaxBuffer: options.execMaxBuffer || 1024 * 200,
 	};
 
 	o = Object.assign(o, {
@@ -142,7 +142,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		baseStyles: has(o.styles, 'icon'),
 		extraStyles: has(o.styles, 'extra'),
 		files: files,
-		glyphs: []
+		glyphs: [],
 	});
 
 	o.hash = getHash();
@@ -371,7 +371,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		o.cssTemplate = readTemplate(o.template, o.syntax, ext);
 		const cssContext = Object.assign(o, {
 			iconsStyles: true,
-			stylesheet: stylesheet
+			stylesheet: stylesheet,
 		});
 
 		const css = renderTemplate(o.cssTemplate, cssContext);
@@ -439,13 +439,13 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 			baseStyles: true,
 			extraStyles: false,
 			iconsStyles: true,
-			stylesheet: 'css'
+			stylesheet: 'css',
 		});
 
 		// Prepares CSS for injection into <style> tag at to of HTML
 		htmlStyles = renderTemplate(o.cssTemplate, context);
 		context = Object.assign(context, {
-			styles: htmlStyles
+			styles: htmlStyles,
 		});
 
 		return context;
@@ -703,7 +703,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		if (fs.existsSync(filename)) {
 			return {
 				filename: filename,
-				template: fs.readFileSync(filename, 'utf8')
+				template: fs.readFileSync(filename, 'utf8'),
 			};
 		} else if (!optional) {
 			logger.fail.fatal(`Cannot find template at path: ${filename}`);

@@ -29,7 +29,7 @@ export default async (o) => {
 	const args = [
 		'fontforge',
 		'-script',
-		`"${path.join(import.meta.dirname, 'fontforge/generate.py')}"`
+		`"${path.join(import.meta.dirname, 'fontforge/generate.py')}"`,
 	].join(' ');
 
 	const execPromise = util.promisify(exec);
@@ -57,7 +57,7 @@ export default async (o) => {
 	});
 
 	const params = Object.assign(o, {
-		inputDir: tempDir
+		inputDir: tempDir,
 	});
 	proc.stdin.write(JSON.stringify(params));
 	proc.stdin.end();

@@ -19,8 +19,8 @@ const configs = {
 		src: 'test/src/*.svg',
 		dest: 'test/tmp/test1',
 		options: {
-			hashes: false
-		}
+			hashes: false,
+		},
 	},
 	test2: {
 		src: 'test/src/*.svg',
@@ -29,16 +29,16 @@ const configs = {
 		options: {
 			font: 'myfont',
 			types: 'woff,svg',
-			syntax: 'bootstrap'
-		}
+			syntax: 'bootstrap',
+		},
 	},
 	embed: {
 		src: 'test/src/*.svg',
 		dest: 'test/tmp/embed',
 		options: {
 			hashes: false,
-			embed: true
-		}
+			embed: true,
+		},
 	},
 	embed_woff: {
 		src: 'test/src/*.svg',
@@ -46,8 +46,8 @@ const configs = {
 		options: {
 			types: 'woff',
 			hashes: false,
-			embed: true
-		}
+			embed: true,
+		},
 	},
 	embed_ttf: {
 		src: 'test/src/*.svg',
@@ -55,8 +55,8 @@ const configs = {
 		options: {
 			types: 'ttf',
 			hashes: false,
-			embed: 'ttf'
-		}
+			embed: 'ttf',
+		},
 	},
 	embed_ttf_woff: {
 		src: 'test/src/*.svg',
@@ -64,44 +64,44 @@ const configs = {
 		options: {
 			types: 'ttf,woff',
 			hashes: false,
-			embed: 'ttf,woff'
-		}
+			embed: 'ttf,woff',
+		},
 	},
 	one: {
 		src: 'test/src_one/*.svg',
 		dest: 'test/tmp/one',
 		options: {
-			hashes: false
-		}
+			hashes: false,
+		},
 	},
 	template: {
 		src: 'test/src/*.svg',
 		dest: 'test/tmp/template',
 		options: {
-			template: 'test/templates/template.css'
-		}
+			template: 'test/templates/template.css',
+		},
 	},
 	html_template: {
 		src: 'test/src/*.svg',
 		dest: 'test/tmp/html_template',
 		options: {
-			htmlDemoTemplate: 'test/templates/template.html'
-		}
+			htmlDemoTemplate: 'test/templates/template.html',
+		},
 	},
 	html_filename: {
 		src: 'test/src/*.svg',
 		dest: 'test/tmp/html_filename',
 		options: {
-			htmlDemoFilename: 'index'
-		}
+			htmlDemoFilename: 'index',
+		},
 	},
 	relative_path: {
 		src: 'test/src/*.svg',
 		dest: 'test/tmp/relative_path',
 		options: {
 			relativeFontPath: '../iamrelative',
-			hashes: false
-		}
+			hashes: false,
+		},
 	},
 	spaces: {
 		src: 'test/src_space/*.svg',
@@ -111,15 +111,15 @@ const configs = {
 		src: 'test/src_one/*.svg',
 		dest: 'test/tmp/disable_demo',
 		options: {
-			htmlDemo: false
-		}
+			htmlDemo: false,
+		},
 	},
 	parent_source: {
 		src: '../grunt-webfont/test/src/*.svg',
 		dest: 'test/tmp/parent_source',
 		options: {
-			hashes: false
-		}
+			hashes: false,
+		},
 	},
 	// #167: Ligatures with hyphen don’t work
 	ligatures: {
@@ -127,8 +127,8 @@ const configs = {
 		dest: 'test/tmp/ligatures',
 		options: {
 			hashes: false,
-			ligatures: true
-		}
+			ligatures: true,
+		},
 	},
 	duplicate_names: {
 		src: '../grunt-webfont/test/src_duplicate_names/**/*.svg',
@@ -137,8 +137,8 @@ const configs = {
 			hashes: false,
 			rename: (/** @type {string} */name) => {
 				return [path.basename(path.dirname(name)), path.basename(name)].join('-');
-			}
-		}
+			},
+		},
 	},
 	order: {
 		src: 'test/src/*.svg',
@@ -146,8 +146,8 @@ const configs = {
 		options: {
 			types: 'woff,svg',
 			order: 'svg,woff',
-			hashes: false
-		}
+			hashes: false,
+		},
 	},
 	template_options: {
 		src: 'test/src/*.svg',
@@ -158,17 +158,17 @@ const configs = {
 			//stylesheet: 'less',
 			templateOptions: {
 				baseClass: 'glyph-icon',
-				classPrefix: 'glyph_'
-			}
-		}
+				classPrefix: 'glyph_',
+			},
+		},
 	},
 	node: {
 		src: 'test/src/*.svg',
 		dest: 'test/tmp/node',
 		options: {
 			hashes: false,
-			engine: 'node'
-		}
+			engine: 'node',
+		},
 	},
 	ie7: {
 		src: 'test/src/*.svg',
@@ -176,8 +176,8 @@ const configs = {
 		options: {
 			hashes: false,
 			ie7: true,
-			syntax: 'bem'
-		}
+			syntax: 'bem',
+		},
 	},
 	ie7_bootstrap: {
 		src: 'test/src/*.svg',
@@ -185,8 +185,8 @@ const configs = {
 		options: {
 			hashes: false,
 			ie7: true,
-			syntax: 'bootstrap'
-		}
+			syntax: 'bootstrap',
+		},
 	},
 	optimize_enabled: {
 		src: 'test/src/*.svg',
@@ -195,8 +195,8 @@ const configs = {
 			engine: 'node',
 			types: 'svg',
 			autoHint: false,
-			optimize: true
-		}
+			optimize: true,
+		},
 	},
 	optimize_disabled: {
 		src: 'test/src/*.svg',
@@ -205,8 +205,8 @@ const configs = {
 			engine: 'node',
 			types: 'svg',
 			autoHint: false,
-			optimize: false
-		}
+			optimize: false,
+		},
 	},
 	codepoints: {
 		src: 'test/src/*.svg',
@@ -215,45 +215,45 @@ const configs = {
 			hashes: false,
 			startCodepoint: 0x41,
 			codepoints: {
-				single: 0x43
-			}
-		}
+				single: 0x43,
+			},
+		},
 	},
 	camel: {
 		src: 'test/camel/*.svg',
 		dest: 'test/tmp/camel',
 		options: {
-			hashes: false
-		}
+			hashes: false,
+		},
 	},
 	folders: {
 		src: 'test/src_folders/**/*.svg',
 		dest: 'test/tmp/folders',
 		options: {
-			hashes: false
-		}
+			hashes: false,
+		},
 	},
 	woff2: {
 		src: 'test/src/*.svg',
 		dest: 'test/tmp/woff2',
 		options: {
-			types: 'woff2,woff'
-		}
+			types: 'woff2,woff',
+		},
 	},
 	woff2_node: {
 		src: 'test/src/*.svg',
 		dest: 'test/tmp/woff2_node',
 		options: {
 			types: 'woff2,woff',
-			engine: 'node'
-		}
+			engine: 'node',
+		},
 	},
 	target_overrides: {
 		src: 'test/src/*.svg',
 		options: {
 			dest: 'test/tmp/target_overrides_icons',
 			destCss: 'test/tmp/target_overrides_css',
-		}
+		},
 	},
 	font_family_name: {
 		src: 'test/src/*.svg',
@@ -261,7 +261,7 @@ const configs = {
 		options: {
 			fontFamilyName: 'customName',
 			types: 'ttf',
-		}
+		},
 	},
 	custom_output: {
 		src: 'test/src/*.svg',
@@ -270,18 +270,18 @@ const configs = {
 			destCss: 'test/tmp/custom_output_css',
 			customOutputs: [{
 				template: 'test/templates/custom.js',
-				dest: 'test/tmp/custom_output/test-icon-config.js'
+				dest: 'test/tmp/custom_output/test-icon-config.js',
 			}, {
 				template: 'test/templates/custom.json',
-				dest: 'test/tmp/custom_output'
+				dest: 'test/tmp/custom_output',
 			}, {
 				template: 'test/templates/context-test.html',
 				dest: 'test/tmp/custom_output',
 				context: {
-					testHeading: 'Hello, world!'
-				}
-			}]
-		}
+					testHeading: 'Hello, world!',
+				},
+			}],
+		},
 	},
 	enabled_template_variables: {
 		src: 'test/src/*.svg',
@@ -289,8 +289,8 @@ const configs = {
 		options: {
 			relativeFontPath: '../iamrelative',
 			//fontPathVariables: true,
-			//stylesheets: ['css']
-		}
+			//stylesheets: ['css'],
+		},
 	},
 	filename_length: {
 		src: 'test/src_filename_length/*.svg',
@@ -299,8 +299,8 @@ const configs = {
 			autoHint: false,
 			engine: 'node',
 			hashes: false,
-			types: 'woff'
-		}
+			types: 'woff',
+		},
 	},
 };
 
@@ -334,7 +334,7 @@ await test('webfont', { concurrency: true }, async (t) => {
 		const options = config.options ?? {};
 		const filesSrc = globSync(config.src, { posix: true });
 		cases.push(
-			webfont("webfont", key, filesSrc, config, options)
+			webfont("webfont", key, filesSrc, config, options),
 		);
 	}
 	await Promise.allSettled(cases);

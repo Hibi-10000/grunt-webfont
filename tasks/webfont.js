@@ -131,7 +131,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		execMaxBuffer: options.execMaxBuffer || 1024 * 200
 	};
 
-	o = _.extend(o, {
+	o = Object.assign(o, {
 		fontName: o.fontBaseName,
 		destCssPaths: {
 			css: o.destCss,
@@ -285,7 +285,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		}
 
 		if (result) {
-			o = _.extend(o, result);
+			o = Object.assign(o, result);
 		}
 	}
 
@@ -361,15 +361,15 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 
 		// Read JSON file corresponding to CSS template
 		const templateJson = readTemplate(o.template, o.syntax, '.json', true);
-		if (templateJson) o = _.extend(o, JSON.parse(templateJson.template));
+		if (templateJson) o = Object.assign(o, JSON.parse(templateJson.template));
 
 		// Now override values with templateOptions
-		if (o.templateOptions) o = _.extend(o, o.templateOptions);
+		if (o.templateOptions) o = Object.assign(o, o.templateOptions);
 
 		// Generate CSS
 		const ext = path.extname(o.template) || '.css'; // Use extension of o.template file if given, or default to .css
 		o.cssTemplate = readTemplate(o.template, o.syntax, ext);
-		const cssContext = _.extend(o, {
+		const cssContext = Object.assign(o, {
 			iconsStyles: true,
 			stylesheet: stylesheet
 		});
@@ -412,7 +412,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	 * Prepares base context for templates
 	 */
 	function prepareBaseTemplateContext() {
-		const context = _.extend({}, o);
+		const context = Object.assign({}, o);
 		return context;
 	}
 
@@ -432,7 +432,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		const _fontSrc1 = o.fontSrc1.replace(relativeRe, htmlRelativeFontPath);
 		const _fontSrc2 = o.fontSrc2.replace(relativeRe, htmlRelativeFontPath);
 
-		context = _.extend(context, {
+		context = Object.assign(context, {
 			fontSrc1: _fontSrc1,
 			fontSrc2: _fontSrc2,
 			fontfaceStyles: true,
@@ -444,7 +444,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 
 		// Prepares CSS for injection into <style> tag at to of HTML
 		htmlStyles = renderTemplate(o.cssTemplate, context);
-		context = _.extend(context, {
+		context = Object.assign(context, {
 			styles: htmlStyles
 		});
 
@@ -462,7 +462,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 
 		// Accesses context
 		let context = prepareBaseTemplateContext();
-		context = _.extend(context, outputConfig.context);
+		context = Object.assign(context, outputConfig.context);
 
 		// Prepares config attributes related to template filepath
 		const templatePath = outputConfig.template;

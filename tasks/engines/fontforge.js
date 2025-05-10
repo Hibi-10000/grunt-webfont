@@ -56,7 +56,7 @@ export default async (o) => {
 		}
 	});
 
-	const params = _.extend(o, {
+	const params = Object.assign(o, {
 		inputDir: tempDir
 	});
 	proc.stdin.write(JSON.stringify(params));

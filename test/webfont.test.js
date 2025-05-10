@@ -1,4 +1,6 @@
 import test from "node:test";
+//TODO: use assert instead of t.assert in nodeUnit_Test
+import assert from "node:assert/strict";
 
 import { rmSync } from "node:fs";
 import path from "node:path";
@@ -302,28 +304,27 @@ const configs = {
 	},
 };
 
-const notImpl = () => {
-	throw new Error("Function not implemented.");
-};
-
 /** @type {(t: import('node:test').TestContext, done: (value?: never) => void) => import('nodeunit').Test} */
 const nodeUnit_Test = (t, done) => ({
 	ok: t.assert.ok,
 	done: done,
-	expect: notImpl,
 	fail: t.assert.fail,
-	assert: notImpl,
 	equal: t.assert.equal,
-	notEqual: notImpl,
-	deepEqual: notImpl,
-	notDeepEqual: notImpl,
-	strictEqual: notImpl,
-	notStrictEqual: notImpl,
-	throws: notImpl,
-	doesNotThrow: notImpl,
-	ifError: notImpl,
 	equals: t.assert.equal,
-	same: notImpl, //deepEqual
+
+	expect: (_num) => {
+		throw new Error("Function not implemented.");
+	},
+	assert: assert,
+	notEqual: t.assert.notEqual,
+	deepEqual: t.assert.deepEqual,
+	notDeepEqual: t.assert.notDeepEqual,
+	strictEqual: t.assert.strictEqual,
+	notStrictEqual: t.assert.notStrictEqual,
+	throws: t.assert.throws,
+	doesNotThrow: t.assert.doesNotThrow,
+	ifError: t.assert.ifError,
+	same: t.assert.deepEqual,
 });
 
 await test('webfont', { concurrency: true }, async (t) => {

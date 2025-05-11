@@ -217,7 +217,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	 * Call callback function if it was specified in the options.
 	 */
 	function completeTask() {
-		if (o && _.isFunction(o.callback)) {
+		if (o && ((typeof o.callback) === 'function')) {
 			o.callback(o.fontName, o.types, o.glyphs, o.hash);
 		}
 	}
@@ -564,7 +564,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		if (typeof val !== 'string') {
 			return val;
 		}
-		return val.split(',').map(_.trim);
+		return val.split(',').map((value) => value.trim());
 	}
 
 	/**
@@ -599,7 +599,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	 * @return {number}
 	 */
 	function getNextCodepoint() {
-		while (_.invert(o.codepoints).hasOwnProperty(currentCodepoint)) {
+		while (Object.values(o.codepoints).includes(currentCodepoint)) {
 			currentCodepoint++;
 		}
 		return currentCodepoint;

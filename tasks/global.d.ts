@@ -17,7 +17,7 @@ interface CustomOutput {
 	template: string,
 	dest: string,
 	syntax?: string,
-	context?: Partial<OptionsInternal>,
+	context?: Context,
 }
 
 interface Configs {
@@ -87,7 +87,7 @@ interface OptionsInternal {
 	htmlDemo: boolean,
 	htmlDemoTemplate: string,
 	htmlDemoFilename: string,
-	styles: string[],
+	styles: string[] | string,
 	types: string[],
 	order: string[],
 	embed: string[],
@@ -130,4 +130,11 @@ interface OptionsInternal {
 		template: string, //html code
 	},
 	testHeading?: string,
+	baseClass?: string,
+	classPrefix?: string,
+	stylesheet?: string,
+	iconsStyles?: true,
+}
+
+interface Context extends Partial<OptionsInternal> {
 }

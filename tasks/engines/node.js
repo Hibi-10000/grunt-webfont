@@ -12,7 +12,6 @@ import util from 'node:util';
 import { exec } from 'node:child_process';
 import { StringDecoder } from 'node:string_decoder';
 import temp from 'temp';
-import _ from 'lodash';
 import svgicons2svgfont from 'svgicons2svgfont';
 import svg2ttf from 'svg2ttf';
 import ttf2woff from 'ttf2woff';

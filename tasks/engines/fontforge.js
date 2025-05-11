@@ -11,7 +11,6 @@ import util from 'node:util';
 import { exec } from 'node:child_process';
 import temp from 'temp';
 import chalk from 'chalk';
-import _ from 'lodash';
 import * as wf from '../util/util.js';
 
 /** @type {(o: OptionsInternal) => Promise<{ fontName: string } | false>} */

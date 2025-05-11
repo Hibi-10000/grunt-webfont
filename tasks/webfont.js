@@ -69,7 +69,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/*
 	 * Check for `dest` param on either target config or global options object
 	 */
-	if (_.isUndefined(params.dest) && _.isUndefined(options.dest)) {
+	if ((params.dest === undefined) && (options.dest === undefined)) {
 		logger.log.warn(`Required property ${name}.${target}.dest or ${name}.${target}.options.dest missing.`);
 	}
 
@@ -79,7 +79,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	}
 
 	// Source files
-	const files = _.filter(filesSrc, isSvgFile);
+	const files = filesSrc.filter(isSvgFile)
 	if (!files.length) {
 		logger.log.warn('Specified empty list of source SVG files.');
 		completeTask();
@@ -182,7 +182,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 				generatedFiles.push(getCssFilePath(stylesheet));
 			});
 
-			regenerationNeeded = _.some(generatedFiles, (filename) => {
+			regenerationNeeded = generatedFiles.some((filename) => {
 				if (!filename) return false;
 				if (!fs.existsSync(filename)) {
 					logger.log.verbose('File', filename, ' is missed.');
@@ -321,14 +321,14 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		// Convert codepoints to array of strings
 		/** @type {string[]} */
 		const codepoints = [];
-		_.each(o.glyphs, (name) => {
+		o.glyphs.forEach((name) => {
 			codepoints.push(o.codepoints[name].toString(16));
 		});
 		//@ts-ignore
 		o.codepoints = codepoints;
 
 		// Prepage glyph names to use as CSS classes
-		o.glyphs = _.map(o.glyphs, classnameize);
+		o.glyphs = o.glyphs.map(classnameize);
 
 		o.stylesheets.sort((a, b) => {
 			return a === 'css' ? 1 : -1;
@@ -505,7 +505,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 			return;
 		}
 
-		_.each(o.customOutputs, generateCustomOutput);
+		o.customOutputs.forEach(generateCustomOutput);
 	}
 
 	/**

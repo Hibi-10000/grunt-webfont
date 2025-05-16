@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import grunt from 'grunt';
+import stylus from 'stylus';
 import { parseString as parseXMLString } from 'xml2js';
 import * as wf from '../tasks/util/util.js';
 
@@ -162,6 +163,12 @@ export const webfont = {
 			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
 		});
 
+		var css = grunt.file.read('test/tmp/embed/icons.css');
+
+		// Data:uri
+		var m = css.match(/data:application\/x-font-woff;charset=utf-8;base64,.*?format\("woff"\)/g);
+		test.equal(m && m.length, 1, 'WOFF (default) data:uri');
+
 		test.done();
 	},
 
@@ -270,10 +277,70 @@ export const webfont = {
 		test.done();
 	},
 
+	template_scss: function(test) {
+		var cssFilename = 'test/tmp/template_scss/_icons.scss';
+
+		test.ok(fs.existsSync(cssFilename), 'SCSS template: .scss file created.');
+
+		var css = grunt.file.read(cssFilename);
+
+		// There should be comment from custom template
+		test.ok(
+			find(css, 'Custom template'),
+			'SCSS template: comment from custom template.'
+		);
+
+		test.done();
+	},
+
+	template_sass: function(test) {
+		var cssFilename = 'test/tmp/template_sass/_icons.sass';
+
+		test.ok(fs.existsSync(cssFilename), 'SASS template: .sass file created (stylesheet extension derived from template name).');
+
+		var css = grunt.file.read(cssFilename);
+
+		// There should be comment from custom template
+		test.ok(
+			find(css, 'Custom template'),
+			'SASS template: comment from custom template.'
+		);
+
+		test.done();
+	},
+
 	enabled_template_variables: function(test) {
+		var scssFilename = 'test/tmp/enabled_template_variables/_icons.scss';
+		var lessFilename = 'test/tmp/enabled_template_variables/icons.less';
 		var htmlFilename = 'test/tmp/enabled_template_variables/icons.html';
 
+		var scss = grunt.file.read(scssFilename);
+		var less = grunt.file.read(lessFilename);
 		var html = grunt.file.read(htmlFilename);
+
+		// There should be a variable declaration for scss preprocessor
+		test.ok(
+			find(scss, '$icons-font-path : "../iamrelative/" !default;'),
+			'SCSS enable template variables: variable exists.'
+		);
+
+		// There should be a variable declaration for scss preprocessor
+		test.ok(
+			find(scss, '$icons-font-path : "../iamrelative/" !default;'),
+			'SCSS enable template variables: variable exists.'
+		);
+
+		// There should be a variable declaration for less preprocessor
+		test.ok(
+			find(less, '@icons-font-path : "../iamrelative/";'),
+			'LESS enable template variables: variable exists.'
+		);
+
+		// The variable should be used in the less file
+		test.ok(
+			find(less, 'url("@{icons-font-path}icons'),
+			'LESS enable template variables: variable used.'
+		);
 
 		// The LESS variable should not be included in the html demo source
 		test.ok(
@@ -319,6 +386,104 @@ export const webfont = {
 		test.done();
 	},
 
+	sass: function(test) {
+		test.ok(fs.existsSync('test/tmp/sass/_icons.sass'), 'SASS file with underscore created.');
+		test.ok(!fs.existsSync('test/tmp/sass/icons.sass'), 'SASS file without underscore not created.');
+		test.ok(!fs.existsSync('test/tmp/sass/icons.css'), 'CSS file not created.');
+
+		var svgs = grunt.file.expand('test/src/**.*');
+		var sass = grunt.file.read('test/tmp/sass/_icons.sass');
+
+		// There should be comment from custom template
+		var m = sass.match(/\/\* *(.*?) *\*\//g);
+		test.ok(!m, 'No regular CSS comments.');
+
+		// There should be comment from custom template
+		m = sass.match(/^\/\//gm);
+		test.equal(m && m.length, 2, 'Single line comments.');
+
+		test.done();
+	},
+
+	less: function(test) {
+		test.ok(fs.existsSync('test/tmp/less/icons.less'), 'LESS file created.');
+		test.ok(!fs.existsSync('test/tmp/less/icons.css'), 'CSS file not created.');
+
+		var svgs = grunt.file.expand('test/src/**.*');
+		var less = grunt.file.read('test/tmp/less/icons.less');
+
+		// There should be comment from custom template
+		var m = less.match(/\/\* *(.*?) *\*\//g);
+		test.ok(!m, 'No regular CSS comments.');
+
+		// There should be comment from custom template
+		m = less.match(/^\/\//gm);
+		test.equal(m && m.length, 2, 'Single line comments.');
+
+		// Every SVG file should have two corresponding entries in CSS file
+		svgs.forEach(function(file) {
+			var id = path.basename(file, '.svg');
+			test.ok(
+				find(less, '.icon_' + id + ' {\n\t&:before'),
+				'LESS Mixin ' + id + ' should be in CSS file.'
+			);
+		});
+
+		test.done();
+	},
+
+	css_plus_scss: function(test) {
+		test.ok(fs.existsSync('test/tmp/scss/_icons.scss'), 'SCSS file with underscore created.');
+		test.ok(!fs.existsSync('test/tmp/scss/icons.scss'), 'SCSS file without underscore not created.');
+		test.ok(fs.existsSync('test/tmp/css/icons.css'), 'CSS file is created.');
+
+		test.done();
+	},
+
+	stylus_bem: function(test) {
+		test.ok(fs.existsSync('test/tmp/stylus_bem/icons.styl'), 'Stylus file created.');
+		test.ok(!fs.existsSync('test/tmp/stylus_bem/icons.css'), 'CSS file not created.');
+
+		var styl = grunt.file.read('test/tmp/stylus_bem/icons.styl');
+
+		// There should be comment from custom template
+		var m = styl.match(/\/\* *(.*?) *\*\//g);
+		test.ok(!m, 'No regular CSS comments.');
+
+		// There should be comment from custom template
+		m = styl.match(/^\/\//gm);
+		test.equal(m && m.length, 2, 'Single line comments.');
+
+		var s = stylus(styl);
+
+		s.render(function(err, css) {
+			if (err) {
+				console.log('Stylus compile error:');
+				console.log(err);
+			}
+			test.ok(!err, 'Stylus file compiled.');
+			test.done();
+		});
+	},
+
+	stylus_bootstrap: function(test) {
+		test.ok(fs.existsSync('test/tmp/stylus_bootstrap/icons.styl'), 'Stylus file created.');
+		test.ok(!fs.existsSync('test/tmp/stylus_bootstrap/icons.css'), 'CSS file not created.');
+
+		var styl = grunt.file.read('test/tmp/stylus_bootstrap/icons.styl');
+
+		var s = stylus(styl);
+
+		s.render(function(err, css) {
+			if (err) {
+				console.log('Stylus compile error:');
+				console.log(err);
+			}
+			test.ok(!err, 'Stylus file compiled.');
+			test.done();
+		});
+	},
+
 	spaces: function(test) {
 		var css = grunt.file.read('test/tmp/spaces/icons.css');
 
@@ -337,6 +502,45 @@ export const webfont = {
 	disable_demo: function(test) {
 		test.ok(fs.existsSync('test/tmp/disable_demo/icons.css'), 'CSS file created.');
 		test.ok(!fs.existsSync('test/tmp/disable_demo/icons.html'), 'HTML file not created.');
+
+		test.done();
+	},
+
+	non_css_demo: function(test) {
+		test.ok(!fs.existsSync('test/tmp/non_css_demo/icons.css'), 'CSS file not created.');
+		test.ok(fs.existsSync('test/tmp/non_css_demo/icons.html'), 'HTML file created.');
+
+		var html = grunt.file.read('test/tmp/non_css_demo/icons.html');
+
+		test.ok(
+			find(html, '@font-face {'),
+			'Font-face declaration exists in HTML.'
+		);
+
+		test.ok(
+			find(html, '.icon {'),
+			'Base icon exists in HTML.'
+		);
+
+		test.ok(
+			!find(html, 'url("../iamrelative/icons-'),
+			'Relative paths should not be in HTML.'
+		);
+
+		test.ok(
+			!find(html, '&:before'),
+			'LESS mixins should not be in HTML.'
+		);
+
+		// Every SVG file should have corresponding entry in <style> block
+		var svgs = grunt.file.expand('test/src/**.*');
+		svgs.forEach(function(file) {
+			var id = path.basename(file, '.svg');
+			test.ok(
+				find(html, '.icon_' + id + ':before'),
+				'Icon ' + id + ' CSS should be in HTML file.'
+			);
+		});
 
 		test.done();
 	},
@@ -404,11 +608,25 @@ export const webfont = {
 
 	template_options: function(test) {
 		var svgs = grunt.file.expand('test/src/**.*');
+		var less = grunt.file.read('test/tmp/template_options/icons.less');
+
+		test.ok(
+				find(less, '.glyph-icon {'),
+				'Class .glyph-icon should be in LESS file.'
+		);
 		var html = grunt.file.read('test/tmp/template_options/icons.html');
 
 		// Every SVG file should have corresponding entry in LESS and HTML files
 		svgs.forEach(function(file) {
 			var id = path.basename(file, '.svg');
+			// test.ok(
+			// 		find(less, '.make-icon-' + id + ' {'),
+			// 		'Mixin .make-icon-' + id + ' should be in LESS file.'
+			// );
+			test.ok(
+					find(less, '.glyph_' + id + ' {'),
+					'Icon .glyph_' + id + ' should be in LESS file.'
+			);
 			test.ok(
 					find(html, '<div class="icons__item" data-name="' + id + '"><i class="glyph-icon glyph_' + id + '"></i> glyph_' + id + '</div>'),
 					'Icon .glyph_' + id + ' should be in HTML file.'

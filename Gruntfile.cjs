@@ -75,6 +75,21 @@ module.exports = (/** @type {import('grunt')} */grunt) => {
 					template: 'test/templates/template.css'
 				}
 			},
+			template_scss: {
+				src: 'test/src/*.svg',
+				dest: 'test/tmp/template_scss',
+				options: {
+					stylesheet: 'scss',
+					template: 'test/templates/template.scss'
+				}
+			},
+			template_sass: {
+				src: 'test/src/*.svg',
+				dest: 'test/tmp/template_sass',
+				options: {
+					template: 'test/templates/template.sass'
+				}
+			},
 			html_template: {
 				src: 'test/src/*.svg',
 				dest: 'test/tmp/html_template',
@@ -97,6 +112,44 @@ module.exports = (/** @type {import('grunt')} */grunt) => {
 					hashes: false
 				}
 			},
+			sass: {
+				src: 'test/src/*.svg',
+				dest: 'test/tmp/sass',
+				options: {
+					stylesheet: 'sass'
+				}
+			},
+			less: {
+				src: 'test/src/*.svg',
+				dest: 'test/tmp/less',
+				options: {
+					stylesheet: 'less'
+				}
+			},
+			css_plus_scss: {
+				src: 'test/src/*.svg',
+				dest: 'test/tmp/sass',
+				destCss: 'test/tmp/css',
+				destScss: 'test/tmp/scss',
+				options: {
+					stylesheets: ['css', 'scss']
+				}
+			},
+			stylus_bem: {
+				src: 'test/src/*.svg',
+				dest: 'test/tmp/stylus_bem',
+				options: {
+					stylesheet: 'styl'
+				}
+			},
+			stylus_bootstrap: {
+				src: 'test/src/*.svg',
+				dest: 'test/tmp/stylus_bootstrap',
+				options: {
+					stylesheet: 'styl',
+					syntax: 'bootstrap'
+				}
+			},
 			spaces: {
 				src: 'test/src_space/*.svg',
 				dest: 'test/tmp/spaces'
@@ -106,6 +159,15 @@ module.exports = (/** @type {import('grunt')} */grunt) => {
 				dest: 'test/tmp/disable_demo',
 				options: {
 					htmlDemo: false
+				}
+			},
+			non_css_demo: {
+				src: 'test/src/*.svg',
+				dest: 'test/tmp/non_css_demo',
+				options: {
+					stylesheet: 'less',
+					relativeFontPath: '../iamrelative',
+					htmlDemo: true
 				}
 			},
 			parent_source: {
@@ -283,7 +345,7 @@ module.exports = (/** @type {import('grunt')} */grunt) => {
 				options: {
 					relativeFontPath: '../iamrelative',
 					fontPathVariables: true,
-					stylesheets: ['css']
+					stylesheets: ['css', 'scss', 'less']
 				}
 			},
 			filename_length: {

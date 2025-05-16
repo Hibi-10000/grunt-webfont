@@ -66,6 +66,7 @@
     "@types/lodash": "^4.17.16",
     "@types/node": "^22.13.10",
     "@types/nodeunit": "^0.0.36",
+    "@types/stylus": "^0.48.43",
     "@types/svg2ttf": "^5.0.3",
     "@types/temp": "^0.9.4",
     "@types/ttf2woff2": "^2.0.2",
@@ -76,6 +77,7 @@
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-nodeunit": "^5.0.0",
     "load-grunt-tasks": "^5.1.0",
+    "stylus": "~0.53.0",
     "xml2js": "^0.6.2"
   },
   "peerDependencies": {

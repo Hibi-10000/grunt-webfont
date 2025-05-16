@@ -136,7 +136,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		execMaxBuffer: options.execMaxBuffer || 1024 * 200,
 	};
 
-	o = Object.assign(o, {
+	o = Object.assign(o, /** @type {Partial<OptionsInternal>} */ ({
 		fontName: o.fontBaseName,
 		destCssPaths: {
 			css: o.destCss,
@@ -152,7 +152,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		extraStyles: has(o.styles, 'extra'),
 		files: files,
 		glyphs: [],
-	});
+	}));
 
 	o.hash = getHash();
 	o.fontFilename = template(options.fontFilename || o.fontBaseName, o);
@@ -383,7 +383,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 			stylesheet: stylesheet,
 		}));
 
-		var css = renderTemplate(o.cssTemplate, cssContext);
+		let css = renderTemplate(o.cssTemplate, cssContext);
 
 		// Fix CSS preprocessors comments: single line comments will be removed after compilation
 		if (has(['sass', 'scss', 'less', 'styl'], stylesheet)) {
@@ -677,7 +677,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	 */
 	function generateFontSrc(type, font, stylesheet) {
 		const filename = template(o.fontFilename + font.ext, o);
-		var fontPathVariableName = o.fontFamilyName + '-font-path';
+		let fontPathVariableName = o.fontFamilyName + '-font-path';
 
 		let url;
 		if (font.embeddable && has(o.embed, type)) {

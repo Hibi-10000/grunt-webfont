@@ -149,13 +149,13 @@ interface OptionsInternal {
 		filename: string,
 		template: string, //html code
 	},
-	testHeading?: string,
 	baseClass?: string,
 	classPrefix?: string,
-	stylesheet?: string,
-	iconsStyles?: true,
 	fontPathVariable?: string,
 }
 
 interface Context extends OptionsInternal {
+	testHeading?: string,
+	stylesheet?: string,
+	iconsStyles?: true,
 }

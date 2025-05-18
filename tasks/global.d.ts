@@ -17,7 +17,7 @@ interface CustomOutput {
 	template: string,
 	dest: string,
 	syntax?: string,
-	context?: Context,
+	context?: Partial<Context>,
 }
 
 interface Configs {
@@ -157,5 +157,5 @@ interface OptionsInternal {
 	fontPathVariable?: string,
 }
 
-interface Context extends Partial<OptionsInternal> {
+interface Context extends OptionsInternal {
 }

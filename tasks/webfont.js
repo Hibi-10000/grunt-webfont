@@ -378,7 +378,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		// Generate CSS
 		const ext = path.extname(o.template) || '.css'; // Use extension of o.template file if given, or default to .css
 		o.cssTemplate = readTemplate(o.template, o.syntax, ext);
-		const cssContext = Object.assign(o, /** @type {Context} */({
+		const cssContext = Object.assign(o, /** @type {Partial<Context>} */({
 			iconsStyles: true,
 			stylesheet: stylesheet,
 		}));
@@ -446,7 +446,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		const _fontSrc1 = o.fontSrc1.replace(relativeRe, htmlRelativeFontPath);
 		const _fontSrc2 = o.fontSrc2.replace(relativeRe, htmlRelativeFontPath);
 
-		context = Object.assign(context, /** @type {Context} */({
+		context = Object.assign(context, /** @type {Partial<Context>} */({
 			fontSrc1: _fontSrc1,
 			fontSrc2: _fontSrc2,
 			fontfaceStyles: true,
@@ -458,7 +458,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 
 		// Prepares CSS for injection into <style> tag at to of HTML
 		htmlStyles = renderTemplate(o.cssTemplate, context);
-		context = Object.assign(context, /** @type {Context} */({
+		context = Object.assign(context, /** @type {Partial<Context>} */({
 			styles: htmlStyles,
 		}));
 

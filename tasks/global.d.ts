@@ -20,6 +20,11 @@ interface CustomOutput {
 	context?: Partial<Context>,
 }
 
+interface TemplateOptions {
+	baseClass?: string,
+	classPrefix?: string,
+}
+
 interface Configs {
 	[key: string]: Config,
 }
@@ -49,7 +54,7 @@ interface Options {
 	ligatures?: boolean,
 	template?: string,
 	syntax?: string,
-	templateOptions?: object | Partial<OptionsInternal>,
+	templateOptions?: TemplateOptions,
 	stylesheets?: string[],
 	stylesheet?: string,
 	htmlDemo?: boolean,
@@ -83,7 +88,7 @@ interface Options {
 	skip?: boolean,
 }
 
-interface OptionsInternal {
+interface OptionsInternal extends TemplateOptions {
 	logger: Logger,
 	fontBaseName: string,
 	destCss: string,
@@ -98,7 +103,7 @@ interface OptionsInternal {
 	addLigatures: boolean,
 	template: string,
 	syntax: string,
-	templateOptions: object | Partial<OptionsInternal>,
+	templateOptions: TemplateOptions,
 	stylesheets: string[],
 	htmlDemo: boolean,
 	htmlDemoTemplate: string,
@@ -149,8 +154,6 @@ interface OptionsInternal {
 		filename: string,
 		template: string, //html code
 	},
-	baseClass?: string,
-	classPrefix?: string,
 	fontPathVariable?: string,
 }
 

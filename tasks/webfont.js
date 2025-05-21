@@ -370,7 +370,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 
 		// Read JSON file corresponding to CSS template
 		const templateJson = readTemplate(o.template, o.syntax, '.json', true);
-		if (templateJson) o = Object.assign(o, /** @type {{baseClass: string, classPrefix: string}} */(JSON.parse(templateJson.template)));
+		if (templateJson) o = Object.assign(o, /** @type {Required<TemplateOptions>} */(JSON.parse(templateJson.template)));
 
 		// Now override values with templateOptions
 		if (o.templateOptions) o = Object.assign(o, o.templateOptions);

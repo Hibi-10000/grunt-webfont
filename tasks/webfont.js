@@ -10,8 +10,6 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { globSync } from 'glob';
 import chalk from 'chalk';
-// updates to v6 are blocked by https://github.com/nfroidure/ttf2woff2/issues/87
-import ttf2woff2 from 'ttf2woff2';
 import _ from 'lodash';
 import fontforge from './engines/fontforge.js';
 import node from './engines/node.js';
@@ -209,6 +207,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 
 	// Save new hash and run
 	saveHash(name, target, o.hash);
+	const ttf2woff2 = (await import('ttf2woff2')).default;
 	try {
 		createOutputDirs();
 		cleanOutputDir();

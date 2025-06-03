@@ -12,7 +12,7 @@ import util from 'node:util';
 import { exec } from 'node:child_process';
 import { StringDecoder } from 'node:string_decoder';
 import temp from 'temp';
-import svgicons2svgfont from 'svgicons2svgfont';
+import { SVGIcons2SVGFontStream } from 'svgicons2svgfont';
 import svg2ttf from 'svg2ttf';
 import ttf2woff from 'ttf2woff';
 import ttf2eot from 'ttf2eot';
@@ -34,14 +34,12 @@ export default async (o) => {
 			let font = '';
 			const decoder = new StringDecoder('utf8');
 			const streams = svgFilesToStreams(o.files);
-			const stream = svgicons2svgfont(streams, {
+			const stream = new SVGIcons2SVGFontStream({
 				fontName: o.fontFamilyName,
 				fontHeight: o.fontHeight,
 				descent: o.descent,
 				normalize: o.normalize,
 				round: o.round,
-				log: logger.log.verbose.bind(logger),
-				error: logger.log.error.bind(logger),
 			});
 			stream.on('data', (chunk) => {
 				font += decoder.write(chunk);
@@ -51,6 +49,16 @@ export default async (o) => {
 					fonts.svg = font;
 					resolve();
 				});
+				for (const s of streams) {
+					const svgStream = s.stream;
+					// @ts-expect-error Property 'metadata' does not exist on type 'ReadableStream'.
+					svgStream.metadata = {
+						unicode: [String.fromCodePoint(s.codepoint)],
+						name: s.name,
+					}
+					stream.write(svgStream);
+				}
+				stream.end();
 			});
 			return font;
 		},

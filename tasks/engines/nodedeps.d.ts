@@ -15,19 +15,3 @@ declare module 'ttf2woff' {
 		metadata?: string | undefined;
 	}): UInt8Array;
 }
-
-declare module 'svgicons2svgfont' {
-	export default function svgicons2svgfont(streams: {
-		codepoint: number,
-		name?: string,
-		stream: NodeJS.ReadableStream
-	}[], options: {
-		fontName: string;
-		fontHeight: number;
-		descent: number;
-		normalize: boolean;
-		round: number;
-		log: Function;
-		error: Function;
-	}): import('node:stream').PassThrough;
-}

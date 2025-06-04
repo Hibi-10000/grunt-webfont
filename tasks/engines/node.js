@@ -34,31 +34,30 @@ export default async (o) => {
 			let font = '';
 			const decoder = new StringDecoder('utf8');
 			const streams = svgFilesToStreams(o.files);
-			const stream = new SVGIcons2SVGFontStream({
+			const fontStream = new SVGIcons2SVGFontStream({
 				fontName: o.fontFamilyName,
 				fontHeight: o.fontHeight,
 				descent: o.descent,
 				normalize: o.normalize,
 				round: o.round,
 			});
-			stream.on('data', (chunk) => {
+			fontStream.on('data', (chunk) => {
 				font += decoder.write(chunk);
 			});
 			await new Promise((resolve) => {
-				stream.on('end', () => {
+				fontStream.on('end', () => {
 					fonts.svg = font;
 					resolve();
 				});
 				for (const s of streams) {
-					const svgStream = s.stream;
-					// @ts-expect-error Property 'metadata' does not exist on type 'ReadableStream'.
+					const svgStream = /** @type {ReadableStreamWithMetadata} */(s.stream);
 					svgStream.metadata = {
 						unicode: [String.fromCodePoint(s.codepoint)],
 						name: s.name,
 					}
-					stream.write(svgStream);
+					fontStream.write(svgStream);
 				}
-				stream.end();
+				fontStream.end();
 			});
 			return font;
 		},

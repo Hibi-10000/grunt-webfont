@@ -162,3 +162,10 @@ interface Context extends OptionsInternal {
 	stylesheet?: string,
 	iconsStyles?: true,
 }
+
+interface ReadableStreamWithMetadata extends NodeJS.ReadableStream {
+	metadata?: {
+		unicode: string[],
+		name: string,
+	}
+}

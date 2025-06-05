@@ -11,6 +11,7 @@ import crypto from 'node:crypto';
 import { globSync } from 'glob';
 import chalk from 'chalk';
 import _ from 'lodash';
+import ttf2woff2 from 'ttf2woff2';
 import fontforge from './engines/fontforge.js';
 import node from './engines/node.js';
 import * as wf from './util/util.js';
@@ -207,7 +208,6 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 
 	// Save new hash and run
 	saveHash(name, target, o.hash);
-	const ttf2woff2 = (await import('ttf2woff2')).default;
 	try {
 		createOutputDirs();
 		cleanOutputDir();

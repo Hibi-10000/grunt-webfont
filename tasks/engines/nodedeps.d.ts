@@ -15,3 +15,8 @@ declare module 'ttf2woff' {
 		metadata?: string | undefined;
 	}): UInt8Array;
 }
+
+declare module 'ttf2woff2' {
+	const ttf2woff2: NonNullable<(ttf: Uint8Array) => Uint8Array>;
+	export default ttf2woff2;
+}

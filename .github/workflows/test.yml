@@ -25,7 +25,9 @@ jobs:
         cache: 'pnpm'
 
     - name: Run apt install
-      run: sudo apt install fontforge ttfautohint
+      run: |
+        sudo apt update
+        sudo apt install fontforge ttfautohint
 
     - name: Run pnpm install
       run: |

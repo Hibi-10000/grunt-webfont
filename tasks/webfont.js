@@ -113,7 +113,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		htmlDemoTemplate: options.htmlDemoTemplate,
 		htmlDemoFilename: options.htmlDemoFilename,
 		styles: optionToArray(options.styles, 'font,icon'),
-		types: optionToArray(options.types, options.engine === 'node' ? 'eot,woff,ttf' : 'woff,ttf'),
+		types: optionToArray(options.types, 'eot,woff,ttf'),
 		order: optionToArray(options.order, wf.fontFormats),
 		embed: options.embed === true ? ['woff'] : optionToArray(options.embed, false),
 		rename: options.rename || path.basename,

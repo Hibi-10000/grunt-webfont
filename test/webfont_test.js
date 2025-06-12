@@ -27,15 +27,15 @@ function findDuplicates(haystack, needles) {
 
 /** @type {{ [key: string]: (test: import('nodeunit').Test) => void }} */
 export const webfont = {
-	test1: function(test) {
+	test1: (test) => {
 		// All out files should be created and should not be empty
-		'woff,ttf,eot'.split(',').forEach(function(type) {
+		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync('test/tmp/test1/icons.' + type), name + ' file created.');
 			test.ok(grunt.file.read('test/tmp/test1/icons.' + type).length, name + ' file not empty.');
 		});
 
-		'css,html'.split(',').forEach(function(type) {
+		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync('test/tmp/test1/icons.' + type), name + ' file created.');
 			test.ok(grunt.file.read('test/tmp/test1/icons.' + type).length, name + ' file not empty.');
@@ -46,7 +46,7 @@ export const webfont = {
 		const html = grunt.file.read('test/tmp/test1/icons.html');
 
 		// CSS links to font files are correct
-		'woff,ttf,eot'.split(',').forEach(function(type) {
+		'woff,ttf,eot'.split(',').forEach((type) => {
 			test.ok(
 				find(css, 'url("icons.' + type),
 				'File path ' + type + ' should be in CSS file.'
@@ -64,7 +64,7 @@ export const webfont = {
 		);
 
 		// Every SVG file should have corresponding entry in CSS and HTML files
-		svgs.forEach(function(file, index) {
+		svgs.forEach((file, index) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
 				find(css, '.icon_' + id + ':before'),
@@ -83,7 +83,7 @@ export const webfont = {
 		test.done();
 	},
 
-	test2: function(test) {
+	test2: (test) => {
 		const css = grunt.file.read('test/tmp/test2/myfont.css');
 
 		// Read hash
@@ -92,20 +92,20 @@ export const webfont = {
 		test.ok(hash, 'Hash calculated.');
 
 		// All out files should be created and should not be empty
-		'woff,svg'.split(',').forEach(function(type) {
+		'woff,svg'.split(',').forEach((type) => {
 			const name = type.toUpperCase(),
 				prefix = 'test/tmp/test2/fonts/myfont.';
 			test.ok(fs.existsSync(prefix + type), name + ' file created.');
 			test.ok(grunt.file.read(prefix + type).length, name + ' file not empty.');
 		});
-		'css,html'.split(',').forEach(function(type) {
+		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync('test/tmp/test2/myfont.' + type), name + ' file created.');
 			test.ok(grunt.file.read('test/tmp/test2/myfont.' + type).length, name + ' file not empty.');
 		});
 
 		// Excluded file types should not be created
-		'eot,ttf'.split(',').forEach(function(type) {
+		'eot,ttf'.split(',').forEach((type) => {
 			const name = type.toUpperCase(),
 				prefix = 'test/tmp/test2/fonts/myfont.';
 			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
@@ -115,7 +115,7 @@ export const webfont = {
 		const html = grunt.file.read('test/tmp/test2/myfont.html');
 
 		// CSS links to font files are correct
-		'woff,svg'.split(',').forEach(function(type) {
+		'woff,svg'.split(',').forEach((type) => {
 			test.ok(
 				find(css, 'url("fonts/myfont.' + type + '?' + hash),
 				'File path ' + type + ' should be in CSS file.'
@@ -123,7 +123,7 @@ export const webfont = {
 		});
 
 		// CSS links to excluded formats should not be included
-		'ttf,eot'.split(',').forEach(function(type) {
+		'ttf,eot'.split(',').forEach((type) => {
 			test.ok(
 				!find(css, 'fonts/myfont.' + type),
 				'File path ' + type + ' should be in CSS file.'
@@ -132,7 +132,7 @@ export const webfont = {
 
 
 		// Every SVG file should have corresponding entry in CSS and HTML files
-		svgs.forEach(function(file) {
+		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
 				find(css, '.icon-' + id + ':before'),
@@ -147,9 +147,9 @@ export const webfont = {
 		test.done();
 	},
 
-	embed: function(test) {
+	embed: (test) => {
 		// All out files should be created and should not be empty
-		'ttf,eot'.split(',').forEach(function(type) {
+		'ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase(),
 				prefix = 'test/tmp/embed/icons.';
 			test.ok(fs.existsSync(prefix + type), name + ' file created.');
@@ -157,7 +157,7 @@ export const webfont = {
 		});
 
 		// WOFF should be deleted
-		'woff'.split(',').forEach(function(type) {
+		'woff'.split(',').forEach((type) => {
 			const name = type.toUpperCase(),
 				prefix = 'test/tmp/embed/icons.';
 			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
@@ -172,9 +172,9 @@ export const webfont = {
 		test.done();
 	},
 
-	embed_woff: function(test) {
+	embed_woff: (test) => {
 		// Excluded file types should not be created + WOFF should be deleted
-		'woff,ttf,eot'.split(',').forEach(function(type) {
+		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase(),
 				prefix = 'test/tmp/embed_woff/icons.';
 			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
@@ -190,9 +190,9 @@ export const webfont = {
 		test.done();
 	},
 
-	embed_ttf: function(test) {
+	embed_ttf: (test) => {
 		// Excluded file types should not be created + TTF should be deleted
-		'woff,ttf,eot'.split(',').forEach(function(type) {
+		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase(),
 				prefix = 'test/tmp/embed_ttf/icons.';
 			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
@@ -208,9 +208,9 @@ export const webfont = {
 		test.done();
 	},
 
-	embed_ttf_woff: function(test) {
+	embed_ttf_woff: (test) => {
 		// Excluded file types should not be created + TTF should be deleted
-		'woff,ttf,eot'.split(',').forEach(function(type) {
+		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase(),
 				prefix = 'test/tmp/embed_ttf_woff/icons.';
 			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
@@ -228,15 +228,15 @@ export const webfont = {
 		test.done();
 	},
 
-	one: function(test) {
+	one: (test) => {
 		// All out files should be created and should not be empty
-		'woff,ttf,eot'.split(',').forEach(function(type) {
+		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync('test/tmp/one/icons.' + type), name + ' file created.');
 			test.ok(grunt.file.read('test/tmp/one/icons.' + type).length, name + ' file not empty.');
 		});
 
-		'css,html'.split(',').forEach(function(type) {
+		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync('test/tmp/one/icons.' + type), name + ' file created.');
 			test.ok(grunt.file.read('test/tmp/one/icons.' + type).length, name + ' file not empty.');
@@ -246,7 +246,7 @@ export const webfont = {
 			css = grunt.file.read('test/tmp/one/icons.css');
 
 		// CSS links to font files are correct
-		'woff,ttf,eot'.split(',').forEach(function(type) {
+		'woff,ttf,eot'.split(',').forEach((type) => {
 			test.ok(
 				find(css, 'icons.' + type),
 				'File path ' + type + ' should be in CSS file.'
@@ -254,7 +254,7 @@ export const webfont = {
 		});
 
 		// Every SVG file should have corresponding entry in CSS file
-		svgs.forEach(function(file) {
+		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
 				find(css, '.icon_' + id + ':before'),
@@ -265,7 +265,7 @@ export const webfont = {
 		test.done();
 	},
 
-	template: function(test) {
+	template: (test) => {
 		const css = grunt.file.read('test/tmp/template/icons.css');
 
 		// There should be comment from custom template
@@ -277,7 +277,7 @@ export const webfont = {
 		test.done();
 	},
 
-	template_scss: function(test) {
+	template_scss: (test) => {
 		const cssFilename = 'test/tmp/template_scss/_icons.scss';
 
 		test.ok(fs.existsSync(cssFilename), 'SCSS template: .scss file created.');
@@ -293,7 +293,7 @@ export const webfont = {
 		test.done();
 	},
 
-	template_sass: function(test) {
+	template_sass: (test) => {
 		const cssFilename = 'test/tmp/template_sass/_icons.sass';
 
 		test.ok(fs.existsSync(cssFilename), 'SASS template: .sass file created (stylesheet extension derived from template name).');
@@ -309,7 +309,7 @@ export const webfont = {
 		test.done();
 	},
 
-	enabled_template_variables: function(test) {
+	enabled_template_variables: (test) => {
 		const scssFilename = 'test/tmp/enabled_template_variables/_icons.scss';
 		const lessFilename = 'test/tmp/enabled_template_variables/icons.less';
 		const htmlFilename = 'test/tmp/enabled_template_variables/icons.html';
@@ -351,7 +351,7 @@ export const webfont = {
 		test.done();
 	},
 
-	html_template: function(test) {
+	html_template: (test) => {
 		const demo = grunt.file.read('test/tmp/html_template/icons.html');
 
 		// There should be comment from custom template
@@ -363,7 +363,7 @@ export const webfont = {
 		test.done();
 	},
 
-	html_filename: function(test) {
+	html_filename: (test) => {
 		const htmlfile = 'test/tmp/html_filename/index.html';
 
 		// There should be comment from custom template
@@ -372,11 +372,11 @@ export const webfont = {
 		test.done();
 	},
 
-	relative_path: function(test) {
+	relative_path: (test) => {
 		const css = grunt.file.read('test/tmp/relative_path/icons.css');
 
 		// CSS links to font files are correct
-		'woff,ttf,eot'.split(',').forEach(function(type) {
+		'woff,ttf,eot'.split(',').forEach((type) => {
 			test.ok(
 				find(css, 'url("../iamrelative/icons.' + type),
 				'File path ' + type + ' should be in CSS file.'
@@ -386,7 +386,7 @@ export const webfont = {
 		test.done();
 	},
 
-	sass: function(test) {
+	sass: (test) => {
 		test.ok(fs.existsSync('test/tmp/sass/_icons.sass'), 'SASS file with underscore created.');
 		test.ok(!fs.existsSync('test/tmp/sass/icons.sass'), 'SASS file without underscore not created.');
 		test.ok(!fs.existsSync('test/tmp/sass/icons.css'), 'CSS file not created.');
@@ -405,7 +405,7 @@ export const webfont = {
 		test.done();
 	},
 
-	less: function(test) {
+	less: (test) => {
 		test.ok(fs.existsSync('test/tmp/less/icons.less'), 'LESS file created.');
 		test.ok(!fs.existsSync('test/tmp/less/icons.css'), 'CSS file not created.');
 
@@ -421,7 +421,7 @@ export const webfont = {
 		test.equal(m && m.length, 2, 'Single line comments.');
 
 		// Every SVG file should have two corresponding entries in CSS file
-		svgs.forEach(function(file) {
+		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
 				find(less, '.icon_' + id + ' {\n\t&:before'),
@@ -432,7 +432,7 @@ export const webfont = {
 		test.done();
 	},
 
-	css_plus_scss: function(test) {
+	css_plus_scss: (test) => {
 		test.ok(fs.existsSync('test/tmp/scss/_icons.scss'), 'SCSS file with underscore created.');
 		test.ok(!fs.existsSync('test/tmp/scss/icons.scss'), 'SCSS file without underscore not created.');
 		test.ok(fs.existsSync('test/tmp/css/icons.css'), 'CSS file is created.');
@@ -440,7 +440,7 @@ export const webfont = {
 		test.done();
 	},
 
-	stylus_bem: function(test) {
+	stylus_bem: (test) => {
 		test.ok(fs.existsSync('test/tmp/stylus_bem/icons.styl'), 'Stylus file created.');
 		test.ok(!fs.existsSync('test/tmp/stylus_bem/icons.css'), 'CSS file not created.');
 
@@ -456,7 +456,7 @@ export const webfont = {
 
 		const s = stylus(styl);
 
-		s.render(function(err, css) {
+		s.render((err, css) => {
 			if (err) {
 				console.log('Stylus compile error:');
 				console.log(err);
@@ -466,7 +466,7 @@ export const webfont = {
 		});
 	},
 
-	stylus_bootstrap: function(test) {
+	stylus_bootstrap: (test) => {
 		test.ok(fs.existsSync('test/tmp/stylus_bootstrap/icons.styl'), 'Stylus file created.');
 		test.ok(!fs.existsSync('test/tmp/stylus_bootstrap/icons.css'), 'CSS file not created.');
 
@@ -474,7 +474,7 @@ export const webfont = {
 
 		const s = stylus(styl);
 
-		s.render(function(err, css) {
+		s.render((err, css) => {
 			if (err) {
 				console.log('Stylus compile error:');
 				console.log(err);
@@ -484,7 +484,7 @@ export const webfont = {
 		});
 	},
 
-	spaces: function(test) {
+	spaces: (test) => {
 		const css = grunt.file.read('test/tmp/spaces/icons.css');
 
 		test.ok(
@@ -499,14 +499,14 @@ export const webfont = {
 		test.done();
 	},
 
-	disable_demo: function(test) {
+	disable_demo: (test) => {
 		test.ok(fs.existsSync('test/tmp/disable_demo/icons.css'), 'CSS file created.');
 		test.ok(!fs.existsSync('test/tmp/disable_demo/icons.html'), 'HTML file not created.');
 
 		test.done();
 	},
 
-	non_css_demo: function(test) {
+	non_css_demo: (test) => {
 		test.ok(!fs.existsSync('test/tmp/non_css_demo/icons.css'), 'CSS file not created.');
 		test.ok(fs.existsSync('test/tmp/non_css_demo/icons.html'), 'HTML file created.');
 
@@ -534,7 +534,7 @@ export const webfont = {
 
 		// Every SVG file should have corresponding entry in <style> block
 		const svgs = grunt.file.expand('test/src/**.*');
-		svgs.forEach(function(file) {
+		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
 				find(html, '.icon_' + id + ':before'),
@@ -545,12 +545,12 @@ export const webfont = {
 		test.done();
 	},
 
-	parent_source: function(test) {
+	parent_source: (test) => {
 		const svgs = grunt.file.expand('test/src/**.*');
 		const css = grunt.file.read('test/tmp/parent_source/icons.css');
 
 		// Every SVG file should have corresponding entry in CSS file
-		svgs.forEach(function(file) {
+		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
 				find(css, '.icon_' + id + ':before'),
@@ -561,12 +561,12 @@ export const webfont = {
 		test.done();
 	},
 
-	ligatures: function(test) {
+	ligatures: (test) => {
 		const svgs = grunt.file.expand('test/ligatures_src/**.*');
 		const css = grunt.file.read('test/tmp/ligatures/icons.css');
 
 		// Every SVG file should have corresponding entry in CSS file
-		svgs.forEach(function(file) {
+		svgs.forEach((file) => {
 			const name = path.basename(file, '.svg');
 			test.ok(
 				find(css, 'content:"'+name+'";'),
@@ -577,12 +577,12 @@ export const webfont = {
 		test.done();
 	},
 
-	duplicate_names: function(test) {
+	duplicate_names: (test) => {
 		const svgs = grunt.file.expand('test/src_duplicate_names/**/*.svg');
 		const css = grunt.file.read('test/tmp/duplicate_names/icons.css');
 
 		// Every SVG file should have corresponding entry in CSS file
-		svgs.forEach(function(file) {
+		svgs.forEach((file) => {
 			const id = [path.basename(path.dirname(file)), path.basename(file, '.svg')].join('-');
 			test.ok(
 				find(css, '.icon_' + id + ':before'),
@@ -593,7 +593,7 @@ export const webfont = {
 		test.done();
 	},
 
-	order: function(test) {
+	order: (test) => {
 		const svgs = grunt.file.expand('test/src/**.*');
 		const css = grunt.file.read('test/tmp/order/icons.css');
 
@@ -606,7 +606,7 @@ export const webfont = {
 		test.done();
 	},
 
-	template_options: function(test) {
+	template_options: (test) => {
 		const svgs = grunt.file.expand('test/src/**.*');
 		const less = grunt.file.read('test/tmp/template_options/icons.less');
 		const html = grunt.file.read('test/tmp/template_options/icons.html');
@@ -617,7 +617,7 @@ export const webfont = {
 		);
 
 		// Every SVG file should have corresponding entry in LESS and HTML files
-		svgs.forEach(function(file) {
+		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			// test.ok(
 			// 		find(less, '.make-icon-' + id + ' {'),
@@ -636,15 +636,15 @@ export const webfont = {
 		test.done();
 	},
 
-	node: function(test) {
+	node: (test) => {
 		// All out files should be created and should not be empty
-		'woff,ttf,eot'.split(',').forEach(function(type) {
+		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync('test/tmp/node/icons.' + type), name + ' file created.');
 			test.ok(grunt.file.read('test/tmp/node/icons.' + type).length, name + ' file not empty.');
 		});
 
-		'css,html'.split(',').forEach(function(type) {
+		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync('test/tmp/node/icons.' + type), name + ' file created.');
 			test.ok(grunt.file.read('test/tmp/node/icons.' + type).length, name + ' file not empty.');
@@ -655,7 +655,7 @@ export const webfont = {
 		const html = grunt.file.read('test/tmp/node/icons.html');
 
 		// CSS links to font files are correct
-		'woff,ttf,eot'.split(',').forEach(function(type) {
+		'woff,ttf,eot'.split(',').forEach((type) => {
 			test.ok(
 				find(css, 'url("icons.' + type),
 				'File path ' + type + ' shound be in CSS file.'
@@ -673,7 +673,7 @@ export const webfont = {
 		);
 
 		// Every SVG file should have corresponding entry in CSS and HTML files
-		svgs.forEach(function(file) {
+		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
 				find(css, '.icon_' + id + ':before'),
@@ -688,12 +688,12 @@ export const webfont = {
 		test.done();
 	},
 
-	ie7: function(test){
+	ie7: (test) => {
 		const css = grunt.file.read('test/tmp/ie7/icons.css');
 		const svgs = grunt.file.expand('test/src/*.svg');
 		test.ok(find(css, '*zoom'), '*zoom property should be set');
 		test.ok(find(css, '&#x') , 'HTML char are present');
-		svgs.forEach(function(file){
+		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
 				find(css, '.icon_' + id + ' {'),
@@ -703,12 +703,12 @@ export const webfont = {
 		test.done();
 	},
 
-	ie7_bootstrap: function(test){
+	ie7_bootstrap: (test) => {
 		const css = grunt.file.read('test/tmp/ie7_bootstrap/icons.css');
 		const svgs = grunt.file.expand('test/src/*.svg');
 		test.ok(find(css, '*zoom'), '*zoom property should be set');
 		test.ok(find(css, '&#x') , 'HTML char are present');
-		svgs.forEach(function(file){
+		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
 				find(css, '.icon-' + id + ' {'),
@@ -718,7 +718,7 @@ export const webfont = {
 		test.done();
 	},
 
-	optimize_enabled: function(test){
+	optimize_enabled: (test) => {
 		const optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
 		const svg	= grunt.file.read('test/tmp/optimize_enabled/icons.svg');
 		if(svg.indexOf(optimizedPathSegment) === -1) {
@@ -727,7 +727,7 @@ export const webfont = {
 		test.done();
 	},
 
-	optimize_disabled: function(test){
+	optimize_disabled: (test) => {
 		const optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
 		const svg	= grunt.file.read('test/tmp/optimize_disabled/icons.svg');
 		if(svg.indexOf(optimizedPathSegment) > -1) {
@@ -736,7 +736,7 @@ export const webfont = {
 		test.done();
 	},
 
-	codepoints: function(test) {
+	codepoints: (test) => {
 		// Default codepoint of 0xE001 can be overidden
 		const resultSVG = grunt.file.expand('test/tmp/codepoints/icons.svg');
 		const css = grunt.file.read('test/tmp/codepoints/icons.css');
@@ -744,14 +744,14 @@ export const webfont = {
 		const startCodepoint = 0x41;
 
 		// Generated SVG font should have glyphs at the overidden codepoints
-		resultSVG.forEach(function(file) {
+		resultSVG.forEach((file) => {
 			const svgSource = grunt.file.read(file);
 			/** @type {{ unicode: string }[]} */
 			const glyphs = [];
 
-			parseXMLString(svgSource, function(err, result) {
+			parseXMLString(svgSource, (err, result) => {
 				// Normalise glyphs into JS objects
-				result.svg.defs[0].font[0].glyph.forEach(function(/** @type {{ $: { unicode: string, "glyph-name": string } }} */glyph) {
+				result.svg.defs[0].font[0].glyph.forEach((/** @type {{ $: { unicode: string, "glyph-name": string } }} */glyph) => {
 					if (glyph.$['glyph-name'].length === 1) { // Skip non-characters (.notdef, .null, etc.)
 						glyphs.push(glyph.$);
 					}
@@ -760,7 +760,7 @@ export const webfont = {
 				// Two assertions for each glyph:
 				// - each glyph has a unique unicode character
 				// - the correct glyph character code is present in the generated CSS
-				const unicodeCharArr = glyphs.map(function(g) { return g.unicode; });
+				const unicodeCharArr = glyphs.map((g) => { return g.unicode; });
 				for (let index = 0; index < glyphs.length; index ++) {
 					test.equals(0, findDuplicates(unicodeCharArr).length);
 					test.ok(
@@ -774,12 +774,12 @@ export const webfont = {
 		test.done();
 	},
 
-	camel: function(test) {
+	camel: (test) => {
 		const svgs = grunt.file.expand('test/camel/*.svg');
 		const css = grunt.file.read('test/tmp/camel/icons.css');
 
 		// Every SVG file should have corresponding entries in CSS file in the same case
-		svgs.forEach(function(file) {
+		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
 				find(css, '.icon_' + id + ':before'),
@@ -790,7 +790,7 @@ export const webfont = {
 		test.done();
 	},
 
-	folders: function(test) {
+	folders: (test) => {
 		// @todo Temporarily disabled because different fontforge versions produce different paths
 		test.done();
 		if (true) return;
@@ -799,15 +799,15 @@ export const webfont = {
 		const paths = JSON.parse(grunt.file.read('test/src_folders/paths.json'));
 		/** @type {{ unicode: string, d: string, "glyph-name": string }[]} */
 		const glyphs = [];
-		parseXMLString(svgFont, function(err, result) {
+		parseXMLString(svgFont, (err, result) => {
 			// Normalise glyphs into JS objects
-			result.svg.defs[0].font[0].glyph.forEach(function(/** @type {{ $: { unicode: string, d: string, "glyph-name": string } }} */glyph) {
+			result.svg.defs[0].font[0].glyph.forEach((/** @type {{ $: { unicode: string, d: string, "glyph-name": string } }} */glyph) => {
 				if (/^uni/.test(glyph.$['glyph-name'])) { // Skip non-characters (.notdef, .null, etc.)
 					glyphs.push(glyph.$);
 				}
 			});
 
-			glyphs.forEach(function(glyph) {
+			glyphs.forEach((glyph) => {
 				test.equals(glyph.d, paths[glyph['glyph-name']], 'Glyph with codepoint ' + glyph.unicode + ' has correct path.');
 			});
 		});
@@ -815,20 +815,20 @@ export const webfont = {
 		test.done();
 	},
 
-	woff2: function(test) {
+	woff2: (test) => {
 		// All out files should be created and should not be empty
-		'woff,woff2'.split(',').forEach(function(type) {
+		'woff,woff2'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync('test/tmp/woff2/icons.' + type), name + ' file created.');
 			test.ok(grunt.file.read('test/tmp/woff2/icons.' + type).length, name + ' file not empty.');
 		});
 
 		// TTF file should be deleted
-		'ttf'.split(',').forEach(function(type) {
+		'ttf'.split(',').forEach((type) => {
 			test.ok(!fs.existsSync('test/tmp/woff2/icons.' + type), type.toUpperCase() + ' file NOT created.');
 		});
 
-		'css,html'.split(',').forEach(function(type) {
+		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync('test/tmp/woff2/icons.' + type), name + ' file created.');
 			test.ok(grunt.file.read('test/tmp/woff2/icons.' + type).length, name + ' file not empty.');
@@ -839,7 +839,7 @@ export const webfont = {
 		const html = grunt.file.read('test/tmp/woff2/icons.html');
 
 		// CSS links to font files are correct
-		'woff2,woff'.split(',').forEach(function(type) {
+		'woff2,woff'.split(',').forEach((type) => {
 			test.ok(
 				find(css, 'url("icons.' + type),
 				'File path ' + type + ' shound be in CSS file.'
@@ -847,7 +847,7 @@ export const webfont = {
 		});
 
 		// CSS links to TTF should not be created
-		'ttf'.split(',').forEach(function(type) {
+		'ttf'.split(',').forEach((type) => {
 			test.ok(
 				!find(css, 'url("icons.' + type),
 				'File path ' + type + ' shound NOT be in CSS file.'
@@ -857,20 +857,20 @@ export const webfont = {
 		test.done();
 	},
 
-	woff2_node: function(test) {
+	woff2_node: (test) => {
 		// All out files should be created and should not be empty
-		'woff,woff2'.split(',').forEach(function(type) {
+		'woff,woff2'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync('test/tmp/woff2_node/icons.' + type), name + ' file created.');
 			test.ok(grunt.file.read('test/tmp/woff2_node/icons.' + type).length, name + ' file not empty.');
 		});
 
 		// TTF file should be deleted
-		'ttf'.split(',').forEach(function(type) {
+		'ttf'.split(',').forEach((type) => {
 			test.ok(!fs.existsSync('test/tmp/woff2_node/icons.' + type), type.toUpperCase() + ' file NOT created.');
 		});
 
-		'css,html'.split(',').forEach(function(type) {
+		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync('test/tmp/woff2_node/icons.' + type), name + ' file created.');
 			test.ok(grunt.file.read('test/tmp/woff2_node/icons.' + type).length, name + ' file not empty.');
@@ -881,7 +881,7 @@ export const webfont = {
 		const html = grunt.file.read('test/tmp/woff2_node/icons.html');
 
 		// CSS links to font files are correct
-		'woff2,woff'.split(',').forEach(function(type) {
+		'woff2,woff'.split(',').forEach((type) => {
 			test.ok(
 				find(css, 'url("icons.' + type),
 				'File path ' + type + ' shound be in CSS file.'
@@ -889,7 +889,7 @@ export const webfont = {
 		});
 
 		// CSS links to TTF should not be created
-		'ttf'.split(',').forEach(function(type) {
+		'ttf'.split(',').forEach((type) => {
 			test.ok(
 				!find(css, 'url("icons.' + type),
 				'File path ' + type + ' shound NOT be in CSS file.'
@@ -899,12 +899,12 @@ export const webfont = {
 		test.done();
 	},
 
-	target_overrides: function(test) {
+	target_overrides: (test) => {
 
 		const css = grunt.file.read('test/tmp/target_overrides_css/icons.css');
 		test.ok(fs.existsSync('test/tmp/target_overrides_css/icons.css') + ' file created.');
 
-		'woff,ttf,eot'.split(',').forEach(function(type) {
+		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync('test/tmp/target_overrides_icons/icons.' + type), name + ' file created.');
 			test.ok(grunt.file.read('test/tmp/target_overrides_icons/icons.' + type).length, name + ' file not empty.');
@@ -913,7 +913,7 @@ export const webfont = {
 		test.done();
 	},
 
-	font_family_name: function(test) {
+	font_family_name: (test) => {
 		const html = grunt.file.read('test/tmp/font_family_name/icons.html');
 
 		// fontFamilyName should be in the HTML file's title
@@ -928,7 +928,7 @@ export const webfont = {
 		test.done();
 	},
 
-	custom_outputs: function(test) {
+	custom_outputs: (test) => {
 
 		// File should have been created when filename is specified
 		test.ok(fs.existsSync('test/tmp/custom_output/test-icon-config.js'));
@@ -942,7 +942,7 @@ export const webfont = {
 		test.done();
 	},
 
-	filename_length: function(test) {
+	filename_length: (test) => {
 
 		// File should have been created.
 		test.ok(fs.existsSync('test/tmp/filename_length/icons.css'));

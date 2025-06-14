@@ -273,7 +273,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	 * Clean output directory
 	 */
 	function cleanOutputDir() {
-		const htmlDemoFileMask = path.posix.join(o.destCss, o.fontBaseName + '*.{css,html}');
+		const htmlDemoFileMask = path.posix.join(o.destCss, `${o.fontBaseName}*.{css,html}`);
 		const files = globSync(htmlDemoFileMask).concat(wf.generatedFontFiles(o));
 		files.forEach(file => {
 			fs.unlinkSync(file);
@@ -675,8 +675,8 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	 * @return {string}
 	 */
 	function generateFontSrc(type, font, stylesheet) {
-		const filename = template(o.fontFilename + font.ext, o);
-		let fontPathVariableName = o.fontFamilyName + '-font-path';
+		const filename = template(`${o.fontFilename}${font.ext}`, o);
+		let fontPathVariableName = `${o.fontFamilyName}-font-path`;
 
 		let url;
 		if (font.embeddable && has(o.embed, type)) {
@@ -684,17 +684,17 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		} else {
 			if (o.fontPathVariables &&  stylesheet !== 'css') {
 				if (stylesheet === 'less') {
-					fontPathVariableName = '@' + fontPathVariableName;
-					o.fontPathVariable = fontPathVariableName + ' : "' + o.relativeFontPath + '";';
+					fontPathVariableName = `@${fontPathVariableName}`;
+					o.fontPathVariable = `${fontPathVariableName} : "${o.relativeFontPath}";`;
 				}
 				else {
-					fontPathVariableName = '$' + fontPathVariableName;
-					o.fontPathVariable = fontPathVariableName + ' : "' + o.relativeFontPath + '" !default;';
+					fontPathVariableName = `$${fontPathVariableName}`;
+					o.fontPathVariable = `${fontPathVariableName} : "${o.relativeFontPath}" !default;`;
 				}
 				url = filename;
 			}
 			else {
-				url = o.relativeFontPath + filename;
+				url = `${o.relativeFontPath}${filename}`;
 			}
 			if (o.addHashes) {
 				if (url.indexOf('#iefix') === -1) { // Do not add hashes for OldIE
@@ -709,10 +709,10 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		let src = `url("${url}")`;
 		if (o.fontPathVariables && stylesheet !== 'css') {
 			if (stylesheet === 'less') {
-				src = 'url("@{' + fontPathVariableName.replace('@','') + '}' + url + '")';
+				src = `url("@{${fontPathVariableName.replace('@','')}}${url}")`;
 			}
 			else {
-				src = 'url(' + fontPathVariableName + ' + "' + url + '")';
+				src = `url(${fontPathVariableName} + "${url}")`;
 			}
 		}
 

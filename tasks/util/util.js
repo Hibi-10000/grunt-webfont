@@ -104,8 +104,7 @@ export const fontFormats = 'eot,woff2,woff,ttf,svg';
  * @param {OptionsInternal} o Options.
  */
 export const generatedFontFiles = (o) => {
-	const mask = `*.{${o.types}}`;
-	return globSync(path.posix.join(o.dest, o.fontFilename + mask));
+	return globSync(path.posix.join(o.dest, `${o.fontFilename}*.{${o.types}}`));
 };
 
 /**

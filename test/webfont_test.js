@@ -93,8 +93,8 @@ export const webfont = {
 
 		// All out files should be created and should not be empty
 		'woff,svg'.split(',').forEach((type) => {
-			const name = type.toUpperCase(),
-				prefix = 'test/tmp/test2/fonts/myfont.';
+			const name = type.toUpperCase();
+			const prefix = 'test/tmp/test2/fonts/myfont.';
 			test.ok(fs.existsSync(prefix + type), name + ' file created.');
 			test.ok(grunt.file.read(prefix + type).length, name + ' file not empty.');
 		});
@@ -106,8 +106,8 @@ export const webfont = {
 
 		// Excluded file types should not be created
 		'eot,ttf'.split(',').forEach((type) => {
-			const name = type.toUpperCase(),
-				prefix = 'test/tmp/test2/fonts/myfont.';
+			const name = type.toUpperCase();
+			const prefix = 'test/tmp/test2/fonts/myfont.';
 			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
 		});
 
@@ -150,16 +150,16 @@ export const webfont = {
 	embed: (test) => {
 		// All out files should be created and should not be empty
 		'ttf,eot'.split(',').forEach((type) => {
-			const name = type.toUpperCase(),
-				prefix = 'test/tmp/embed/icons.';
+			const name = type.toUpperCase();
+			const prefix = 'test/tmp/embed/icons.';
 			test.ok(fs.existsSync(prefix + type), name + ' file created.');
 			test.ok(grunt.file.read(prefix + type).length, name + ' file not empty.');
 		});
 
 		// WOFF should be deleted
 		'woff'.split(',').forEach((type) => {
-			const name = type.toUpperCase(),
-				prefix = 'test/tmp/embed/icons.';
+			const name = type.toUpperCase();
+			const prefix = 'test/tmp/embed/icons.';
 			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
 		});
 
@@ -175,8 +175,8 @@ export const webfont = {
 	embed_woff: (test) => {
 		// Excluded file types should not be created + WOFF should be deleted
 		'woff,ttf,eot'.split(',').forEach((type) => {
-			const name = type.toUpperCase(),
-				prefix = 'test/tmp/embed_woff/icons.';
+			const name = type.toUpperCase();
+			const prefix = 'test/tmp/embed_woff/icons.';
 			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
 		});
 
@@ -193,8 +193,8 @@ export const webfont = {
 	embed_ttf: (test) => {
 		// Excluded file types should not be created + TTF should be deleted
 		'woff,ttf,eot'.split(',').forEach((type) => {
-			const name = type.toUpperCase(),
-				prefix = 'test/tmp/embed_ttf/icons.';
+			const name = type.toUpperCase();
+			const prefix = 'test/tmp/embed_ttf/icons.';
 			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
 		});
 
@@ -211,8 +211,8 @@ export const webfont = {
 	embed_ttf_woff: (test) => {
 		// Excluded file types should not be created + TTF should be deleted
 		'woff,ttf,eot'.split(',').forEach((type) => {
-			const name = type.toUpperCase(),
-				prefix = 'test/tmp/embed_ttf_woff/icons.';
+			const name = type.toUpperCase();
+			const prefix = 'test/tmp/embed_ttf_woff/icons.';
 			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
 		});
 
@@ -242,8 +242,8 @@ export const webfont = {
 			test.ok(grunt.file.read('test/tmp/one/icons.' + type).length, name + ' file not empty.');
 		});
 
-		const svgs = grunt.file.expand('test/src_one/**.*'),
-			css = grunt.file.read('test/tmp/one/icons.css');
+		const svgs = grunt.file.expand('test/src_one/**.*');
+		const css = grunt.file.read('test/tmp/one/icons.css');
 
 		// CSS links to font files are correct
 		'woff,ttf,eot'.split(',').forEach((type) => {
@@ -391,7 +391,7 @@ export const webfont = {
 		test.ok(!fs.existsSync('test/tmp/sass/icons.sass'), 'SASS file without underscore not created.');
 		test.ok(!fs.existsSync('test/tmp/sass/icons.css'), 'CSS file not created.');
 
-		const svgs = grunt.file.expand('test/src/**.*');
+		//const svgs = grunt.file.expand('test/src/**.*');
 		const sass = grunt.file.read('test/tmp/sass/_icons.sass');
 
 		// There should be comment from custom template
@@ -594,7 +594,7 @@ export const webfont = {
 	},
 
 	order: (test) => {
-		const svgs = grunt.file.expand('test/src/**.*');
+		//const svgs = grunt.file.expand('test/src/**.*');
 		const css = grunt.file.read('test/tmp/order/icons.css');
 
 		// Font-face src rules should be in right order
@@ -612,8 +612,8 @@ export const webfont = {
 		const html = grunt.file.read('test/tmp/template_options/icons.html');
 
 		test.ok(
-				find(less, '.glyph-icon {'),
-				'Class .glyph-icon should be in LESS file.'
+			find(less, '.glyph-icon {'),
+			'Class .glyph-icon should be in LESS file.'
 		);
 
 		// Every SVG file should have corresponding entry in LESS and HTML files
@@ -624,12 +624,12 @@ export const webfont = {
 			// 		'Mixin .make-icon-' + id + ' should be in LESS file.'
 			// );
 			test.ok(
-					find(less, '.glyph_' + id + ' {'),
-					'Icon .glyph_' + id + ' should be in LESS file.'
+				find(less, '.glyph_' + id + ' {'),
+				'Icon .glyph_' + id + ' should be in LESS file.'
 			);
 			test.ok(
-					find(html, '<div class="icons__item" data-name="' + id + '"><i class="glyph-icon glyph_' + id + '"></i> glyph_' + id + '</div>'),
-					'Icon .glyph_' + id + ' should be in HTML file.'
+				find(html, '<div class="icons__item" data-name="' + id + '"><i class="glyph-icon glyph_' + id + '"></i> glyph_' + id + '</div>'),
+				'Icon .glyph_' + id + ' should be in HTML file.'
 			);
 		});
 
@@ -720,7 +720,7 @@ export const webfont = {
 
 	optimize_enabled: (test) => {
 		const optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
-		const svg	= grunt.file.read('test/tmp/optimize_enabled/icons.svg');
+		const svg = grunt.file.read('test/tmp/optimize_enabled/icons.svg');
 		if(svg.indexOf(optimizedPathSegment) === -1) {
 			test.fail(true, 'SVG element must be contains the optimized path', undefined, undefined);
 		}
@@ -729,7 +729,7 @@ export const webfont = {
 
 	optimize_disabled: (test) => {
 		const optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
-		const svg	= grunt.file.read('test/tmp/optimize_disabled/icons.svg');
+		const svg = grunt.file.read('test/tmp/optimize_disabled/icons.svg');
 		if(svg.indexOf(optimizedPathSegment) > -1) {
 			test.fail(true, 'SVG element must be contains the un-optimized path', undefined, undefined);
 		}
@@ -740,7 +740,7 @@ export const webfont = {
 		// Default codepoint of 0xE001 can be overidden
 		const resultSVG = grunt.file.expand('test/tmp/codepoints/icons.svg');
 		const css = grunt.file.read('test/tmp/codepoints/icons.css');
-		const html = grunt.file.read('test/tmp/codepoints/icons.html');
+		//const html = grunt.file.read('test/tmp/codepoints/icons.html');
 		const startCodepoint = 0x41;
 
 		// Generated SVG font should have glyphs at the overidden codepoints
@@ -761,7 +761,7 @@ export const webfont = {
 				// - each glyph has a unique unicode character
 				// - the correct glyph character code is present in the generated CSS
 				const unicodeCharArr = glyphs.map((g) => { return g.unicode; });
-				for (let index = 0; index < glyphs.length; index ++) {
+				for (let index = 0; index < glyphs.length; index++) {
 					test.equals(0, findDuplicates(unicodeCharArr).length);
 					test.ok(
 						find(css, 'content:"\\' + (startCodepoint + index).toString(16) + '"'),
@@ -834,9 +834,9 @@ export const webfont = {
 			test.ok(grunt.file.read('test/tmp/woff2/icons.' + type).length, name + ' file not empty.');
 		});
 
-		const svgs = grunt.file.expand('test/src/**.*');
+		//const svgs = grunt.file.expand('test/src/**.*');
 		const css = grunt.file.read('test/tmp/woff2/icons.css');
-		const html = grunt.file.read('test/tmp/woff2/icons.html');
+		//const html = grunt.file.read('test/tmp/woff2/icons.html');
 
 		// CSS links to font files are correct
 		'woff2,woff'.split(',').forEach((type) => {
@@ -876,9 +876,9 @@ export const webfont = {
 			test.ok(grunt.file.read('test/tmp/woff2_node/icons.' + type).length, name + ' file not empty.');
 		});
 
-		const svgs = grunt.file.expand('test/src/**.*');
+		//const svgs = grunt.file.expand('test/src/**.*');
 		const css = grunt.file.read('test/tmp/woff2_node/icons.css');
-		const html = grunt.file.read('test/tmp/woff2_node/icons.html');
+		//const html = grunt.file.read('test/tmp/woff2_node/icons.html');
 
 		// CSS links to font files are correct
 		'woff2,woff'.split(',').forEach((type) => {
@@ -901,7 +901,7 @@ export const webfont = {
 
 	target_overrides: (test) => {
 
-		const css = grunt.file.read('test/tmp/target_overrides_css/icons.css');
+		//const css = grunt.file.read('test/tmp/target_overrides_css/icons.css');
 		test.ok(fs.existsSync('test/tmp/target_overrides_css/icons.css') + ' file created.');
 
 		'woff,ttf,eot'.split(',').forEach((type) => {

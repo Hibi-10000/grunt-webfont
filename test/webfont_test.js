@@ -31,14 +31,14 @@ export const webfont = {
 		// All out files should be created and should not be empty
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
-			test.ok(fs.existsSync('test/tmp/test1/icons.' + type), name + ' file created.');
-			test.ok(grunt.file.read('test/tmp/test1/icons.' + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(`test/tmp/test1/icons.${type}`), `${name} file created.`);
+			test.ok(grunt.file.read(`test/tmp/test1/icons.${type}`).length, `${name} file not empty.`);
 		});
 
 		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
-			test.ok(fs.existsSync('test/tmp/test1/icons.' + type), name + ' file created.');
-			test.ok(grunt.file.read('test/tmp/test1/icons.' + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(`test/tmp/test1/icons.${type}`), `${name} file created.`);
+			test.ok(grunt.file.read(`test/tmp/test1/icons.${type}`).length, `${name} file not empty.`);
 		});
 
 		const svgs = grunt.file.expand('test/src/**.*');
@@ -48,8 +48,8 @@ export const webfont = {
 		// CSS links to font files are correct
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			test.ok(
-				find(css, 'url("icons.' + type),
-				'File path ' + type + ' should be in CSS file.'
+				find(css, `url("icons.${type}`),
+				`File path ${type} should be in CSS file.`
 			);
 		});
 
@@ -67,16 +67,16 @@ export const webfont = {
 		svgs.forEach((file, index) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, '.icon_' + id + ':before'),
-				'Icon ' + id + ' should be in CSS file.'
+				find(css, `.icon_${id}:before`),
+				`Icon ${id} should be in CSS file.`
 			);
 			test.ok(
-				find(css, 'content:"\\' + (wf.UNICODE_PUA_START + index).toString(16) + '"'),
-				'Character at index ' + index + ' has its codepoint in the CSS'
+				find(css, `content:"\\${(wf.UNICODE_PUA_START + index).toString(16)}"`),
+				`Character at index ${index} has its codepoint in the CSS`
 			);
 			test.ok(
-				find(html, '<div class="icons__item" data-name="' + id + '"><i class="icon icon_' + id + '"></i> icon_' + id + '</div>'),
-				'Icon ' + id + ' should be in HTML file.'
+				find(html, `<div class="icons__item" data-name="${id}"><i class="icon icon_${id}"></i> icon_${id}</div>`),
+				`Icon ${id} should be in HTML file.`
 			);
 		});
 
@@ -95,20 +95,20 @@ export const webfont = {
 		'woff,svg'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/test2/fonts/myfont.';
-			test.ok(fs.existsSync(prefix + type), name + ' file created.');
-			test.ok(grunt.file.read(prefix + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(prefix + type), `${name} file created.`);
+			test.ok(grunt.file.read(prefix + type).length, `${name} file not empty.`);
 		});
 		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
-			test.ok(fs.existsSync('test/tmp/test2/myfont.' + type), name + ' file created.');
-			test.ok(grunt.file.read('test/tmp/test2/myfont.' + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(`test/tmp/test2/myfont.${type}`), `${name} file created.`);
+			test.ok(grunt.file.read(`test/tmp/test2/myfont.${type}`).length, `${name} file not empty.`);
 		});
 
 		// Excluded file types should not be created
 		'eot,ttf'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/test2/fonts/myfont.';
-			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
+			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
 		});
 
 		const svgs = grunt.file.expand('test/src/**.*');
@@ -117,16 +117,16 @@ export const webfont = {
 		// CSS links to font files are correct
 		'woff,svg'.split(',').forEach((type) => {
 			test.ok(
-				find(css, 'url("fonts/myfont.' + type + '?' + hash),
-				'File path ' + type + ' should be in CSS file.'
+				find(css, `url("fonts/myfont.${type}?${hash}`),
+				`File path ${type} should be in CSS file.`
 			);
 		});
 
 		// CSS links to excluded formats should not be included
 		'ttf,eot'.split(',').forEach((type) => {
 			test.ok(
-				!find(css, 'fonts/myfont.' + type),
-				'File path ' + type + ' should be in CSS file.'
+				!find(css, `fonts/myfont.${type}`),
+				`File path ${type} should be in CSS file.`
 			);
 		});
 
@@ -135,12 +135,12 @@ export const webfont = {
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, '.icon-' + id + ':before'),
-				'Icon ' + id + ' should be in CSS file.'
+				find(css, `.icon-${id}:before`),
+				`Icon ${id} should be in CSS file.`
 			);
 			test.ok(
-				find(html, '<div class="icons__item" data-name="' + id + '"><i class=" icon-' + id + '"></i> icon-' + id + '</div>'),
-				'Icon ' + id + ' should be in HTML file.'
+				find(html, `<div class="icons__item" data-name="${id}"><i class=" icon-${id}"></i> icon-${id}</div>`),
+				`Icon ${id} should be in HTML file.`
 			);
 		});
 
@@ -152,15 +152,15 @@ export const webfont = {
 		'ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/embed/icons.';
-			test.ok(fs.existsSync(prefix + type), name + ' file created.');
-			test.ok(grunt.file.read(prefix + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(prefix + type), `${name} file created.`);
+			test.ok(grunt.file.read(prefix + type).length, `${name} file not empty.`);
 		});
 
 		// WOFF should be deleted
 		'woff'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/embed/icons.';
-			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
+			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
 		});
 
 		const css = grunt.file.read('test/tmp/embed/icons.css');
@@ -177,7 +177,7 @@ export const webfont = {
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/embed_woff/icons.';
-			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
+			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
 		});
 
 		const css = grunt.file.read('test/tmp/embed_woff/icons.css');
@@ -195,7 +195,7 @@ export const webfont = {
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/embed_ttf/icons.';
-			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
+			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
 		});
 
 		const css = grunt.file.read('test/tmp/embed_ttf/icons.css');
@@ -213,7 +213,7 @@ export const webfont = {
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/embed_ttf_woff/icons.';
-			test.ok(!fs.existsSync(prefix + type), name + ' file NOT created.');
+			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
 		});
 
 		const css = grunt.file.read('test/tmp/embed_ttf_woff/icons.css');
@@ -232,14 +232,14 @@ export const webfont = {
 		// All out files should be created and should not be empty
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
-			test.ok(fs.existsSync('test/tmp/one/icons.' + type), name + ' file created.');
-			test.ok(grunt.file.read('test/tmp/one/icons.' + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(`test/tmp/one/icons.${type}`), `${name} file created.`);
+			test.ok(grunt.file.read(`test/tmp/one/icons.${type}`).length, `${name} file not empty.`);
 		});
 
 		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
-			test.ok(fs.existsSync('test/tmp/one/icons.' + type), name + ' file created.');
-			test.ok(grunt.file.read('test/tmp/one/icons.' + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(`test/tmp/one/icons.${type}`), `${name} file created.`);
+			test.ok(grunt.file.read(`test/tmp/one/icons.${type}`).length, `${name} file not empty.`);
 		});
 
 		const svgs = grunt.file.expand('test/src_one/**.*');
@@ -248,8 +248,8 @@ export const webfont = {
 		// CSS links to font files are correct
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			test.ok(
-				find(css, 'icons.' + type),
-				'File path ' + type + ' should be in CSS file.'
+				find(css, `icons.${type}`),
+				`File path ${type} should be in CSS file.`
 			);
 		});
 
@@ -257,8 +257,8 @@ export const webfont = {
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, '.icon_' + id + ':before'),
-				'Icon ' + id + ' should be in CSS file.'
+				find(css, `.icon_${id}:before`),
+				`Icon ${id} should be in CSS file.`
 			);
 		});
 
@@ -378,8 +378,8 @@ export const webfont = {
 		// CSS links to font files are correct
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			test.ok(
-				find(css, 'url("../iamrelative/icons.' + type),
-				'File path ' + type + ' should be in CSS file.'
+				find(css, `url("../iamrelative/icons.${type}`),
+				`File path ${type} should be in CSS file.`
 			);
 		});
 
@@ -424,8 +424,8 @@ export const webfont = {
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(less, '.icon_' + id + ' {\n\t&:before'),
-				'LESS Mixin ' + id + ' should be in CSS file.'
+				find(less, `.icon_${id} {\n\t&:before`),
+				`LESS Mixin ${id} should be in CSS file.`
 			);
 		});
 
@@ -492,7 +492,7 @@ export const webfont = {
 			'Spaces in class name should be replaced by hyphens.'
 		);
 		test.ok(
-			find(css, 'content:"\\' + wf.UNICODE_PUA_START.toString(16) + '";'),
+			find(css, `content:"\\${wf.UNICODE_PUA_START.toString(16)}";`),
 			'Right codepoint should exists.'
 		);
 
@@ -537,8 +537,8 @@ export const webfont = {
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(html, '.icon_' + id + ':before'),
-				'Icon ' + id + ' CSS should be in HTML file.'
+				find(html, `.icon_${id}:before`),
+				`Icon ${id} CSS should be in HTML file.`
 			);
 		});
 
@@ -553,8 +553,8 @@ export const webfont = {
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, '.icon_' + id + ':before'),
-				'Icon ' + id + ' should be in CSS file.'
+				find(css, `.icon_${id}:before`),
+				`Icon ${id} should be in CSS file.`
 			);
 		});
 
@@ -569,8 +569,8 @@ export const webfont = {
 		svgs.forEach((file) => {
 			const name = path.basename(file, '.svg');
 			test.ok(
-				find(css, 'content:"'+name+'";'),
-				'Icon ' + name + ' should be in CSS file.'
+				find(css, `content:"${name}";`),
+				`Icon ${name} should be in CSS file.`
 			);
 		});
 
@@ -585,8 +585,8 @@ export const webfont = {
 		svgs.forEach((file) => {
 			const id = [path.basename(path.dirname(file)), path.basename(file, '.svg')].join('-');
 			test.ok(
-				find(css, '.icon_' + id + ':before'),
-				'Icon ' + id + ' should be in CSS file.'
+				find(css, `.icon_${id}:before`),
+				`Icon ${id} should be in CSS file.`
 			);
 		});
 
@@ -620,16 +620,16 @@ export const webfont = {
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			// test.ok(
-			// 		find(less, '.make-icon-' + id + ' {'),
-			// 		'Mixin .make-icon-' + id + ' should be in LESS file.'
+			// 		find(less, `.make-icon-${id} {`),
+			// 		`Mixin .make-icon-${id} should be in LESS file.`
 			// );
 			test.ok(
-				find(less, '.glyph_' + id + ' {'),
-				'Icon .glyph_' + id + ' should be in LESS file.'
+				find(less, `.glyph_${id} {`),
+				`Icon .glyph_${id} should be in LESS file.`
 			);
 			test.ok(
-				find(html, '<div class="icons__item" data-name="' + id + '"><i class="glyph-icon glyph_' + id + '"></i> glyph_' + id + '</div>'),
-				'Icon .glyph_' + id + ' should be in HTML file.'
+				find(html, `<div class="icons__item" data-name="${id}"><i class="glyph-icon glyph_${id}"></i> glyph_${id}</div>`),
+				`Icon .glyph_${id} should be in HTML file.`
 			);
 		});
 
@@ -640,14 +640,14 @@ export const webfont = {
 		// All out files should be created and should not be empty
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
-			test.ok(fs.existsSync('test/tmp/node/icons.' + type), name + ' file created.');
-			test.ok(grunt.file.read('test/tmp/node/icons.' + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(`test/tmp/node/icons.${type}`), `${name} file created.`);
+			test.ok(grunt.file.read(`test/tmp/node/icons.${type}`).length, `${name} file not empty.`);
 		});
 
 		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
-			test.ok(fs.existsSync('test/tmp/node/icons.' + type), name + ' file created.');
-			test.ok(grunt.file.read('test/tmp/node/icons.' + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(`test/tmp/node/icons.${type}`), `${name} file created.`);
+			test.ok(grunt.file.read(`test/tmp/node/icons.${type}`).length, `${name} file not empty.`);
 		});
 
 		const svgs = grunt.file.expand('test/src/**.*');
@@ -657,8 +657,8 @@ export const webfont = {
 		// CSS links to font files are correct
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			test.ok(
-				find(css, 'url("icons.' + type),
-				'File path ' + type + ' shound be in CSS file.'
+				find(css, `url("icons.${type}`),
+				`File path ${type} shound be in CSS file.`
 			);
 		});
 
@@ -676,12 +676,12 @@ export const webfont = {
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, '.icon_' + id + ':before'),
-				'Icon ' + id + ' shound be in CSS file.'
+				find(css, `.icon_${id}:before`),
+				`Icon ${id} shound be in CSS file.`
 			);
 			test.ok(
-				find(html, '<div class="icons__item" data-name="' + id + '"><i class="icon icon_' + id + '"></i> icon_' + id + '</div>'),
-				'Icon ' + id + ' shound be in HTML file.'
+				find(html, `<div class="icons__item" data-name="${id}"><i class="icon icon_${id}"></i> icon_${id}</div>`),
+				`Icon ${id} shound be in HTML file.`
 			);
 		});
 
@@ -696,8 +696,8 @@ export const webfont = {
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, '.icon_' + id + ' {'),
-				'Icon ' + id + ' shound be in CSS file.'
+				find(css, `.icon_${id} {`),
+				`Icon ${id} shound be in CSS file.`
 			);
 		});
 		test.done();
@@ -711,8 +711,8 @@ export const webfont = {
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, '.icon-' + id + ' {'),
-				'Icon ' + id + ' shound be in CSS file.'
+				find(css, `.icon-${id} {`),
+				`Icon ${id} shound be in CSS file.`
 			);
 		});
 		test.done();
@@ -764,8 +764,8 @@ export const webfont = {
 				for (let index = 0; index < glyphs.length; index++) {
 					test.equals(0, findDuplicates(unicodeCharArr).length);
 					test.ok(
-						find(css, 'content:"\\' + (startCodepoint + index).toString(16) + '"'),
-						'Character at index ' + index + ' has its codepoint in the CSS'
+						find(css, `content:"\\${(startCodepoint + index).toString(16)}"`),
+						`Character at index ${index} has its codepoint in the CSS`
 					);
 				}
 			});
@@ -782,8 +782,8 @@ export const webfont = {
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, '.icon_' + id + ':before'),
-				'Icon ' + id + ' should be in CSS file.'
+				find(css, `.icon_${id}:before`),
+				`Icon ${id} should be in CSS file.`
 			);
 		});
 
@@ -808,7 +808,7 @@ export const webfont = {
 			});
 
 			glyphs.forEach((glyph) => {
-				test.equals(glyph.d, paths[glyph['glyph-name']], 'Glyph with codepoint ' + glyph.unicode + ' has correct path.');
+				test.equals(glyph.d, paths[glyph['glyph-name']], `Glyph with codepoint ${glyph.unicode} has correct path.`);
 			});
 		});
 
@@ -819,19 +819,19 @@ export const webfont = {
 		// All out files should be created and should not be empty
 		'woff,woff2'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
-			test.ok(fs.existsSync('test/tmp/woff2/icons.' + type), name + ' file created.');
-			test.ok(grunt.file.read('test/tmp/woff2/icons.' + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(`test/tmp/woff2/icons.${type}`), `${name} file created.`);
+			test.ok(grunt.file.read(`test/tmp/woff2/icons.${type}`).length, `${name} file not empty.`);
 		});
 
 		// TTF file should be deleted
 		'ttf'.split(',').forEach((type) => {
-			test.ok(!fs.existsSync('test/tmp/woff2/icons.' + type), type.toUpperCase() + ' file NOT created.');
+			test.ok(!fs.existsSync(`test/tmp/woff2/icons.${type}`), `${type.toUpperCase()} file NOT created.`);
 		});
 
 		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
-			test.ok(fs.existsSync('test/tmp/woff2/icons.' + type), name + ' file created.');
-			test.ok(grunt.file.read('test/tmp/woff2/icons.' + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(`test/tmp/woff2/icons.${type}`), `${name} file created.`);
+			test.ok(grunt.file.read(`test/tmp/woff2/icons.${type}`).length, `${name} file not empty.`);
 		});
 
 		//const svgs = grunt.file.expand('test/src/**.*');
@@ -841,16 +841,16 @@ export const webfont = {
 		// CSS links to font files are correct
 		'woff2,woff'.split(',').forEach((type) => {
 			test.ok(
-				find(css, 'url("icons.' + type),
-				'File path ' + type + ' shound be in CSS file.'
+				find(css, `url("icons.${type}`),
+				`File path ${type} shound be in CSS file.`
 			);
 		});
 
 		// CSS links to TTF should not be created
 		'ttf'.split(',').forEach((type) => {
 			test.ok(
-				!find(css, 'url("icons.' + type),
-				'File path ' + type + ' shound NOT be in CSS file.'
+				!find(css, `url("icons.${type}`),
+				`File path ${type} shound NOT be in CSS file.`
 			);
 		});
 
@@ -861,19 +861,19 @@ export const webfont = {
 		// All out files should be created and should not be empty
 		'woff,woff2'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
-			test.ok(fs.existsSync('test/tmp/woff2_node/icons.' + type), name + ' file created.');
-			test.ok(grunt.file.read('test/tmp/woff2_node/icons.' + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(`test/tmp/woff2_node/icons.${type}`), `${name} file created.`);
+			test.ok(grunt.file.read(`test/tmp/woff2_node/icons.${type}`).length, `${name} file not empty.`);
 		});
 
 		// TTF file should be deleted
 		'ttf'.split(',').forEach((type) => {
-			test.ok(!fs.existsSync('test/tmp/woff2_node/icons.' + type), type.toUpperCase() + ' file NOT created.');
+			test.ok(!fs.existsSync(`test/tmp/woff2_node/icons.${type}`), `${type.toUpperCase()} file NOT created.`);
 		});
 
 		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
-			test.ok(fs.existsSync('test/tmp/woff2_node/icons.' + type), name + ' file created.');
-			test.ok(grunt.file.read('test/tmp/woff2_node/icons.' + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(`test/tmp/woff2_node/icons.${type}`), `${name} file created.`);
+			test.ok(grunt.file.read(`test/tmp/woff2_node/icons.${type}`).length, `${name} file not empty.`);
 		});
 
 		//const svgs = grunt.file.expand('test/src/**.*');
@@ -883,16 +883,16 @@ export const webfont = {
 		// CSS links to font files are correct
 		'woff2,woff'.split(',').forEach((type) => {
 			test.ok(
-				find(css, 'url("icons.' + type),
-				'File path ' + type + ' shound be in CSS file.'
+				find(css, `url("icons.${type}`),
+				`File path ${type} shound be in CSS file.`
 			);
 		});
 
 		// CSS links to TTF should not be created
 		'ttf'.split(',').forEach((type) => {
 			test.ok(
-				!find(css, 'url("icons.' + type),
-				'File path ' + type + ' shound NOT be in CSS file.'
+				!find(css, `url("icons.${type}`),
+				`File path ${type} shound NOT be in CSS file.`
 			);
 		});
 
@@ -906,8 +906,8 @@ export const webfont = {
 
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
-			test.ok(fs.existsSync('test/tmp/target_overrides_icons/icons.' + type), name + ' file created.');
-			test.ok(grunt.file.read('test/tmp/target_overrides_icons/icons.' + type).length, name + ' file not empty.');
+			test.ok(fs.existsSync(`test/tmp/target_overrides_icons/icons.${type}`), `${name} file created.`);
+			test.ok(grunt.file.read(`test/tmp/target_overrides_icons/icons.${type}`).length, `${name} file not empty.`);
 		});
 
 		test.done();

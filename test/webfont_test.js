@@ -902,7 +902,7 @@ export const webfont = {
 	target_overrides: (test) => {
 
 		//const css = grunt.file.read('test/tmp/target_overrides_css/icons.css');
-		test.ok(fs.existsSync('test/tmp/target_overrides_css/icons.css') + ' file created.');
+		test.ok(fs.existsSync('test/tmp/target_overrides_css/icons.css'), 'CSS file created.');
 
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();

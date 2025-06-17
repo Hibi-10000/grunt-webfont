@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import grunt from 'grunt';
+import { globSync } from 'glob';
 import stylus from 'stylus';
 import { parseString as parseXMLString } from 'xml2js';
 import * as wf from '../tasks/util/util.js';
@@ -24,6 +24,11 @@ function findDuplicates(haystack, needles) {
 
 	return results;
 }
+
+const grunt = { file: {
+	read: (/** @type {string} */filename) => fs.readFileSync(filename, 'utf8'),
+	expand: (/** @type {string} */pattern) => globSync(pattern, { posix: true }),
+} };
 
 /** @type {{ [key: string]: (test: import('nodeunit').Test) => void }} */
 export const webfont = {

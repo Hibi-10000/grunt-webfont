@@ -25,11 +25,6 @@ function findDuplicates(haystack, needles) {
 	return results;
 }
 
-const grunt = { file: {
-	read: (/** @type {string} */filename) => fs.readFileSync(filename, 'utf8'),
-	expand: (/** @type {string} */pattern) => globSync(pattern, { posix: true }),
-} };
-
 /** @type {{ [key: string]: (test: import('nodeunit').Test) => void }} */
 export const webfont = {
 	test1: (test) => {
@@ -37,18 +32,18 @@ export const webfont = {
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/test1/icons.${type}`), `${name} file created.`);
-			test.ok(grunt.file.read(`test/tmp/test1/icons.${type}`).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(`test/tmp/test1/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
 		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/test1/icons.${type}`), `${name} file created.`);
-			test.ok(grunt.file.read(`test/tmp/test1/icons.${type}`).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(`test/tmp/test1/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
-		const svgs = grunt.file.expand('test/src/**.*');
-		const css = grunt.file.read('test/tmp/test1/icons.css');
-		const html = grunt.file.read('test/tmp/test1/icons.html');
+		const svgs = globSync('test/src/**.*');
+		const css = fs.readFileSync('test/tmp/test1/icons.css', 'utf8');
+		const html = fs.readFileSync('test/tmp/test1/icons.html', 'utf8');
 
 		// CSS links to font files are correct
 		'woff,ttf,eot'.split(',').forEach((type) => {
@@ -89,7 +84,7 @@ export const webfont = {
 	},
 
 	test2: (test) => {
-		const css = grunt.file.read('test/tmp/test2/myfont.css');
+		const css = fs.readFileSync('test/tmp/test2/myfont.css', 'utf8');
 
 		// Read hash
 		const hashes = css.match(/url\("fonts\/myfont\.woff\?([0-9a-f]{32})"\)/);
@@ -101,12 +96,12 @@ export const webfont = {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/test2/fonts/myfont.';
 			test.ok(fs.existsSync(prefix + type), `${name} file created.`);
-			test.ok(grunt.file.read(prefix + type).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(prefix + type, 'utf8').length, `${name} file not empty.`);
 		});
 		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/test2/myfont.${type}`), `${name} file created.`);
-			test.ok(grunt.file.read(`test/tmp/test2/myfont.${type}`).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(`test/tmp/test2/myfont.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
 		// Excluded file types should not be created
@@ -116,8 +111,8 @@ export const webfont = {
 			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
 		});
 
-		const svgs = grunt.file.expand('test/src/**.*');
-		const html = grunt.file.read('test/tmp/test2/myfont.html');
+		const svgs = globSync('test/src/**.*');
+		const html = fs.readFileSync('test/tmp/test2/myfont.html', 'utf8');
 
 		// CSS links to font files are correct
 		'woff,svg'.split(',').forEach((type) => {
@@ -158,7 +153,7 @@ export const webfont = {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/embed/icons.';
 			test.ok(fs.existsSync(prefix + type), `${name} file created.`);
-			test.ok(grunt.file.read(prefix + type).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(prefix + type, 'utf8').length, `${name} file not empty.`);
 		});
 
 		// WOFF should be deleted
@@ -168,7 +163,7 @@ export const webfont = {
 			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
 		});
 
-		const css = grunt.file.read('test/tmp/embed/icons.css');
+		const css = fs.readFileSync('test/tmp/embed/icons.css', 'utf8');
 
 		// Data:uri
 		const m = css.match(/data:application\/x-font-woff;charset=utf-8;base64,.*?format\("woff"\)/g);
@@ -185,7 +180,7 @@ export const webfont = {
 			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
 		});
 
-		const css = grunt.file.read('test/tmp/embed_woff/icons.css');
+		const css = fs.readFileSync('test/tmp/embed_woff/icons.css', 'utf8');
 		let m;
 
 		// Data:uri
@@ -203,7 +198,7 @@ export const webfont = {
 			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
 		});
 
-		const css = grunt.file.read('test/tmp/embed_ttf/icons.css');
+		const css = fs.readFileSync('test/tmp/embed_ttf/icons.css', 'utf8');
 		let m;
 
 		// Data:uri
@@ -221,7 +216,7 @@ export const webfont = {
 			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
 		});
 
-		const css = grunt.file.read('test/tmp/embed_ttf_woff/icons.css');
+		const css = fs.readFileSync('test/tmp/embed_ttf_woff/icons.css', 'utf8');
 		let m;
 
 		// Data:uri
@@ -238,17 +233,17 @@ export const webfont = {
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/one/icons.${type}`), `${name} file created.`);
-			test.ok(grunt.file.read(`test/tmp/one/icons.${type}`).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(`test/tmp/one/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
 		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/one/icons.${type}`), `${name} file created.`);
-			test.ok(grunt.file.read(`test/tmp/one/icons.${type}`).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(`test/tmp/one/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
-		const svgs = grunt.file.expand('test/src_one/**.*');
-		const css = grunt.file.read('test/tmp/one/icons.css');
+		const svgs = globSync('test/src_one/**.*');
+		const css = fs.readFileSync('test/tmp/one/icons.css', 'utf8');
 
 		// CSS links to font files are correct
 		'woff,ttf,eot'.split(',').forEach((type) => {
@@ -271,7 +266,7 @@ export const webfont = {
 	},
 
 	template: (test) => {
-		const css = grunt.file.read('test/tmp/template/icons.css');
+		const css = fs.readFileSync('test/tmp/template/icons.css', 'utf8');
 
 		// There should be comment from custom template
 		test.ok(
@@ -287,7 +282,7 @@ export const webfont = {
 
 		test.ok(fs.existsSync(cssFilename), 'SCSS template: .scss file created.');
 
-		const css = grunt.file.read(cssFilename);
+		const css = fs.readFileSync(cssFilename, 'utf8');
 
 		// There should be comment from custom template
 		test.ok(
@@ -303,7 +298,7 @@ export const webfont = {
 
 		test.ok(fs.existsSync(cssFilename), 'SASS template: .sass file created (stylesheet extension derived from template name).');
 
-		const css = grunt.file.read(cssFilename);
+		const css = fs.readFileSync(cssFilename, 'utf8');
 
 		// There should be comment from custom template
 		test.ok(
@@ -319,9 +314,9 @@ export const webfont = {
 		const lessFilename = 'test/tmp/enabled_template_variables/icons.less';
 		const htmlFilename = 'test/tmp/enabled_template_variables/icons.html';
 
-		const scss = grunt.file.read(scssFilename);
-		const less = grunt.file.read(lessFilename);
-		const html = grunt.file.read(htmlFilename);
+		const scss = fs.readFileSync(scssFilename, 'utf8');
+		const less = fs.readFileSync(lessFilename, 'utf8');
+		const html = fs.readFileSync(htmlFilename, 'utf8');
 
 		// There should be a variable declaration for scss preprocessor
 		test.ok(
@@ -357,7 +352,7 @@ export const webfont = {
 	},
 
 	html_template: (test) => {
-		const demo = grunt.file.read('test/tmp/html_template/icons.html');
+		const demo = fs.readFileSync('test/tmp/html_template/icons.html', 'utf8');
 
 		// There should be comment from custom template
 		test.ok(
@@ -378,7 +373,7 @@ export const webfont = {
 	},
 
 	relative_path: (test) => {
-		const css = grunt.file.read('test/tmp/relative_path/icons.css');
+		const css = fs.readFileSync('test/tmp/relative_path/icons.css', 'utf8');
 
 		// CSS links to font files are correct
 		'woff,ttf,eot'.split(',').forEach((type) => {
@@ -396,8 +391,8 @@ export const webfont = {
 		test.ok(!fs.existsSync('test/tmp/sass/icons.sass'), 'SASS file without underscore not created.');
 		test.ok(!fs.existsSync('test/tmp/sass/icons.css'), 'CSS file not created.');
 
-		//const svgs = grunt.file.expand('test/src/**.*');
-		const sass = grunt.file.read('test/tmp/sass/_icons.sass');
+		//const svgs = globSync('test/src/**.*');
+		const sass = fs.readFileSync('test/tmp/sass/_icons.sass', 'utf8');
 
 		// There should be comment from custom template
 		let m = sass.match(/\/\* *(.*?) *\*\//g);
@@ -414,8 +409,8 @@ export const webfont = {
 		test.ok(fs.existsSync('test/tmp/less/icons.less'), 'LESS file created.');
 		test.ok(!fs.existsSync('test/tmp/less/icons.css'), 'CSS file not created.');
 
-		const svgs = grunt.file.expand('test/src/**.*');
-		const less = grunt.file.read('test/tmp/less/icons.less');
+		const svgs = globSync('test/src/**.*');
+		const less = fs.readFileSync('test/tmp/less/icons.less', 'utf8');
 
 		// There should be comment from custom template
 		let m = less.match(/\/\* *(.*?) *\*\//g);
@@ -449,7 +444,7 @@ export const webfont = {
 		test.ok(fs.existsSync('test/tmp/stylus_bem/icons.styl'), 'Stylus file created.');
 		test.ok(!fs.existsSync('test/tmp/stylus_bem/icons.css'), 'CSS file not created.');
 
-		const styl = grunt.file.read('test/tmp/stylus_bem/icons.styl');
+		const styl = fs.readFileSync('test/tmp/stylus_bem/icons.styl', 'utf8');
 
 		// There should be comment from custom template
 		let m = styl.match(/\/\* *(.*?) *\*\//g);
@@ -475,7 +470,7 @@ export const webfont = {
 		test.ok(fs.existsSync('test/tmp/stylus_bootstrap/icons.styl'), 'Stylus file created.');
 		test.ok(!fs.existsSync('test/tmp/stylus_bootstrap/icons.css'), 'CSS file not created.');
 
-		const styl = grunt.file.read('test/tmp/stylus_bootstrap/icons.styl');
+		const styl = fs.readFileSync('test/tmp/stylus_bootstrap/icons.styl', 'utf8');
 
 		const s = stylus(styl);
 
@@ -490,7 +485,7 @@ export const webfont = {
 	},
 
 	spaces: (test) => {
-		const css = grunt.file.read('test/tmp/spaces/icons.css');
+		const css = fs.readFileSync('test/tmp/spaces/icons.css', 'utf8');
 
 		test.ok(
 			find(css, '.icon_ma-il-ru:before'),
@@ -515,7 +510,7 @@ export const webfont = {
 		test.ok(!fs.existsSync('test/tmp/non_css_demo/icons.css'), 'CSS file not created.');
 		test.ok(fs.existsSync('test/tmp/non_css_demo/icons.html'), 'HTML file created.');
 
-		const html = grunt.file.read('test/tmp/non_css_demo/icons.html');
+		const html = fs.readFileSync('test/tmp/non_css_demo/icons.html', 'utf8');
 
 		test.ok(
 			find(html, '@font-face {'),
@@ -538,7 +533,7 @@ export const webfont = {
 		);
 
 		// Every SVG file should have corresponding entry in <style> block
-		const svgs = grunt.file.expand('test/src/**.*');
+		const svgs = globSync('test/src/**.*');
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
@@ -551,8 +546,8 @@ export const webfont = {
 	},
 
 	parent_source: (test) => {
-		const svgs = grunt.file.expand('test/src/**.*');
-		const css = grunt.file.read('test/tmp/parent_source/icons.css');
+		const svgs = globSync('test/src/**.*');
+		const css = fs.readFileSync('test/tmp/parent_source/icons.css', 'utf8');
 
 		// Every SVG file should have corresponding entry in CSS file
 		svgs.forEach((file) => {
@@ -567,8 +562,8 @@ export const webfont = {
 	},
 
 	ligatures: (test) => {
-		const svgs = grunt.file.expand('test/ligatures_src/**.*');
-		const css = grunt.file.read('test/tmp/ligatures/icons.css');
+		const svgs = globSync('test/ligatures_src/**.*');
+		const css = fs.readFileSync('test/tmp/ligatures/icons.css', 'utf8');
 
 		// Every SVG file should have corresponding entry in CSS file
 		svgs.forEach((file) => {
@@ -583,8 +578,8 @@ export const webfont = {
 	},
 
 	duplicate_names: (test) => {
-		const svgs = grunt.file.expand('test/src_duplicate_names/**/*.svg');
-		const css = grunt.file.read('test/tmp/duplicate_names/icons.css');
+		const svgs = globSync('test/src_duplicate_names/**/*.svg');
+		const css = fs.readFileSync('test/tmp/duplicate_names/icons.css', 'utf8');
 
 		// Every SVG file should have corresponding entry in CSS file
 		svgs.forEach((file) => {
@@ -599,8 +594,8 @@ export const webfont = {
 	},
 
 	order: (test) => {
-		//const svgs = grunt.file.expand('test/src/**.*');
-		const css = grunt.file.read('test/tmp/order/icons.css');
+		//const svgs = globSync('test/src/**.*');
+		const css = fs.readFileSync('test/tmp/order/icons.css', 'utf8');
 
 		// Font-face src rules should be in right order
 		test.ok(
@@ -612,9 +607,9 @@ export const webfont = {
 	},
 
 	template_options: (test) => {
-		const svgs = grunt.file.expand('test/src/**.*');
-		const less = grunt.file.read('test/tmp/template_options/icons.less');
-		const html = grunt.file.read('test/tmp/template_options/icons.html');
+		const svgs = globSync('test/src/**.*');
+		const less = fs.readFileSync('test/tmp/template_options/icons.less', 'utf8');
+		const html = fs.readFileSync('test/tmp/template_options/icons.html', 'utf8');
 
 		test.ok(
 			find(less, '.glyph-icon {'),
@@ -646,18 +641,18 @@ export const webfont = {
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/node/icons.${type}`), `${name} file created.`);
-			test.ok(grunt.file.read(`test/tmp/node/icons.${type}`).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(`test/tmp/node/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
 		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/node/icons.${type}`), `${name} file created.`);
-			test.ok(grunt.file.read(`test/tmp/node/icons.${type}`).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(`test/tmp/node/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
-		const svgs = grunt.file.expand('test/src/**.*');
-		const css = grunt.file.read('test/tmp/node/icons.css');
-		const html = grunt.file.read('test/tmp/node/icons.html');
+		const svgs = globSync('test/src/**.*');
+		const css = fs.readFileSync('test/tmp/node/icons.css', 'utf8');
+		const html = fs.readFileSync('test/tmp/node/icons.html', 'utf8');
 
 		// CSS links to font files are correct
 		'woff,ttf,eot'.split(',').forEach((type) => {
@@ -694,8 +689,8 @@ export const webfont = {
 	},
 
 	ie7: (test) => {
-		const css = grunt.file.read('test/tmp/ie7/icons.css');
-		const svgs = grunt.file.expand('test/src/*.svg');
+		const css = fs.readFileSync('test/tmp/ie7/icons.css', 'utf8');
+		const svgs = globSync('test/src/*.svg');
 		test.ok(find(css, '*zoom'), '*zoom property should be set');
 		test.ok(find(css, '&#x') , 'HTML char are present');
 		svgs.forEach((file) => {
@@ -709,8 +704,8 @@ export const webfont = {
 	},
 
 	ie7_bootstrap: (test) => {
-		const css = grunt.file.read('test/tmp/ie7_bootstrap/icons.css');
-		const svgs = grunt.file.expand('test/src/*.svg');
+		const css = fs.readFileSync('test/tmp/ie7_bootstrap/icons.css', 'utf8');
+		const svgs = globSync('test/src/*.svg');
 		test.ok(find(css, '*zoom'), '*zoom property should be set');
 		test.ok(find(css, '&#x') , 'HTML char are present');
 		svgs.forEach((file) => {
@@ -725,7 +720,7 @@ export const webfont = {
 
 	optimize_enabled: (test) => {
 		const optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
-		const svg = grunt.file.read('test/tmp/optimize_enabled/icons.svg');
+		const svg = fs.readFileSync('test/tmp/optimize_enabled/icons.svg', 'utf8');
 		if(svg.indexOf(optimizedPathSegment) === -1) {
 			test.fail(true, 'SVG element must be contains the optimized path', undefined, undefined);
 		}
@@ -734,7 +729,7 @@ export const webfont = {
 
 	optimize_disabled: (test) => {
 		const optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
-		const svg = grunt.file.read('test/tmp/optimize_disabled/icons.svg');
+		const svg = fs.readFileSync('test/tmp/optimize_disabled/icons.svg', 'utf8');
 		if(svg.indexOf(optimizedPathSegment) > -1) {
 			test.fail(true, 'SVG element must be contains the un-optimized path', undefined, undefined);
 		}
@@ -743,14 +738,14 @@ export const webfont = {
 
 	codepoints: (test) => {
 		// Default codepoint of 0xE001 can be overidden
-		const resultSVG = grunt.file.expand('test/tmp/codepoints/icons.svg');
-		const css = grunt.file.read('test/tmp/codepoints/icons.css');
-		//const html = grunt.file.read('test/tmp/codepoints/icons.html');
+		const resultSVG = globSync('test/tmp/codepoints/icons.svg');
+		const css = fs.readFileSync('test/tmp/codepoints/icons.css', 'utf8');
+		//const html = fs.readFileSync('test/tmp/codepoints/icons.html', 'utf8');
 		const startCodepoint = 0x41;
 
 		// Generated SVG font should have glyphs at the overidden codepoints
 		resultSVG.forEach((file) => {
-			const svgSource = grunt.file.read(file);
+			const svgSource = fs.readFileSync(file, 'utf8');
 			/** @type {{ unicode: string }[]} */
 			const glyphs = [];
 
@@ -780,8 +775,8 @@ export const webfont = {
 	},
 
 	camel: (test) => {
-		const svgs = grunt.file.expand('test/camel/*.svg');
-		const css = grunt.file.read('test/tmp/camel/icons.css');
+		const svgs = globSync('test/camel/*.svg');
+		const css = fs.readFileSync('test/tmp/camel/icons.css', 'utf8');
 
 		// Every SVG file should have corresponding entries in CSS file in the same case
 		svgs.forEach((file) => {
@@ -800,8 +795,8 @@ export const webfont = {
 		test.done();
 		if (true) return;
 
-		const svgFont = grunt.file.read('test/tmp/folders/icons.svg');
-		const paths = JSON.parse(grunt.file.read('test/src_folders/paths.json'));
+		const svgFont = fs.readFileSync('test/tmp/folders/icons.svg', 'utf8');
+		const paths = JSON.parse(fs.readFileSync('test/src_folders/paths.json', 'utf8'));
 		/** @type {{ unicode: string, d: string, "glyph-name": string }[]} */
 		const glyphs = [];
 		parseXMLString(svgFont, (err, result) => {
@@ -825,7 +820,7 @@ export const webfont = {
 		'woff,woff2'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/woff2/icons.${type}`), `${name} file created.`);
-			test.ok(grunt.file.read(`test/tmp/woff2/icons.${type}`).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(`test/tmp/woff2/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
 		// TTF file should be deleted
@@ -836,12 +831,12 @@ export const webfont = {
 		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/woff2/icons.${type}`), `${name} file created.`);
-			test.ok(grunt.file.read(`test/tmp/woff2/icons.${type}`).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(`test/tmp/woff2/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
-		//const svgs = grunt.file.expand('test/src/**.*');
-		const css = grunt.file.read('test/tmp/woff2/icons.css');
-		//const html = grunt.file.read('test/tmp/woff2/icons.html');
+		//const svgs = globSync('test/src/**.*');
+		const css = fs.readFileSync('test/tmp/woff2/icons.css', 'utf8');
+		//const html = fs.readFileSync('test/tmp/woff2/icons.html', 'utf8');
 
 		// CSS links to font files are correct
 		'woff2,woff'.split(',').forEach((type) => {
@@ -867,7 +862,7 @@ export const webfont = {
 		'woff,woff2'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/woff2_node/icons.${type}`), `${name} file created.`);
-			test.ok(grunt.file.read(`test/tmp/woff2_node/icons.${type}`).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(`test/tmp/woff2_node/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
 		// TTF file should be deleted
@@ -878,12 +873,12 @@ export const webfont = {
 		'css,html'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/woff2_node/icons.${type}`), `${name} file created.`);
-			test.ok(grunt.file.read(`test/tmp/woff2_node/icons.${type}`).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(`test/tmp/woff2_node/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
-		//const svgs = grunt.file.expand('test/src/**.*');
-		const css = grunt.file.read('test/tmp/woff2_node/icons.css');
-		//const html = grunt.file.read('test/tmp/woff2_node/icons.html');
+		//const svgs = globSync('test/src/**.*');
+		const css = fs.readFileSync('test/tmp/woff2_node/icons.css', 'utf8');
+		//const html = fs.readFileSync('test/tmp/woff2_node/icons.html', 'utf8');
 
 		// CSS links to font files are correct
 		'woff2,woff'.split(',').forEach((type) => {
@@ -906,20 +901,20 @@ export const webfont = {
 
 	target_overrides: (test) => {
 
-		//const css = grunt.file.read('test/tmp/target_overrides_css/icons.css');
+		//const css = fs.readFileSync('test/tmp/target_overrides_css/icons.css', 'utf8');
 		test.ok(fs.existsSync('test/tmp/target_overrides_css/icons.css'), 'CSS file created.');
 
 		'woff,ttf,eot'.split(',').forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/target_overrides_icons/icons.${type}`), `${name} file created.`);
-			test.ok(grunt.file.read(`test/tmp/target_overrides_icons/icons.${type}`).length, `${name} file not empty.`);
+			test.ok(fs.readFileSync(`test/tmp/target_overrides_icons/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
 		test.done();
 	},
 
 	font_family_name: (test) => {
-		const html = grunt.file.read('test/tmp/font_family_name/icons.html');
+		const html = fs.readFileSync('test/tmp/font_family_name/icons.html', 'utf8');
 
 		// fontFamilyName should be in the HTML file's title
 		test.ok(

@@ -29,13 +29,13 @@ function findDuplicates(haystack, needles) {
 export const webfont = {
 	test1: (test) => {
 		// All out files should be created and should not be empty
-		'woff,ttf,eot'.split(',').forEach((type) => {
+		['woff', 'ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/test1/icons.${type}`), `${name} file created.`);
 			test.ok(fs.readFileSync(`test/tmp/test1/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
-		'css,html'.split(',').forEach((type) => {
+		['css', 'html'].forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/test1/icons.${type}`), `${name} file created.`);
 			test.ok(fs.readFileSync(`test/tmp/test1/icons.${type}`, 'utf8').length, `${name} file not empty.`);
@@ -46,7 +46,7 @@ export const webfont = {
 		const html = fs.readFileSync('test/tmp/test1/icons.html', 'utf8');
 
 		// CSS links to font files are correct
-		'woff,ttf,eot'.split(',').forEach((type) => {
+		['woff', 'ttf', 'eot'].forEach((type) => {
 			test.ok(
 				find(css, `url("icons.${type}`),
 				`File path ${type} should be in CSS file.`
@@ -92,20 +92,20 @@ export const webfont = {
 		test.ok(hash, 'Hash calculated.');
 
 		// All out files should be created and should not be empty
-		'woff,svg'.split(',').forEach((type) => {
+		['woff', 'svg'].forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/test2/fonts/myfont.';
 			test.ok(fs.existsSync(prefix + type), `${name} file created.`);
 			test.ok(fs.readFileSync(prefix + type, 'utf8').length, `${name} file not empty.`);
 		});
-		'css,html'.split(',').forEach((type) => {
+		['css', 'html'].forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/test2/myfont.${type}`), `${name} file created.`);
 			test.ok(fs.readFileSync(`test/tmp/test2/myfont.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
 		// Excluded file types should not be created
-		'eot,ttf'.split(',').forEach((type) => {
+		['eot', 'ttf'].forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/test2/fonts/myfont.';
 			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
@@ -115,7 +115,7 @@ export const webfont = {
 		const html = fs.readFileSync('test/tmp/test2/myfont.html', 'utf8');
 
 		// CSS links to font files are correct
-		'woff,svg'.split(',').forEach((type) => {
+		['woff', 'svg'].forEach((type) => {
 			test.ok(
 				find(css, `url("fonts/myfont.${type}?${hash}`),
 				`File path ${type} should be in CSS file.`
@@ -123,7 +123,7 @@ export const webfont = {
 		});
 
 		// CSS links to excluded formats should not be included
-		'ttf,eot'.split(',').forEach((type) => {
+		['ttf', 'eot'].forEach((type) => {
 			test.ok(
 				!find(css, `fonts/myfont.${type}`),
 				`File path ${type} should be in CSS file.`
@@ -149,7 +149,7 @@ export const webfont = {
 
 	embed: (test) => {
 		// All out files should be created and should not be empty
-		'ttf,eot'.split(',').forEach((type) => {
+		['ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/embed/icons.';
 			test.ok(fs.existsSync(prefix + type), `${name} file created.`);
@@ -157,7 +157,7 @@ export const webfont = {
 		});
 
 		// WOFF should be deleted
-		'woff'.split(',').forEach((type) => {
+		['woff'].forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/embed/icons.';
 			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
@@ -174,7 +174,7 @@ export const webfont = {
 
 	embed_woff: (test) => {
 		// Excluded file types should not be created + WOFF should be deleted
-		'woff,ttf,eot'.split(',').forEach((type) => {
+		['woff', 'ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/embed_woff/icons.';
 			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
@@ -192,7 +192,7 @@ export const webfont = {
 
 	embed_ttf: (test) => {
 		// Excluded file types should not be created + TTF should be deleted
-		'woff,ttf,eot'.split(',').forEach((type) => {
+		['woff', 'ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/embed_ttf/icons.';
 			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
@@ -210,7 +210,7 @@ export const webfont = {
 
 	embed_ttf_woff: (test) => {
 		// Excluded file types should not be created + TTF should be deleted
-		'woff,ttf,eot'.split(',').forEach((type) => {
+		['woff', 'ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
 			const prefix = 'test/tmp/embed_ttf_woff/icons.';
 			test.ok(!fs.existsSync(prefix + type), `${name} file NOT created.`);
@@ -230,13 +230,13 @@ export const webfont = {
 
 	one: (test) => {
 		// All out files should be created and should not be empty
-		'woff,ttf,eot'.split(',').forEach((type) => {
+		['woff', 'ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/one/icons.${type}`), `${name} file created.`);
 			test.ok(fs.readFileSync(`test/tmp/one/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
-		'css,html'.split(',').forEach((type) => {
+		['css', 'html'].forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/one/icons.${type}`), `${name} file created.`);
 			test.ok(fs.readFileSync(`test/tmp/one/icons.${type}`, 'utf8').length, `${name} file not empty.`);
@@ -246,7 +246,7 @@ export const webfont = {
 		const css = fs.readFileSync('test/tmp/one/icons.css', 'utf8');
 
 		// CSS links to font files are correct
-		'woff,ttf,eot'.split(',').forEach((type) => {
+		['woff', 'ttf', 'eot'].forEach((type) => {
 			test.ok(
 				find(css, `icons.${type}`),
 				`File path ${type} should be in CSS file.`
@@ -376,7 +376,7 @@ export const webfont = {
 		const css = fs.readFileSync('test/tmp/relative_path/icons.css', 'utf8');
 
 		// CSS links to font files are correct
-		'woff,ttf,eot'.split(',').forEach((type) => {
+		['woff', 'ttf', 'eot'].forEach((type) => {
 			test.ok(
 				find(css, `url("../iamrelative/icons.${type}`),
 				`File path ${type} should be in CSS file.`
@@ -638,13 +638,13 @@ export const webfont = {
 
 	node: (test) => {
 		// All out files should be created and should not be empty
-		'woff,ttf,eot'.split(',').forEach((type) => {
+		['woff', 'ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/node/icons.${type}`), `${name} file created.`);
 			test.ok(fs.readFileSync(`test/tmp/node/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
-		'css,html'.split(',').forEach((type) => {
+		['css', 'html'].forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/node/icons.${type}`), `${name} file created.`);
 			test.ok(fs.readFileSync(`test/tmp/node/icons.${type}`, 'utf8').length, `${name} file not empty.`);
@@ -655,7 +655,7 @@ export const webfont = {
 		const html = fs.readFileSync('test/tmp/node/icons.html', 'utf8');
 
 		// CSS links to font files are correct
-		'woff,ttf,eot'.split(',').forEach((type) => {
+		['woff', 'ttf', 'eot'].forEach((type) => {
 			test.ok(
 				find(css, `url("icons.${type}`),
 				`File path ${type} shound be in CSS file.`
@@ -817,18 +817,18 @@ export const webfont = {
 
 	woff2: (test) => {
 		// All out files should be created and should not be empty
-		'woff,woff2'.split(',').forEach((type) => {
+		['woff', 'woff2'].forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/woff2/icons.${type}`), `${name} file created.`);
 			test.ok(fs.readFileSync(`test/tmp/woff2/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
 		// TTF file should be deleted
-		'ttf'.split(',').forEach((type) => {
+		['ttf'].forEach((type) => {
 			test.ok(!fs.existsSync(`test/tmp/woff2/icons.${type}`), `${type.toUpperCase()} file NOT created.`);
 		});
 
-		'css,html'.split(',').forEach((type) => {
+		['css', 'html'].forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/woff2/icons.${type}`), `${name} file created.`);
 			test.ok(fs.readFileSync(`test/tmp/woff2/icons.${type}`, 'utf8').length, `${name} file not empty.`);
@@ -839,7 +839,7 @@ export const webfont = {
 		//const html = fs.readFileSync('test/tmp/woff2/icons.html', 'utf8');
 
 		// CSS links to font files are correct
-		'woff2,woff'.split(',').forEach((type) => {
+		['woff2', 'woff'].forEach((type) => {
 			test.ok(
 				find(css, `url("icons.${type}`),
 				`File path ${type} shound be in CSS file.`
@@ -847,7 +847,7 @@ export const webfont = {
 		});
 
 		// CSS links to TTF should not be created
-		'ttf'.split(',').forEach((type) => {
+		['ttf'].forEach((type) => {
 			test.ok(
 				!find(css, `url("icons.${type}`),
 				`File path ${type} shound NOT be in CSS file.`
@@ -859,18 +859,18 @@ export const webfont = {
 
 	woff2_node: (test) => {
 		// All out files should be created and should not be empty
-		'woff,woff2'.split(',').forEach((type) => {
+		['woff', 'woff2'].forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/woff2_node/icons.${type}`), `${name} file created.`);
 			test.ok(fs.readFileSync(`test/tmp/woff2_node/icons.${type}`, 'utf8').length, `${name} file not empty.`);
 		});
 
 		// TTF file should be deleted
-		'ttf'.split(',').forEach((type) => {
+		['ttf'].forEach((type) => {
 			test.ok(!fs.existsSync(`test/tmp/woff2_node/icons.${type}`), `${type.toUpperCase()} file NOT created.`);
 		});
 
-		'css,html'.split(',').forEach((type) => {
+		['css', 'html'].forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/woff2_node/icons.${type}`), `${name} file created.`);
 			test.ok(fs.readFileSync(`test/tmp/woff2_node/icons.${type}`, 'utf8').length, `${name} file not empty.`);
@@ -881,7 +881,7 @@ export const webfont = {
 		//const html = fs.readFileSync('test/tmp/woff2_node/icons.html', 'utf8');
 
 		// CSS links to font files are correct
-		'woff2,woff'.split(',').forEach((type) => {
+		['woff2', 'woff'].forEach((type) => {
 			test.ok(
 				find(css, `url("icons.${type}`),
 				`File path ${type} shound be in CSS file.`
@@ -889,7 +889,7 @@ export const webfont = {
 		});
 
 		// CSS links to TTF should not be created
-		'ttf'.split(',').forEach((type) => {
+		['ttf'].forEach((type) => {
 			test.ok(
 				!find(css, `url("icons.${type}`),
 				`File path ${type} shound NOT be in CSS file.`
@@ -904,7 +904,7 @@ export const webfont = {
 		//const css = fs.readFileSync('test/tmp/target_overrides_css/icons.css', 'utf8');
 		test.ok(fs.existsSync('test/tmp/target_overrides_css/icons.css'), 'CSS file created.');
 
-		'woff,ttf,eot'.split(',').forEach((type) => {
+		['woff', 'ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
 			test.ok(fs.existsSync(`test/tmp/target_overrides_icons/icons.${type}`), `${name} file created.`);
 			test.ok(fs.readFileSync(`test/tmp/target_overrides_icons/icons.${type}`, 'utf8').length, `${name} file not empty.`);

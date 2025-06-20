@@ -1,10 +1,12 @@
 import test from "node:test";
+import type { TestContext } from "node:test";
 //TODO: use assert instead of t.assert in nodeUnit_Test
 import assert from "node:assert/strict";
 
 import { rmSync } from "node:fs";
 import path from "node:path";
 import { globSync } from "glob";
+import type { Test } from "nodeunit";
 
 import { webfont } from "../tasks/webfont.js";
 import { webfont as webfontTests } from "./webfont_test.js";
@@ -13,8 +15,7 @@ const cleanTmp = () => rmSync('test/tmp', { recursive: true, force: true });
 
 cleanTmp();
 
-/** @type {Configs} */
-const configs = {
+const configs: Configs = {
 	test1: {
 		src: 'test/src/*.svg',
 		dest: 'test/tmp/test1',
@@ -366,8 +367,7 @@ const configs = {
 	},
 };
 
-/** @type {(t: import('node:test').TestContext, done: (value?: never) => void) => import('nodeunit').Test} */
-const nodeUnit_Test = (t, done) => ({
+const nodeUnit_Test = (t: TestContext, done: (value?: never) => void) => ({
 	ok: t.assert.ok,
 	done: done,
 	fail: t.assert.fail,
@@ -387,10 +387,10 @@ const nodeUnit_Test = (t, done) => ({
 	doesNotThrow: t.assert.doesNotThrow,
 	ifError: t.assert.ifError,
 	same: t.assert.deepEqual,
-});
+}) as Test;
 
 await test('webfont', { concurrency: true }, async (t) => {
-	const cases = [];
+	const cases: Promise<void>[] = [];
 	for (const key in configs) {
 		const config = configs[key];
 		const options = config.options ?? {};
@@ -400,10 +400,8 @@ await test('webfont', { concurrency: true }, async (t) => {
 		);
 	}
 	await Promise.allSettled(cases);
-	/** @type {Promise<void>[]} */
-	const tests = [];
-	///** @type {((value?: never) => void)[]} */
-	//const resolves = [];
+	const tests: Promise<void>[] = [];
+	//const resolves: ((value?: never) => void)[] = [];
 	for (const key in webfontTests) {
 		const webfontTest = webfontTests[key];
 		tests.push(t.test(key, async (t) => {

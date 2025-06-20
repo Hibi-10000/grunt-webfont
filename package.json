@@ -38,7 +38,7 @@
   "main": "tasks/webfont.js",
   "type": "module",
   "scripts": {
-    "test:node": "node --test ./test/webfont.test.js",
+    "test:node": "node --experimental-transform-types --test ./test/webfont.test.ts",
     "test:grunt": "grunt --stack"
   },
   "engines": {

@@ -28,7 +28,7 @@ export default async (o) => {
 	const args = [
 		'fontforge',
 		'-script',
-		`"${path.join(import.meta.dirname, 'fontforge/generate.py')}"`,
+		`"${path.join(import.meta.dirname, '../../bin/fontforge/generate.py')}"`,
 	].join(' ');
 
 	const execPromise = util.promisify(exec);

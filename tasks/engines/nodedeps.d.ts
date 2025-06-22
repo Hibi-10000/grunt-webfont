@@ -2,18 +2,18 @@
 // Kaspar Vollenweider (casaper), MIT License
 
 declare module 'ttf2eot' {
-	export default function ttf2eot(ttf: UInt8Array): UInt8Array;
+	export default function ttf2eot(ttf: Uint8Array): Uint8Array;
 }
 
 declare module 'ttf2woff' {
-	export default function ttf2woff(ttf: UInt8Array, options?: {
+	export default function ttf2woff(ttf: Uint8Array, options?: {
 		/**
 		 * Woff Extended Metadata Block
 		 *
 		 * See https://www.w3.org/TR/WOFF/#Metadata
 		 */
 		metadata?: string | undefined;
-	}): UInt8Array;
+	}): Uint8Array;
 }
 
 declare module 'ttf2woff2' {

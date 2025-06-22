@@ -770,7 +770,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	 */
 	function template(tmpl, context) {
 		return tmpl.replace(/\{([^\}]+)\}/g, (m, /** @type {keyof OptionsInternal} */key) => {
-			return context[key];
+			return /** @type {string} */ (context[key]);
 		});
 	}
 

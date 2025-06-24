@@ -15,11 +15,13 @@
     "useUnknownInCatchVariables": false,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
     "allowSyntheticDefaultImports": true,
     "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
   },
   "exclude": [
+    "dist",
     "node_modules",
   ],
 }

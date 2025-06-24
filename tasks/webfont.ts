@@ -18,14 +18,12 @@ import * as wf from './util/util.js';
 
 import packageJson from '../package.json' with { type: "json" };
 
-export default (/** @type {import('grunt')} */grunt) => {
+export default (grunt: IGrunt): void => {
 	grunt.registerMultiTask('webfont', 'Compile separate SVG files to webfont', function() {
 		/**
 		 * Consola to Grunt logger adapter.
-		 *
-		 * @type {Logger}
 		 */
-		const logger = {
+		const logger: Logger = {
 			log: {
 				warn: (...args) => {
 					grunt.log.warn.apply(null, args);
@@ -49,7 +47,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 
 		const allDone = this.async();
 		const params = this.data;
-		const options = this.options(/** @type {Options} */(undefined));
+		const options = this.options<Options>(undefined);
 
 		/*
 		 * Check for `src` param on target config
@@ -60,8 +58,7 @@ export default (/** @type {import('grunt')} */grunt) => {
 	});
 };
 
-/** @type {(name: string, target: string, filesSrc: string[], params: Config, options: Options, logger?: Logger) => Promise<void>} */
-export const webfont = async (name, target, filesSrc, params, options, logger) => {
+export const webfont = async (name: string, target: string, filesSrc: string[], params: Config, options: Options, logger?: Logger): Promise<void> => {
 	if (!logger) logger = wf.consolaLogger;
 	const md5 = crypto.createHash('md5');
 
@@ -91,8 +88,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	}
 
 	// Options
-	/** @type {OptionsInternal} */
-	let o = {
+	let o: OptionsInternal = {
 		logger: logger,
 		fontBaseName: options.font || 'icons',
 		destCss: options.destCss || params.destCss || params.dest,
@@ -135,7 +131,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		execMaxBuffer: options.execMaxBuffer || 1024 * 200,
 	};
 
-	o = Object.assign(o, /** @type {Partial<OptionsInternal>} */ ({
+	o = Object.assign<OptionsInternal, Partial<OptionsInternal>>(o, {
 		fontName: o.fontBaseName,
 		destCssPaths: {
 			css: o.destCss,
@@ -151,7 +147,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		extraStyles: has(o.styles, 'extra'),
 		files: files,
 		glyphs: [],
-	}));
+	});
 
 	o.hash = getHash();
 	o.fontFilename = template(options.fontFilename || o.fontBaseName, o);
@@ -224,7 +220,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Call callback function if it was specified in the options.
 	 */
-	function completeTask() {
+	function completeTask(): void {
 		if (o && ((typeof o.callback) === 'function')) {
 			o.callback(o.fontName, o.types, o.glyphs, o.hash);
 		}
@@ -233,10 +229,8 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Calculate hash to flush browser cache.
 	 * Hash is based on source SVG files contents, task options and grunt-webfont version.
-	 *
-	 * @return {string}
 	 */
-	function getHash() {
+	function getHash(): string {
 		// Source SVG files contents
 		o.files.forEach((file) => {
 			md5.update(fs.readFileSync(file, 'utf8'));
@@ -262,7 +256,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Create output directory
 	 */
-	function createOutputDirs() {
+	function createOutputDirs(): void {
 		o.stylesheets.forEach((stylesheet) => {
 			fs.mkdirSync(option(o.destCssPaths, stylesheet), { recursive: true });
 		});
@@ -272,7 +266,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Clean output directory
 	 */
-	function cleanOutputDir() {
+	function cleanOutputDir(): void {
 		const htmlDemoFileMask = path.posix.join(o.destCss, `${o.fontBaseName}*.{css,html}`);
 		const files = globSync(htmlDemoFileMask).concat(wf.generatedFontFiles(o));
 		files.forEach(file => {
@@ -283,7 +277,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Generate font using selected engine
 	 */
-	async function generateFont() {
+	async function generateFont(): Promise<void> {
 		const f = o.engine === 'node' ? node : fontforge;
 		const result = await f(o);
 		if (result === false) {
@@ -300,7 +294,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Converts TTF font to WOFF2.
 	 */
-	function generateWoff2Font() {
+	function generateWoff2Font(): void {
 		if (!has(o.types, 'woff2')) {
 			return;
 		}
@@ -325,10 +319,9 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Generate CSS
 	 */
-	function generateStylesheets() {
+	function generateStylesheets(): void {
 		// Convert codepoints to array of strings
-		/** @type {string[]} */
-		const codepoints = [];
+		const codepoints: string[] = [];
 		o.glyphs.forEach((name) => {
 			codepoints.push(o.codepoints[name].toString(16));
 		});
@@ -346,15 +339,14 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Generate CSS
 	 *
-	 * @param {string} stylesheet type: css, scss, ...
+	 * @param stylesheet type: css, scss, ...
 	 */
-	function generateStylesheet(stylesheet) {
+	function generateStylesheet(stylesheet: string): void {
 		o.relativeFontPath = normalizePath(o.relativeFontPath);
 
 		// Generate font URLs to use in @font-face
-		/** @type {{ 0: string[], 1: string[] }} */
-		const fontSrcs = { 0: [], 1: [] };
-		o.order.forEach((/** @type {'eot'|'woff2'|'woff'|'ttf'|'svg'} */type) => {
+		const fontSrcs: { 0: string[], 1: string[] } = { 0: [], 1: [] };
+		o.order.forEach((type: 'eot'|'woff2'|'woff'|'ttf'|'svg') => {
 			if (!has(o.types, type)) return;
 			const fontSrc1 = wf.fontsSrcsMap[type][0];
 			if (fontSrc1) fontSrcs[0].push(generateFontSrc(type, fontSrc1, stylesheet));
@@ -369,7 +361,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 
 		// Read JSON file corresponding to CSS template
 		const templateJson = readTemplate(o.template, o.syntax, '.json', true);
-		if (templateJson) o = Object.assign(o, /** @type {Required<TemplateOptions>} */(JSON.parse(templateJson.template)));
+		if (templateJson) o = Object.assign<OptionsInternal, Required<TemplateOptions>>(o, JSON.parse(templateJson.template));
 
 		// Now override values with templateOptions
 		if (o.templateOptions) o = Object.assign(o, o.templateOptions);
@@ -377,10 +369,10 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		// Generate CSS
 		const ext = path.extname(o.template) || '.css'; // Use extension of o.template file if given, or default to .css
 		o.cssTemplate = readTemplate(o.template, o.syntax, ext);
-		const cssContext = Object.assign(o, /** @type {Partial<Context>} */({
+		const cssContext = Object.assign<OptionsInternal, Partial<Context>>(o, {
 			iconsStyles: true,
 			stylesheet: stylesheet,
-		}));
+		});
 
 		let css = renderTemplate(o.cssTemplate, cssContext);
 
@@ -396,7 +388,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Gets the codepoints from the set filepath in o.codepointsFile
 	 */
-	function readCodepointsFromFile(){
+	function readCodepointsFromFile(): { [key: string]: number } {
 		if (!o.codepointsFile) return {};
 		if (!fs.existsSync(o.codepointsFile)){
 			logger.log.verbose('Codepoints file not found');
@@ -410,7 +402,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Saves the codespoints to the set file
 	 */
-	function saveCodepointsToFile(){
+	function saveCodepointsToFile(): void {
 		if (!o.codepointsFile) return;
 		const codepointsToString = JSON.stringify(o.codepoints, null, 4);
 		try {
@@ -424,8 +416,8 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/*
 	 * Prepares base context for templates
 	 */
-	function prepareBaseTemplateContext() {
-		const context = Object.assign({}, /** @type {Context} */(o));
+	function prepareBaseTemplateContext(): Context {
+		const context = Object.assign<{}, Context>({}, o);
 		return context;
 	}
 
@@ -433,7 +425,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	 * Makes custom extends necessary for use with preparing the template context
 	 * object for the HTML demo.
 	 */
-	function prepareHtmlTemplateContext() {
+	function prepareHtmlTemplateContext(): Context {
 
 		let context = prepareBaseTemplateContext();
 
@@ -445,7 +437,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 		const _fontSrc1 = o.fontSrc1.replace(relativeRe, htmlRelativeFontPath);
 		const _fontSrc2 = o.fontSrc2.replace(relativeRe, htmlRelativeFontPath);
 
-		context = Object.assign(context, /** @type {Partial<Context>} */({
+		context = Object.assign<Context, Partial<Context>>(context, {
 			fontSrc1: _fontSrc1,
 			fontSrc2: _fontSrc2,
 			fontfaceStyles: true,
@@ -453,13 +445,13 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 			extraStyles: false,
 			iconsStyles: true,
 			stylesheet: 'css',
-		}));
+		});
 
 		// Prepares CSS for injection into <style> tag at to of HTML
 		htmlStyles = renderTemplate(o.cssTemplate, context);
-		context = Object.assign(context, /** @type {Partial<Context>} */({
+		context = Object.assign<Context, Partial<Context>>(context, {
 			styles: htmlStyles,
-		}));
+		});
 
 		return context;
 	}
@@ -469,9 +461,9 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	 * render "custom output" via mini configuration objects specified in
 	 * the array `options.customOutputs`.
 	 *
-	 * @param {CustomOutput} outputConfig
+	 * @param outputConfig
 	 */
-	function generateCustomOutput(outputConfig) {
+	function generateCustomOutput(outputConfig: CustomOutput): void {
 
 		// Accesses context
 		let context = prepareBaseTemplateContext();
@@ -513,7 +505,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	 * Iterates over entries in the `options.customOutputs` object and,
 	 * on a config-by-config basis, generates the desired results.
 	 */
-	function generateCustomOutputs() {
+	function generateCustomOutputs(): void {
 		if (!o.customOutputs || o.customOutputs.length < 1) {
 			return;
 		}
@@ -524,7 +516,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Generate HTML demo page
 	 */
-	async function generateDemoHtml() {
+	async function generateDemoHtml(): Promise<void> {
 		if (!o.htmlDemo) {
 			return;
 		}
@@ -551,7 +543,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Print log
 	 */
-	function printDone() {
+	function printDone(): void {
 		logger.log.info(`Font ${chalk.cyan(o.fontName)} with ${o.glyphs.length} glyphs created.`);
 	}
 
@@ -563,11 +555,10 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Convert a string of comma separated words into an array
 	 *
-	 * @param {string | false} val Input string
-	 * @param {string | false} defVal Default value
-	 * @return {string[]}
+	 * @param val Input string
+	 * @param defVal Default value
 	 */
-	function optionToArray(val, defVal) {
+	function optionToArray(val: string | false, defVal: string | false): string[] {
 		if (val === undefined) {
 			val = defVal;
 		}
@@ -583,22 +574,21 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Check if a value exists in an array
 	 *
-	 * @param {string[] | string} haystack Array to find the needle in
-	 * @param {string} needle Value to find
-	 * @return {boolean} Needle was found
+	 * @param haystack Array to find the needle in
+	 * @param needle Value to find
+	 * @return Needle was found
 	 */
-	function has(haystack, needle) {
+	function has(haystack: string[] | string, needle: string): boolean {
 		return haystack.indexOf(needle) !== -1;
 	}
 
 	/**
 	 * Return a specified option if it exists in an object or `_default` otherwise
 	 *
-	 * @param {{ _default?: string, [key: string]: string }} map Options object
-	 * @param {string} key Option to find in the object
-	 * @return {string}
+	 * @param map Options object
+	 * @param key Option to find in the object
 	 */
-	function option(map, key) {
+	function option(map: { _default?: string, [key: string]: string }, key: string): string {
 		if (key in map) {
 			return map[key];
 		} else {
@@ -608,10 +598,8 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 
 	/**
 	 * Find next unused codepoint.
-	 *
-	 * @return {number}
 	 */
-	function getNextCodepoint() {
+	function getNextCodepoint(): number {
 		while (Object.values(o.codepoints).includes(currentCodepoint)) {
 			currentCodepoint++;
 		}
@@ -621,20 +609,19 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Check whether file is SVG or not
 	 *
-	 * @param {string} filepath File path
-	 * @return {boolean}
+	 * @param filepath File path
 	 */
-	function isSvgFile(filepath) {
+	function isSvgFile(filepath: string): boolean {
 		return path.extname(filepath).toLowerCase() === '.svg';
 	}
 
 	/**
 	 * Convert font file to data:uri and remove source file
 	 *
-	 * @param {string} fontFile Font file path
-	 * @return {string} Base64 encoded string
+	 * @param fontFile Font file path
+	 * @return Base64 encoded string
 	 */
-	function embedFont(fontFile) {
+	function embedFont(fontFile: string): string {
 		// Convert to data:uri
 		const dataUri = fs.readFileSync(fontFile, 'base64');
 		const type = path.extname(fontFile).substring(1);
@@ -649,10 +636,9 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Append a slash to end of a filepath if it not exists and make all slashes forward
 	 *
-	 * @param {string} filepath File path
-	 * @return {string}
+	 * @param filepath File path
 	 */
-	function normalizePath(filepath) {
+	function normalizePath(filepath: string): string {
 		if (!filepath.length) return filepath;
 
 		// Make all slashes forward
@@ -669,12 +655,11 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Generate URL for @font-face
 	 *
-	 * @param {string} type Type of font
-	 * @param {{ ext: string, format?: string, embeddable?: boolean }} font URL or Base64 string
-	 * @param {string} stylesheet type: css, scss, ...
-	 * @return {string}
+	 * @param type Type of font
+	 * @param font URL or Base64 string
+	 * @param stylesheet type: css, scss, ...
 	 */
-	function generateFontSrc(type, font, stylesheet) {
+	function generateFontSrc(type: string, font: { ext: string, format?: string, embeddable?: boolean }, stylesheet: string): string {
 		const filename = template(`${o.fontFilename}${font.ext}`, o);
 		let fontPathVariableName = `${o.fontFamilyName}-font-path`;
 
@@ -724,13 +709,12 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Read the template file
 	 *
-	 * @param {string} template Template file path
-	 * @param {string} syntax Syntax (bem, bootstrap, etc.)
-	 * @param {string} ext Extension of the template
-	 * @param {boolean} [optional]
-	 * @return {{ filename: string, template: string }} {filename: 'Template filename', template: 'Template code'}
+	 * @param template Template file path
+	 * @param syntax Syntax (bem, bootstrap, etc.)
+	 * @param ext Extension of the template
+	 * @return \{filename: 'Template filename', template: 'Template code'}
 	 */
-	function readTemplate(template, syntax, ext, optional) {
+	function readTemplate(template: string, syntax: string, ext: string, optional?: boolean): { filename: string, template: string } {
 		const filename = template
 			? path.resolve(template.replace(path.extname(template), ext))
 			: path.join(import.meta.dirname, `../templates/${syntax}${ext}`)
@@ -748,11 +732,10 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Render template with error reporting
 	 *
-	 * @param {{ filename: string, template: string }} template {filename: 'Template filename', template: 'Template code'}
-	 * @param {Context} context Template context
-	 * @return {string}
+	 * @param template {filename: 'Template filename', template: 'Template code'}
+	 * @param context Template context
 	 */
-	function renderTemplate(template, context) {
+	function renderTemplate(template: { filename: string, template: string }, context: Context): string {
 		try {
 			const func = _.template(template.template);
 			return func(context);
@@ -764,43 +747,38 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Basic template function: replaces {variables}
 	 *
-	 * @param {string} tmpl Template code
-	 * @param {OptionsInternal} context Values object
-	 * @return {string}
+	 * @param tmpl Template code
+	 * @param context Values object
 	 */
-	function template(tmpl, context) {
-		return tmpl.replace(/\{([^\}]+)\}/g, (m, /** @type {keyof OptionsInternal} */key) => {
-			return /** @type {string} */ (context[key]);
+	function template(tmpl: string, context: OptionsInternal): string {
+		return tmpl.replace(/\{([^\}]+)\}/g, (m, key: keyof OptionsInternal) => {
+			return context[key] as string;
 		});
 	}
 
 	/**
 	 * Prepare string to use as CSS class name
 	 *
-	 * @param {string} str
-	 * @return {string}
+	 * @param str
 	 */
-	function classnameize(str) {
+	function classnameize(str: string): string {
 		return str.trim().replace(/\s+/g, '-');
 	}
 
 	/**
 	 * Return path of CSS file.
 	 *
-	 * @param {string} stylesheet (css, scss, ...)
-	 * @return {string}
+	 * @param stylesheet (css, scss, ...)
 	 */
-	function getCssFilePath(stylesheet) {
+	function getCssFilePath(stylesheet: string): string {
 		const cssFilePrefix = option(wf.cssFilePrefixes, stylesheet);
 		return path.join(option(o.destCssPaths, stylesheet), `${cssFilePrefix}${o.fontBaseName}.${stylesheet}`);
 	}
 
 	/**
 	 * Return path of HTML demo file or `null` if its generation was disabled.
-	 *
-	 * @return {string}
 	 */
-	function getDemoFilePath() {
+	function getDemoFilePath(): string {
 		if (!o.htmlDemo) return null;
 		const name = o.htmlDemoFilename || o.fontBaseName;
 		return path.join(o.destHtml, `${name}.html`);
@@ -809,7 +787,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Return path of HTML demo file or `null` if feature was disabled
 	 */
-	function getDemoPath() {
+	function getDemoPath(): string {
 		if (!o.htmlDemo) return null;
 		return o.destHtml;
 	}
@@ -817,11 +795,11 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Save hash to cache file.
 	 *
-	 * @param {string} name Task name (webfont).
-	 * @param {string} target Task target name.
-	 * @param {string} hash Hash.
+	 * @param name Task name (webfont).
+	 * @param target Task target name.
+	 * @param hash Hash.
 	 */
-	function saveHash(name, target, hash) {
+	function saveHash(name: string, target: string, hash: string): void {
 		const filepath = getHashPath(name, target);
 		fs.mkdirSync(path.dirname(filepath), { recursive: true });
 		fs.writeFileSync(filepath, hash);
@@ -830,11 +808,10 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Read hash from cache file or `null` if file don’t exist.
 	 *
-	 * @param {string} name Task name (webfont).
-	 * @param {string} target Task target name.
-	 * @return {string}
+	 * @param name Task name (webfont).
+	 * @param target Task target name.
 	 */
-	function readHash(name, target) {
+	function readHash(name: string, target: string): string {
 		const filepath = getHashPath(name, target);
 		if (fs.existsSync(filepath)) {
 			return fs.readFileSync(filepath, 'utf8');
@@ -845,11 +822,10 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	/**
 	 * Return path to cache file.
 	 *
-	 * @param {string} name Task name (webfont).
-	 * @param {string} target Task target name.
-	 * @return {string}
+	 * @param name Task name (webfont).
+	 * @param target Task target name.
 	 */
-	function getHashPath(name, target) {
+	function getHashPath(name: string, target: string): string {
 		return path.join(o.cache, name, target, 'hash');
 	}
 };

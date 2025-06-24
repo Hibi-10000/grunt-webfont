@@ -65,13 +65,16 @@ importers:
         version: 2.0.1(grunt@1.6.1)
       grunt-contrib-nodeunit:
         specifier: ^5.0.0
-        version: 5.0.0
+        version: 5.0.0(typescript@5.8.3)
       load-grunt-tasks:
         specifier: ^5.1.0
         version: 5.1.0(grunt@1.6.1)
       stylus:
         specifier: ^0.64.0
         version: 0.64.0
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
       xml2js:
         specifier: ^0.6.2
         version: 0.6.2
@@ -1590,6 +1593,11 @@ packages:
   typedarray-to-buffer@3.1.5:
     resolution: {integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==}
 
+  typescript@5.8.3:
+    resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   unc-path-regex@0.1.2:
     resolution: {integrity: sha512-eXL4nmJT7oCpkZsHZUOJo8hcX3GbsiDOa0Qu9F646fi8dT3XuSVopVqAcEiVzSKKH7UoDti23wNX3qGFxcW5Qg==}
     engines: {node: '>=0.10.0'}
@@ -2387,9 +2395,9 @@ snapshots:
       grunt: 1.6.1
       rimraf: 2.7.1
 
-  grunt-contrib-nodeunit@5.0.0:
+  grunt-contrib-nodeunit@5.0.0(typescript@5.8.3):
     dependencies:
-      nodeunit-x: 0.16.0
+      nodeunit-x: 0.16.0(typescript@5.8.3)
     transitivePeerDependencies:
       - coveralls
       - flow-remove-types
@@ -2821,10 +2829,10 @@ snapshots:
 
   node-releases@2.0.19: {}
 
-  nodeunit-x@0.16.0:
+  nodeunit-x@0.16.0(typescript@5.8.3):
     dependencies:
       ejs: 3.1.10
-      tap: 16.3.10
+      tap: 16.3.10(typescript@5.8.3)
     transitivePeerDependencies:
       - coveralls
       - flow-remove-types
@@ -3247,7 +3255,7 @@ snapshots:
     dependencies:
       yaml: 1.10.2
 
-  tap@16.3.10:
+  tap@16.3.10(typescript@5.8.3):
     dependencies:
       chokidar: 3.6.0
       findit: 2.0.0
@@ -3270,6 +3278,8 @@ snapshots:
       tap-yaml: 1.0.2
       tcompare: 5.0.7
       which: 2.0.2
+    optionalDependencies:
+      typescript: 5.8.3
     transitivePeerDependencies:
       - supports-color
 
@@ -3338,6 +3348,8 @@ snapshots:
   typedarray-to-buffer@3.1.5:
     dependencies:
       is-typedarray: 1.0.0
+
+  typescript@5.8.3: {}
 
   unc-path-regex@0.1.2: {}
 

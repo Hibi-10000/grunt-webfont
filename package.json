@@ -35,9 +35,10 @@
     "icon"
   ],
   "license": "MIT",
-  "main": "tasks/webfont.js",
+  "main": "dist/webfont.js",
   "type": "module",
   "scripts": {
+    "build": "tsc --project tsconfig.build.json",
     "test:node": "node --experimental-transform-types --test ./test/webfont.test.ts",
     "test:grunt": "grunt --stack"
   },
@@ -77,6 +78,7 @@
     "grunt-contrib-nodeunit": "^5.0.0",
     "load-grunt-tasks": "^5.1.0",
     "stylus": "^0.64.0",
+    "typescript": "^5.8.3",
     "xml2js": "^0.6.2"
   },
   "peerDependencies": {

@@ -1,7 +1,7 @@
 const path = require('node:path');
 //@ts-expect-error
 const loadGruntTasks = require('load-grunt-tasks');
-const webfont = require('./tasks/webfont.js').default;
+const webfont = require('./dist/webfont.js').default;
 
 module.exports = (/** @type {import('grunt')} */grunt) => {
 	loadGruntTasks(grunt);

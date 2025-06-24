@@ -8,7 +8,7 @@ import path from "node:path";
 import { globSync } from "glob";
 import type { Test } from "nodeunit";
 
-import { webfont } from "../tasks/webfont.js";
+import { webfont } from "../tasks/webfont.ts";
 import { webfont as webfontTests } from "./webfont_test.js";
 
 const cleanTmp = () => rmSync('test/tmp', { recursive: true, force: true });

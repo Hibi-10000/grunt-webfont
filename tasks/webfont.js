@@ -733,7 +733,7 @@ export const webfont = async (name, target, filesSrc, params, options, logger) =
 	function readTemplate(template, syntax, ext, optional) {
 		const filename = template
 			? path.resolve(template.replace(path.extname(template), ext))
-			: path.join(import.meta.dirname, `templates/${syntax}${ext}`)
+			: path.join(import.meta.dirname, `../templates/${syntax}${ext}`)
 		;
 		if (fs.existsSync(filename)) {
 			return {

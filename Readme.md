@@ -191,7 +191,7 @@ Icon classes syntax. `bem` for double class names: `icon icon_awesome` or `boots
 
 Type: `string` Default: ``
 
-Custom CSS template path (see `tasks/templates` for some examples). Should be used instead of `syntax`. (You probably need to define `htmlDemoTemplate` option too.)
+Custom CSS template path (see `templates` for some examples). Should be used instead of `syntax`. (You probably need to define `htmlDemoTemplate` option too.)
 
 Template is a pair of CSS and JSON (optional) files with the same name.
 
@@ -295,7 +295,7 @@ If `true`, an HTML file will be available (by default, in `destCSS` folder) to t
 
 Type: `string` Default: `null`
 
-Custom demo HTML template path (see `tasks/templates/demo.html` for an example) (requires `htmlDemo` option to be true).
+Custom demo HTML template path (see `templates/demo.html` for an example) (requires `htmlDemo` option to be true).
 
 #### htmlDemoFilename
 

@@ -13,7 +13,7 @@ import chalk from 'chalk';
 import _ from 'lodash';
 import ttf2woff2 from 'ttf2woff2';
 import fontforge from './engines/fontforge.ts';
-import node from './engines/node.js';
+import node from './engines/node.ts';
 import * as wf from './util/util.js';
 
 import packageJson from '../package.json' with { type: "json" };

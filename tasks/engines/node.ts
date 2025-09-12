@@ -20,14 +20,12 @@ import svgo from 'svgo';
 import which from 'which';
 import * as wf from '../util/util.js';
 
-/** @type {(o: OptionsInternal) => Promise<false>} */
-export default async (o) => {
+export default async (o: OptionsInternal): Promise<false> => {
 	const logger = o.logger || wf.consolaLogger;
 
 	// @todo Ligatures
 
-	/** @type {{ svg?: string, ttf?: Uint8Array, woff?: Uint8Array, eot?: Uint8Array }} */
-	const fonts = {};
+	const fonts: { svg?: string, ttf?: Uint8Array, woff?: Uint8Array, eot?: Uint8Array } = {};
 
 	const generators = {
 		svg: async () => {
@@ -44,13 +42,13 @@ export default async (o) => {
 			fontStream.on('data', (chunk) => {
 				font += decoder.write(chunk);
 			});
-			await new Promise((resolve) => {
+			await new Promise<void>((resolve) => {
 				fontStream.on('end', () => {
 					fonts.svg = font;
 					resolve();
 				});
 				for (const s of streams) {
-					const svgStream = /** @type {ReadableStreamWithMetadata} */(s.stream);
+					const svgStream = s.stream as ReadableStreamWithMetadata;
 					svgStream.metadata = {
 						unicode: [String.fromCodePoint(s.codepoint)],
 						name: s.name,
@@ -106,22 +104,10 @@ export default async (o) => {
 		return false;
 	}
 
-	/**
-	 * @overload
-	 * @param {'svg'} type
-	 * @returns {Promise<string>}
-	 *
-	 * @overload
-	 * @param {'eot' | 'woff' | 'ttf'} type
-	 * @returns {Promise<Uint8Array>}
-	 *
-	 * @overload
-	 * @param {'eot' | 'woff' | 'ttf' | 'svg'} type
-	 * @returns {Promise<string | Uint8Array>}
-	 *
-	 * @type {(type: 'eot'|'woff'|'ttf'|'svg') => Promise<string | Uint8Array>}
-	 */
-	async function getFont(type) {
+	async function getFont(type: 'svg'): Promise<string>;
+	async function getFont(type: 'eot' | 'woff' | 'ttf'): Promise<Uint8Array>;
+	async function getFont(type: 'eot' | 'woff' | 'ttf' | 'svg'): Promise<string | Uint8Array>;
+	async function getFont(type: 'eot' | 'woff' | 'ttf' | 'svg') {
 		if (fonts[type]) {
 			return fonts[type];
 		} else {
@@ -129,18 +115,17 @@ export default async (o) => {
 		}
 	}
 
-	async function createFontWriter(/** @type {'eot'|'woff'|'ttf'|'svg'} */type) {
+	async function createFontWriter(type: 'eot' | 'woff' | 'ttf' | 'svg') {
 		const font = await getFont(type)
 		fs.writeFileSync(wf.getFontPath(o, type), font);
 	}
 
-	/** @typedef {{ codepoint: number, name?: string, stream: NodeJS.ReadableStream }} Stream */
-	function svgFilesToStreams(/** @type {string[]} */files) {
+	type Stream = { codepoint: number, name?: string, stream: NodeJS.ReadableStream };
+	function svgFilesToStreams(files: string[]) {
 		try {
 			return files.map((file) => {
 
-				/** @type {(name: string, stream: NodeJS.ReadableStream) => Stream} */
-				function fileStreamed(name, stream) {
+				function fileStreamed(name: string, stream: NodeJS.ReadableStream): Stream {
 					return {
 						codepoint: o.codepoints[name],
 						name: name,
@@ -148,14 +133,12 @@ export default async (o) => {
 					};
 				}
 
-				/** @type {(name: string, file: string) => Stream} */
-				function streamSVG(name, file) {
+				function streamSVG(name: string, file: string) {
 					const stream = fs.createReadStream(file);
 					return fileStreamed(name, stream);
 				}
 
-				/** @type {(name: string, file: string) => Stream} */
-				function streamSVGO(name, file) {
+				function streamSVGO(name: string, file: string) {
 					const svg = fs.readFileSync(file, 'utf8');
 					try {
 						const optimized = svgo.optimize(svg).data;
@@ -182,7 +165,7 @@ export default async (o) => {
 		}
 	}
 
-	async function autohintTtfFont(/** @type {Uint8Array} */font) {
+	async function autohintTtfFont(font: Uint8Array) {
 		if (!which.sync('ttfautohint', { nothrow: true })) {
 			logger.log.verbose('Hinting skipped, ttfautohint not found.');
 			return false;

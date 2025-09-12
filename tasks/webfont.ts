@@ -12,7 +12,7 @@ import { globSync } from 'glob';
 import chalk from 'chalk';
 import _ from 'lodash';
 import ttf2woff2 from 'ttf2woff2';
-import fontforge from './engines/fontforge.js';
+import fontforge from './engines/fontforge.ts';
 import node from './engines/node.js';
 import * as wf from './util/util.js';
 

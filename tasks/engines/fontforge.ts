@@ -8,13 +8,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import util from 'node:util';
-import { exec } from 'node:child_process';
+import { exec, type ExecException } from 'node:child_process';
 import temp from 'temp';
 import chalk from 'chalk';
 import * as wf from '../util/util.js';
 
-/** @type {(o: OptionsInternal) => Promise<{ fontName: string } | false>} */
-export default async (o) => {
+export default async (o: OptionsInternal) => {
 	const logger = o.logger || wf.consolaLogger;
 
 	// Copy source files to temporary directory
@@ -64,9 +63,8 @@ export default async (o) => {
 	let out;
 	try {
 		out = (await promise).stdout;
-	} catch (err) {
-		/** @typedef {import('node:child_process').ExecException} ExecException */
-		if (err instanceof Error && (/** @type {ExecException} */(err)).code === 127) {
+	} catch (err: unknown) {
+		if (err instanceof Error && (err as ExecException).code === 127) {
 			logger.log.error(`fontforge not found. Please install fontforge and all other requirements: ${chalk.underline('https://github.com/sapegin/grunt-webfont#installation')}`);
 			return false;
 		}
@@ -81,10 +79,9 @@ export default async (o) => {
 		const success = !!wf.generatedFontFiles(o);
 		const notError = /(Copyright|License |with many parts BSD |Executable based on sources from|Library based on sources from|Based on source from git)/;
 		//const version = /(Executable based on sources from|Library based on sources from)/;
-		const lines = (/** @type {string} */(err)).split('\n');
+		const lines = (err as string).split('\n');
 
-		/** @type {string[]} */
-		const warn = [];
+		const warn: string[] = [];
 		lines.forEach((line) => {
 			if (!line.match(notError) && !success) {
 				warn.push(line);
@@ -105,8 +102,7 @@ export default async (o) => {
 	const json = out.replace(/^[^{]+/, '').replace(/[^}]+$/, '');
 
 	// Parse json
-	/** @type {{ file: string }} */
-	let result;
+	let result: { file: string };
 	try {
 		result = JSON.parse(json);
 	} catch (e) {

@@ -3,7 +3,8 @@
     "enable": true,
   },
   "compilerOptions": {
-    "module": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "target": "ESNext",
     "lib": ["ESNext"],
     "noEmit": true,

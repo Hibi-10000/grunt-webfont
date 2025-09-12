@@ -11,4 +11,12 @@ export default defineConfig({
 	},
 	bundle: false,
 	platform: "node",
+	plugins: [
+		{
+			name: "replace-ts-import",
+			renderChunk(code) {
+				return { code: code.replace(/(import .*? from ['"][^'"]*?)\.ts(['"])/g, '$1.js$2') };
+			},
+		}
+	],
 });

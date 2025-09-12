@@ -6,7 +6,7 @@ import sys
 import json
 import re
 from subprocess import call
-from distutils.spawn import find_executable
+import shutil
 
 args = json.load(sys.stdin)
 
@@ -100,7 +100,7 @@ generate(fontfile + '.ttf')
 
 # Hint the TTF file
 # ttfautohint is optional
-if (find_executable('ttfautohint') and args['autoHint']):
+if (shutil.which('ttfautohint') and args['autoHint']):
 	call('ttfautohint --symbol --fallback-script=latn --no-info "%(font)s.ttf" "%(font)s-hinted.ttf" && mv "%(font)s-hinted.ttf" "%(font)s.ttf"' % {'font': fontfile}, shell=True)
 	f = fontforge.open(fontfile + '.ttf')
 

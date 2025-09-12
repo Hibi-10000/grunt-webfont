@@ -2,7 +2,7 @@
  * grunt-webfont: Node.js engine
  *
  * @requires ttfautohint 1.00+ (optional)
- * @author Artem Sapegin (http://sapegin.me)
+ * @author Artem Sapegin (http://sapegin.me), Hibi_10000
  */
 
 import fs from 'node:fs';

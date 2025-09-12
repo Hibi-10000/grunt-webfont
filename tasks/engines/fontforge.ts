@@ -2,7 +2,7 @@
  * grunt-webfont: fontforge engine
  *
  * @requires fontforge, ttfautohint 1.00+ (optional), eotlitetool.py
- * @author Artem Sapegin (http://sapegin.me)
+ * @author Artem Sapegin (http://sapegin.me), Hibi_10000
  */
 
 import fs from 'node:fs';

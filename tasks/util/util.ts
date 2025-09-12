@@ -1,7 +1,7 @@
 /**
  * grunt-webfont: common stuff
  *
- * @author Artem Sapegin (http://sapegin.me)
+ * @author Artem Sapegin (http://sapegin.me), Hibi_10000
  */
 
 import path from 'node:path';

@@ -2,7 +2,7 @@
  * SVG to webfont converter for Grunt
  *
  * @requires ttfautohint
- * @author Artem Sapegin (http://sapegin.me)
+ * @author Artem Sapegin (http://sapegin.me), Hibi_10000
  */
 
 import fs from 'node:fs';

@@ -47,9 +47,9 @@
     "pnpm": ">=10"
   },
   "dependencies": {
-    "chalk": "^5.4.1",
+    "chalk": "^5.6.2",
     "consola": "^3.4.2",
-    "glob": "^11.0.2",
+    "glob": "^11.0.3",
     "lodash": "^4.17.21",
     "temp": "^0.9.4",
     "ttf2woff2": "^8.0.0"
@@ -57,15 +57,15 @@
   "optionalDependencies": {
     "svg2ttf": "^6.0.3",
     "svgicons2svgfont": "~15.0.1",
-    "svgo": "^3.3.2",
+    "svgo": "^4.0.0",
     "ttf2eot": "^3.1.0",
     "ttf2woff": "^3.0.0",
     "which": "^5.0.0"
   },
   "devDependencies": {
     "@types/grunt": "^0.4.32",
-    "@types/lodash": "^4.17.17",
-    "@types/node": "^22.15.30",
+    "@types/lodash": "^4.17.20",
+    "@types/node": "^22.18.1",
     "@types/nodeunit": "^0.0.36",
     "@types/stylus": "^0.48.43",
     "@types/svg2ttf": "^5.0.3",
@@ -79,7 +79,7 @@
     "load-grunt-tasks": "^5.1.0",
     "stylus": "^0.64.0",
     "tsup": "^8.5.0",
-    "typescript": "^5.8.3",
+    "typescript": "^5.9.2",
     "xml2js": "^0.6.2"
   },
   "peerDependencies": {

@@ -16,7 +16,7 @@ import { SVGIcons2SVGFontStream } from 'svgicons2svgfont';
 import svg2ttf from 'svg2ttf';
 import ttf2woff from 'ttf2woff';
 import ttf2eot from 'ttf2eot';
-import svgo from 'svgo';
+import * as svgo from 'svgo';
 import which from 'which';
 import * as wf from '../util/util.ts';
 

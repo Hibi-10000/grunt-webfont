@@ -3,7 +3,7 @@ import path from 'node:path';
 import { globSync } from 'glob';
 import stylus from 'stylus';
 import { parseString as parseXMLString } from 'xml2js';
-import * as wf from '../tasks/util/util.js';
+import * as wf from '../dist/util/util.js';
 
 /** @type {(haystack: string, needle: string) => boolean} */
 function find(haystack, needle) {

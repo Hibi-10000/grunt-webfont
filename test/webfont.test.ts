@@ -198,7 +198,7 @@ const configs: Configs = {
 		dest: 'test/tmp/duplicate_names',
 		options: {
 			hashes: false,
-			rename: (/** @type {string} */name) => {
+			rename: (name: string) => {
 				return [path.basename(path.dirname(name)), path.basename(name)].join('-');
 			},
 		},

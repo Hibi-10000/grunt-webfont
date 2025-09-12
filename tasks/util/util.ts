@@ -8,8 +8,7 @@ import path from 'node:path';
 import { globSync } from 'glob';
 import { consola } from 'consola';
 
-/** @type {Logger} */
-export const consolaLogger = {
+export const consolaLogger: Logger = {
 	log: {
 		error: consola.error.raw,
 		warn: consola.warn.raw,
@@ -44,7 +43,7 @@ export const fontsSrcsMap = {
 		},
 	},
 	woff: {
-		0: /** @type {false} */(false),
+		0: false as false,
 		1: {
 			ext: '.woff',
 			format: 'woff',
@@ -52,7 +51,7 @@ export const fontsSrcsMap = {
 		},
 	},
 	woff2: {
-		0: /** @type {false} */(false),
+		0: false as false,
 		1: {
 			ext: '.woff2',
 			format: 'woff2',
@@ -60,7 +59,7 @@ export const fontsSrcsMap = {
 		},
 	},
 	ttf: {
-		0: /** @type {false} */(false),
+		0: false as false,
 		1: {
 			ext: '.ttf',
 			format: 'truetype',
@@ -68,7 +67,7 @@ export const fontsSrcsMap = {
 		},
 	},
 	svg: {
-		0: /** @type {false} */(false),
+		0: false as false,
 		1: {
 			ext: '.svg#{fontBaseName}',
 			format: 'svg',
@@ -101,18 +100,18 @@ export const fontFormats = 'eot,woff2,woff,ttf,svg';
 /**
  * Returns list of all generated font files.
  *
- * @param {OptionsInternal} o Options.
+ * @param o Options.
  */
-export const generatedFontFiles = (o) => {
+export const generatedFontFiles = (o: OptionsInternal) => {
 	return globSync(path.posix.join(o.dest, `${o.fontFilename}*.{${o.types}}`));
 };
 
 /**
  * Returns path to font of specified format.
  *
- * @param {OptionsInternal} o Options.
- * @param {string} type Font type (see `wf.fontFormats`).
+ * @param o Options.
+ * @param type Font type (see `wf.fontFormats`).
  */
-export const getFontPath = (o, type) => {
+export const getFontPath = (o: OptionsInternal, type: string) => {
 	return path.join(o.dest, `${o.fontFilename}.${type}`);
 };

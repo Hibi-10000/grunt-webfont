@@ -14,7 +14,7 @@ import _ from 'lodash';
 import ttf2woff2 from 'ttf2woff2';
 import fontforge from './engines/fontforge.ts';
 import node from './engines/node.ts';
-import * as wf from './util/util.js';
+import * as wf from './util/util.ts';
 
 import packageJson from '../package.json' with { type: "json" };
 

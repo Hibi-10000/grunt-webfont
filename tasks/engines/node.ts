@@ -18,7 +18,7 @@ import ttf2woff from 'ttf2woff';
 import ttf2eot from 'ttf2eot';
 import svgo from 'svgo';
 import which from 'which';
-import * as wf from '../util/util.js';
+import * as wf from '../util/util.ts';
 
 export default async (o: OptionsInternal): Promise<false> => {
 	const logger = o.logger || wf.consolaLogger;

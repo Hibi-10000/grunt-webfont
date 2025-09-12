@@ -11,7 +11,7 @@ import util from 'node:util';
 import { exec, type ExecException } from 'node:child_process';
 import temp from 'temp';
 import chalk from 'chalk';
-import * as wf from '../util/util.js';
+import * as wf from '../util/util.ts';
 
 export default async (o: OptionsInternal) => {
 	const logger = o.logger || wf.consolaLogger;

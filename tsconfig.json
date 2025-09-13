@@ -22,6 +22,7 @@
     "verbatimModuleSyntax": true,
     //"declaration": true,
     //"isolatedDeclarations": true,
+    //"skipLibCheck": true,
   },
   "exclude": [
     "dist",

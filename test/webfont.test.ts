@@ -368,7 +368,7 @@ const configs: Configs = {
 	},
 };
 
-const nodeUnit_Test = (t: TestContext, done: (value?: never) => void) => ({
+const nodeUnit_Test = (t: TestContext, done: (value?: never) => void): Test => ({
 	ok: t.assert.ok,
 	done: done,
 	fail: t.assert.fail,
@@ -388,7 +388,7 @@ const nodeUnit_Test = (t: TestContext, done: (value?: never) => void) => ({
 	doesNotThrow: t.assert.doesNotThrow,
 	ifError: t.assert.ifError,
 	same: t.assert.deepEqual,
-}) as Test;
+});
 
 await test('webfont', { concurrency: true }, async (t) => {
 	const cases: Promise<void>[] = [];

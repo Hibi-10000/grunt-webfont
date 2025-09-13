@@ -1,23 +1,21 @@
 {
-  "name": "grunt-webfont",
+  "name": "@hibi_10000/grunt-webfont",
   "description": "Ultimate SVG to webfont converter for Grunt.",
   "version": "1.7.2",
-  "homepage": "https://github.com/sapegin/grunt-webfont",
-  "author": {
-    "name": "Artem Sapegin",
-    "url": "http://sapegin.me/"
-  },
+  "homepage": "https://github.com/Hibi-10000/grunt-webfont",
+  "author": "Hibi_10000",
   "contributors": [
+    "Artem Sapegin (http://sapegin.me/)",
     "Maxime Thirouin (http://moox.io/)",
     "Aaron Lampros (https://github.com/alampros)",
     "Cyrille Meichel (https://github.com/landru29)"
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/sapegin/grunt-webfont.git"
+    "url": "git+https://github.com/Hibi-10000/grunt-webfont.git"
   },
   "bugs": {
-    "url": "https://github.com/sapegin/grunt-webfont/issues"
+    "url": "https://github.com/Hibi-10000/grunt-webfont/issues"
   },
   "keywords": [
     "gruntplugin",

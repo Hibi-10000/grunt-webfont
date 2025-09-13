@@ -1,8 +1,10 @@
 # SVG to webfont converter for Grunt
 
-[![Powered by You](http://sapegin.github.io/powered-by-you/badge.svg)](http://sapegin.github.io/powered-by-you/)
-[![Build Status](https://travis-ci.org/sapegin/grunt-webfont.svg)](https://travis-ci.org/sapegin/grunt-webfont)
-[![Downloads on npm](http://img.shields.io/npm/dm/grunt-webfont.svg?style=flat)](https://www.npmjs.com/package/grunt-webfont)
+<!-- [![Powered by You](http://sapegin.github.io/powered-by-you/badge.svg)](http://sapegin.github.io/powered-by-you/) -->
+[![Test Status](https://github.com/Hibi-10000/grunt-webfont/actions/workflows/test.yml/badge.svg)](https://github.com/Hibi-10000/grunt-webfont/actions/workflows/test.yml)
+[![Downloads on npm](http://img.shields.io/npm/dm/@hibi_10000/grunt-webfont.svg?style=flat)](https://www.npmjs.com/package/@hibi_10000/grunt-webfont)
+
+Forked from [sapegin/grunt-webfont](https://github.com/sapegin/grunt-webfont)
 
 Generate custom icon webfonts from SVG files via Grunt. Inspired by [Font Custom](https://github.com/FontCustom/fontcustom).
 
@@ -685,8 +687,8 @@ Check the following...
 
 ## Changelog
 
-The changelog can be found on the [Releases page](https://github.com/sapegin/grunt-webfont/releases).
+The changelog can be found on the [Releases page](https://github.com/Hibi-10000/grunt-webfont/releases).
 
 ## License
 
-The MIT License, see the included [License.md](License.md) file.
+The MIT License, see the included [LICENSE.md](LICENSE.md) file.

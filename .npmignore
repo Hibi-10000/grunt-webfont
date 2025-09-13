@@ -1,3 +1,9 @@
+.cache
+.github
 node_modules
-Formula
 test
+.editorconfig
+.npmignore
+Gruntfile.cjs
+tsdown-typefix.d.ts
+tsdown.config.ts

@@ -2,6 +2,7 @@
 
 <!-- [![Powered by You](http://sapegin.github.io/powered-by-you/badge.svg)](http://sapegin.github.io/powered-by-you/) -->
 [![Test Status](https://github.com/Hibi-10000/grunt-webfont/actions/workflows/test.yml/badge.svg)](https://github.com/Hibi-10000/grunt-webfont/actions/workflows/test.yml)
+[![Publish Status](https://github.com/Hibi-10000/grunt-webfont/actions/workflows/publish.yml/badge.svg)](https://github.com/Hibi-10000/grunt-webfont/actions/workflows/publish.yml)
 [![Downloads on npm](http://img.shields.io/npm/dm/@hibi_10000/grunt-webfont.svg?style=flat)](https://www.npmjs.com/package/@hibi_10000/grunt-webfont)
 
 Forked from [sapegin/grunt-webfont](https://github.com/sapegin/grunt-webfont)

@@ -39,7 +39,7 @@
   "type": "module",
   "scripts": {
     "build": "tsdown",
-    "test:node": "node --experimental-transform-types --test ./test/webfont.test.ts",
+    "test:node": "node --test ./test/webfont.test.ts",
     "test:grunt": "pnpm build & grunt --stack"
   },
   "engines": {

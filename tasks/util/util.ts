@@ -102,7 +102,7 @@ export const fontFormats = 'eot,woff2,woff,ttf,svg';
  *
  * @param o Options.
  */
-export const generatedFontFiles = (o: OptionsInternal) => {
+export const generatedFontFiles = (o: OptionsInternal): string[] => {
 	return globSync(path.posix.join(o.dest, `${o.fontFilename}*.{${o.types}}`));
 };
 
@@ -112,6 +112,6 @@ export const generatedFontFiles = (o: OptionsInternal) => {
  * @param o Options.
  * @param type Font type (see `wf.fontFormats`).
  */
-export const getFontPath = (o: OptionsInternal, type: string) => {
+export const getFontPath = (o: OptionsInternal, type: string): string => {
 	return path.join(o.dest, `${o.fontFilename}.${type}`);
 };

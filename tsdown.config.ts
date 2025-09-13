@@ -6,7 +6,9 @@ export default defineConfig({
     sourcemap: true,
     format: "esm",
 	cjsDefault: false,
-	dts: true,
+	dts: {
+		oxc: true,
+	},
 	skipNodeModulesBundle: true,
 	platform: "node",
 });

@@ -13,7 +13,7 @@ import temp from 'temp';
 import chalk from 'chalk';
 import * as wf from '../util/util.ts';
 
-export default async (o: OptionsInternal) => {
+export default async (o: OptionsInternal): Promise<false | { fontName: string }> => {
 	const logger = o.logger || wf.consolaLogger;
 
 	// Copy source files to temporary directory

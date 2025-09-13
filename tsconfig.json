@@ -20,6 +20,8 @@
     "allowSyntheticDefaultImports": true,
     "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
+    //"declaration": true,
+    //"isolatedDeclarations": true,
   },
   "exclude": [
     "dist",

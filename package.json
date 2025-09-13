@@ -1,7 +1,7 @@
 {
   "name": "@hibi_10000/grunt-webfont",
   "description": "Ultimate SVG to webfont converter for Grunt.",
-  "version": "1.7.2",
+  "version": "2.0.0",
   "homepage": "https://github.com/Hibi-10000/grunt-webfont",
   "author": "Hibi_10000",
   "contributors": [

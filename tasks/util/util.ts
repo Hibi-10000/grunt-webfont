@@ -8,6 +8,8 @@ import path from 'node:path';
 import { globSync } from 'glob';
 import { consola } from 'consola';
 
+import type { Logger, OptionsInternal } from '../types.ts';
+
 export const consolaLogger: Logger = {
 	log: {
 		error: consola.error.raw,

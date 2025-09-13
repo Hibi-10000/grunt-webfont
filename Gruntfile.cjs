@@ -9,7 +9,7 @@ module.exports = (/** @type {import('grunt')} */grunt) => {
 	webfont(grunt);
 
 	grunt.initConfig({
-		webfont: /** @type {Configs} */({
+		webfont: /** @type {import('./tasks/types.js').Configs} */({
 			test1: {
 				src: 'test/src/*.svg',
 				dest: 'test/tmp/test1',

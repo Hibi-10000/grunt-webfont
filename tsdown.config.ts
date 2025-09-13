@@ -9,9 +9,6 @@ export default defineConfig({
 	dts: {
 		oxc: true,
 	},
-	copy: [
-		"tasks/global.d.ts",
-	],
 	skipNodeModulesBundle: true,
 	platform: "node",
 });

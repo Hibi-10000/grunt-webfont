@@ -10,6 +10,7 @@ import type { Test } from "nodeunit";
 
 import { webfont } from "../tasks/webfont.ts";
 import { webfont as webfontTests } from "./webfont_test.js";
+import type { Configs } from "../tasks/types.ts";
 
 const cleanTmp = () => rmSync('test/tmp', { recursive: true, force: true });
 

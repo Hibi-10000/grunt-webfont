@@ -12,9 +12,11 @@ import { globSync } from 'glob';
 import chalk from 'chalk';
 import _ from 'lodash';
 import ttf2woff2 from 'ttf2woff2';
+
 import fontforge from './engines/fontforge.ts';
 import node from './engines/node.ts';
 import * as wf from './util/util.ts';
+import type { Logger, CustomOutput, TemplateOptions, Config, Options, OptionsInternal, Context } from './types.ts';
 
 import packageJson from '../package.json' with { type: "json" };
 

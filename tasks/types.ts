@@ -1,6 +1,4 @@
-/// <reference types="node" />
-
-interface Logger {
+export interface Logger {
 	log: {
 		error: (...args: any[]) => void,
 		warn: (...args: any[]) => void,
@@ -13,23 +11,23 @@ interface Logger {
 	},
 }
 
-interface CustomOutput {
+export interface CustomOutput {
 	template: string,
 	dest: string,
 	syntax?: string,
 	context?: Partial<Context>,
 }
 
-interface TemplateOptions {
+export interface TemplateOptions {
 	baseClass?: string,
 	classPrefix?: string,
 }
 
-interface Configs {
+export interface Configs {
 	[key: string]: Config,
 }
 
-interface Config {
+export interface Config {
 	src: string,
 	dest?: string,
 	destCss?: string,
@@ -40,7 +38,7 @@ interface Config {
 	options?: Options,
 }
 
-interface Options {
+export interface Options {
 	font?: string,
 	destCss?: string,
 	destScss?: string,
@@ -88,7 +86,7 @@ interface Options {
 	skip?: boolean,
 }
 
-interface OptionsInternal extends TemplateOptions {
+export interface OptionsInternal extends TemplateOptions {
 	logger: Logger,
 	fontBaseName: string,
 	destCss: string,
@@ -157,13 +155,13 @@ interface OptionsInternal extends TemplateOptions {
 	fontPathVariable?: string,
 }
 
-interface Context extends OptionsInternal {
+export interface Context extends OptionsInternal {
 	testHeading?: string,
 	stylesheet?: string,
 	iconsStyles?: true,
 }
 
-interface ReadableStreamWithMetadata extends NodeJS.ReadableStream {
+export interface ReadableStreamWithMetadata extends NodeJS.ReadableStream {
 	metadata?: {
 		unicode: string[],
 		name: string,

@@ -60,7 +60,8 @@ export default (grunt: IGrunt): void => {
 	});
 };
 
-export const webfont = async (name: string, target: string, filesSrc: string[], params: Config, options: Options, logger?: Logger): Promise<void> => {
+export const webfont = async (name: string, target: string, filesSrc: string[], params: Config, options?: Options, logger?: Logger): Promise<void> => {
+	if (!options) options = params.options;
 	if (!logger) logger = wf.consolaLogger;
 	const md5 = crypto.createHash('md5');
 

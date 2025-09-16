@@ -929,7 +929,7 @@ export const webfont = {
 		test.done();
 	},
 
-	custom_outputs: (test) => {
+	custom_output: (test) => {
 
 		// File should have been created when filename is specified
 		test.ok(fs.existsSync('test/tmp/custom_output/test-icon-config.js'));

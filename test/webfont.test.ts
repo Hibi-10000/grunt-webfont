@@ -3,7 +3,7 @@ import type { TestContext } from "node:test";
 //TODO: use assert instead of t.assert in nodeUnit_Test
 import assert from "node:assert/strict";
 
-import { rmSync } from "node:fs";
+import { mkdirSync, rmSync } from "node:fs";
 import path from "node:path";
 import { globSync } from "glob";
 import type { Test } from "nodeunit";
@@ -15,6 +15,8 @@ import type { Configs } from "../tasks/types.ts";
 const cleanTmp = () => rmSync('test/tmp', { recursive: true, force: true });
 
 cleanTmp();
+
+mkdirSync('test/tmp');
 
 const configs: Configs = {
 	test1: {
@@ -391,31 +393,19 @@ const nodeUnit_Test = (t: TestContext, done: (value?: never) => void): Test => (
 });
 
 await test('webfont', { concurrency: true }, async (t) => {
-	const cases: Promise<void>[] = [];
+	const tests: Promise<void>[] = [];
 	for (const key in configs) {
 		const config = configs[key];
-		const options = config.options ?? {};
+		const options = config.options;
 		const filesSrc = globSync(config.src, { posix: true });
-		cases.push(
-			webfont("webfont", key, filesSrc, config, options),
-		);
-	}
-	await Promise.allSettled(cases);
-	const tests: Promise<void>[] = [];
-	//const resolves: ((value?: never) => void)[] = [];
-	for (const key in webfontTests) {
 		const webfontTest = webfontTests[key];
 		tests.push(t.test(key, async (t) => {
-			//await new Promise((resolve) => {
-			//	resolves.push(resolve);
-			//});
+			await webfont("webfont", key, filesSrc, config, options);
 			await new Promise(async (resolve) =>
 				webfontTest(nodeUnit_Test(t, resolve))
 			);
 		}));
 	}
-	//await Promise.allSettled(cases);
-	//resolves.forEach((resolve) => resolve());
 	await Promise.allSettled(tests);
 });
 

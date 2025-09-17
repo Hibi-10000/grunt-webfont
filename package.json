@@ -33,7 +33,17 @@
     "icon"
   ],
   "license": "MIT",
-  "main": "dist/webfont.js",
+  "main": "./dist/webfont.cjs",
+  "exports": {
+    "require": {
+      "types": "./dist/webfont.d.cts",
+      "default": "./dist/webfont.cjs"
+    },
+    "import": {
+      "types": "./dist/webfont.d.ts",
+      "default": "./dist/webfont.js"
+    }
+  },
   "type": "module",
   "scripts": {
     "build": "tsdown",

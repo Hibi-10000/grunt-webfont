@@ -11,4 +11,8 @@ export default defineConfig({
 	},
 	skipNodeModulesBundle: true,
 	platform: "node",
+	copy: [
+		"public/webfont.d.cts",
+		"public/webfont.cjs",
+	],
 });

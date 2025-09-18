@@ -81,7 +81,7 @@ for dirname, dirnames, filenames in os.walk(args['inputDir']):
 			if args['round']:
 				glyph.round(int(args['round']))
 
-fontfile = args['dest'] + os.path.sep + args['fontFilename']
+fontfile = args['dest'] + '/' + args['fontFilename']
 
 f.fontname = args['fontFilename']
 f.familyname = args['fontFamilyName']

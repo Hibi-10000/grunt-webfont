@@ -396,11 +396,10 @@ await test('webfont', { concurrency: true }, async (t) => {
 	const tests: Promise<void>[] = [];
 	for (const key in configs) {
 		const config = configs[key];
-		const options = config.options;
 		const filesSrc = globSync(config.src, { posix: true });
 		const webfontTest = webfontTests[key];
 		tests.push(t.test(key, async (t) => {
-			await webfont("webfont", key, filesSrc, config, options);
+			await webfont("webfont", key, filesSrc, config);
 			await new Promise(async (resolve) =>
 				webfontTest(nodeUnit_Test(t, resolve))
 			);

@@ -15,7 +15,7 @@ export const consolaLogger: Logger = {
 		error: consola.error.raw,
 		warn: consola.warn.raw,
 		info: consola.info.raw,
-		verbose: consola.verbose.raw,
+		verbose: consola.debug.raw,
 	},
 	fail: {
 		fatal: (...args) => {

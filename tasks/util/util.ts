@@ -25,6 +25,10 @@ export const consolaLogger: Logger = {
 	},
 }
 
+export const showConsolaVerbose = () => {
+	consola.level = 4; // debug
+};
+
 /**
  * Unicode Private Use Area start.
  * http://en.wikipedia.org/wiki/Private_Use_(Unicode)

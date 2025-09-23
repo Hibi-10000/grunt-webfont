@@ -10,6 +10,8 @@ import { consola } from 'consola';
 
 import type { Logger, OptionsInternal } from '../types.ts';
 
+consola.options.throttle = 300;
+
 export const consolaLogger: Logger = {
 	log: {
 		error: consola.error.raw,

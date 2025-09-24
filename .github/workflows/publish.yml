@@ -1,12 +1,18 @@
 name: publish
 
+run-name: Publish ${{ github.ref_name }}
+
 on:
   push:
     tags:
     - 'v*'
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   release:
+    needs: [test]
     runs-on: ubuntu-latest
     permissions:
       contents: write

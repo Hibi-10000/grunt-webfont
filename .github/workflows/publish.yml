@@ -5,7 +5,7 @@ run-name: Publish ${{ github.ref_name }}
 on:
   push:
     tags:
-    - 'v*'
+      - 'v*'
 
 jobs:
   test:
@@ -17,12 +17,12 @@ jobs:
     permissions:
       contents: write
     steps:
-    - name: Create release draft
-      uses: softprops/action-gh-release@v2
-      with:
-        name: ${{ github.ref_name }}
-        tag_name: ${{ github.ref_name }}
-        draft: true
+      - name: Create release draft
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          draft: true
 
   publish:
     needs: [release]
@@ -33,29 +33,29 @@ jobs:
       contents: read
       id-token: write
     steps:
-    - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
 
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: ^10
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ^10
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v5
-      with:
-        node-version: 22
-        cache: 'pnpm'
-        registry-url: 'https://registry.npmjs.org/'
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org/'
 
-    - name: Run pnpm install
-      run: |
-        pnpm install
-        pnpm install --force
+      - name: Run pnpm install
+        run: |
+          pnpm install
+          pnpm install --force
 
-    - name: Run build
-      run: |
-        pnpm build
+      - name: Run build
+        run: |
+          pnpm build
 
-    - name: Publish package
-      run: |
-        npm publish --access public
+      - name: Publish package
+        run: |
+          npm publish --access public

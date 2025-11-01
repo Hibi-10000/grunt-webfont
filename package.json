@@ -73,7 +73,7 @@
   "devDependencies": {
     "@types/grunt": "^0.4.32",
     "@types/lodash": "^4.17.20",
-    "@types/node": "^22.18.1",
+    "@types/node": "^22.18.12",
     "@types/nodeunit": "^0.0.36",
     "@types/stylus": "^0.48.43",
     "@types/svg2ttf": "^5.0.3",
@@ -86,8 +86,8 @@
     "grunt-contrib-nodeunit": "^5.0.0",
     "load-grunt-tasks": "^5.1.0",
     "stylus": "^0.64.0",
-    "tsdown": "^0.15.0",
-    "typescript": "^5.9.2",
+    "tsdown": "^0.15.9",
+    "typescript": "^5.9.3",
     "xml2js": "^0.6.2"
   },
   "peerDependencies": {

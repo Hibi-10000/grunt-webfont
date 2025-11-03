@@ -15,4 +15,7 @@ export default defineConfig({
 		"public/webfont.d.cts",
 		"public/webfont.cjs",
 	],
+	report: {
+		gzip: false,
+	}
 });

@@ -51,8 +51,15 @@
     "test:grunt": "pnpm build & grunt --stack"
   },
   "engines": {
-    "node": ">=24.11",
+    "node": ">=20.11",
     "pnpm": ">=10"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^24.11",
+      "onFail": "download"
+    }
   },
   "dependencies": {
     "chalk": "^5.6.2",

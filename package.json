@@ -48,7 +48,8 @@
   "scripts": {
     "build": "tsdown",
     "test:node": "node --test ./test/webfont.test.ts",
-    "test:grunt": "pnpm build & grunt --stack"
+    "pretest:grunt": "pnpm build",
+    "test:grunt": "grunt --stack"
   },
   "engines": {
     "node": ">=20.11",

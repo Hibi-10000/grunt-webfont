@@ -37,6 +37,5 @@ jobs:
 
       - name: Run tests
         run: |
-          pnpm build
           pnpm test:node
           pnpm test:grunt

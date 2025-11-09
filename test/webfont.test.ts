@@ -395,7 +395,7 @@ const nodeUnit_Test = (t: TestContext, done: (value?: never) => void): Test => (
 	same: t.assert.deepEqual,
 });
 
-await test('webfont', { concurrency: process.platform !== 'win32' }, async (t) => {
+await test('webfont', { concurrency: true }, async (t) => {
 	const tests: Promise<void>[] = [];
 	for (const key in configs) {
 		const config = configs[key];

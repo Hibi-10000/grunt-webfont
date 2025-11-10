@@ -17,9 +17,11 @@ if (process.env.RUNNER_DEBUG === '1') wf.showConsolaVerbose();
 
 const cleanTmp = () => rmSync('test/tmp', { recursive: true, force: true });
 
-cleanTmp();
+if (process.argv[2] !== "--no-clean") {
+	cleanTmp();
 
-mkdirSync('test/tmp');
+	mkdirSync('test/tmp');
+}
 
 const configs: Configs = {
 	test1: {
@@ -395,14 +397,16 @@ const nodeUnit_Test = (t: TestContext, done: (value?: never) => void): Test => (
 	same: t.assert.deepEqual,
 });
 
-await test('webfont', { concurrency: true }, async (t) => {
+await test('webfont', { concurrency: true, only: true }, async (t) => {
 	const tests: Promise<void>[] = [];
 	for (const key in configs) {
 		const config = configs[key];
 		const filesSrc = globSync(config.src, { posix: true });
 		const webfontTest = webfontTests[key];
 		tests.push(t.test(key, async (t) => {
-			await webfont("webfont", key, filesSrc, config);
+			await t.test(`${key} run`, { only: false }, async () =>
+				await webfont("webfont", key, filesSrc, config)
+			);
 			await new Promise(async (resolve) =>
 				webfontTest(nodeUnit_Test(t, resolve))
 			);

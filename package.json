@@ -48,7 +48,8 @@
   "scripts": {
     "build": "tsdown",
     "test:node": "node --test ./test/webfont.test.ts",
-    "test:grunt": "grunt --stack"
+    "pretest:grunt": "grunt clean webfont --stack",
+    "test:grunt": "node --test-only ./test/webfont.test.ts --no-clean"
   },
   "engines": {
     "node": ">=20.11",

@@ -1,10 +1,10 @@
 const path = require('node:path');
 //@ts-expect-error
-const loadGruntTasks = require('load-grunt-tasks');
+const clean = require('grunt-contrib-clean');
 const webfont = require('./tasks/webfont.ts').default;
 
 module.exports = (/** @type {import('grunt')} */grunt) => {
-	loadGruntTasks(grunt);
+	clean(grunt);
 
 	webfont(grunt);
 
@@ -360,14 +360,6 @@ module.exports = (/** @type {import('grunt')} */grunt) => {
 				}
 			},
 		}),
-		nodeunit: {
-			all: ['test/webfont_test.js']
-		},
 		clean: ['test/tmp']
 	});
-
-	grunt.loadTasks('tasks');
-
-	grunt.registerTask('test', ['nodeunit']);
-	grunt.registerTask('default', ['clean', 'webfont', 'test', 'clean']);
 };

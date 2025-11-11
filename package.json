@@ -91,8 +91,6 @@
     "grunt": "^1.6.1",
     "grunt-cli": "^1.5.0",
     "grunt-contrib-clean": "^2.0.1",
-    "grunt-contrib-nodeunit": "^5.0.0",
-    "load-grunt-tasks": "^5.1.0",
     "stylus": "^0.64.0",
     "tsdown": "^0.15.9",
     "typescript": "^5.9.3",

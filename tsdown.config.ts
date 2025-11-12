@@ -6,14 +6,15 @@ export default defineConfig({
 	sourcemap: true,
 	format: "esm",
 	cjsDefault: false,
+	fixedExtension: false,
 	dts: {
 		oxc: true,
 	},
 	skipNodeModulesBundle: true,
 	platform: "node",
 	copy: [
-		"public/webfont.d.cts",
 		"public/webfont.cjs",
+		"public/webfont.d.cts",
 	],
 	report: {
 		gzip: false,

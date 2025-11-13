@@ -3,20 +3,18 @@ import path from 'node:path';
 import { globSync } from 'glob';
 import stylus from 'stylus';
 import { parseString as parseXMLString } from 'xml2js';
+import type { Test } from 'nodeunit';
 
 import * as wf from '../tasks/util/util.ts';
 
-/** @type {(haystack: string, needle: string) => boolean} */
-function find(haystack, needle) {
+function find(haystack: string, needle: string): boolean {
 	return haystack.indexOf(needle) !== -1;
 }
 
-/** @type {(haystack: string[], needles?: never) => string[]} */
-function findDuplicates(haystack, needles) {
+function findDuplicates(haystack: string[], needles?: never): string[] {
 	const sorted_arr = haystack.sort();
 
-	/** @type {string[]} */
-	const results = [];
+	const results: string[] = [];
 	for (let i = 0; i < haystack.length - 1; i++) {
 		if (sorted_arr[i + 1] === sorted_arr[i]) {
 			results.push(sorted_arr[i]);
@@ -26,8 +24,7 @@ function findDuplicates(haystack, needles) {
 	return results;
 }
 
-/** @type {{ [key: string]: (test: import('nodeunit').Test) => void }} */
-export const webfont = {
+export const webfont: { [key: string]: (test: Test) => void; } = {
 	test1: (test) => {
 		// All out files should be created and should not be empty
 		['woff', 'ttf', 'eot'].forEach((type) => {
@@ -747,12 +744,11 @@ export const webfont = {
 		// Generated SVG font should have glyphs at the overidden codepoints
 		resultSVG.forEach((file) => {
 			const svgSource = fs.readFileSync(file, 'utf8');
-			/** @type {{ unicode: string }[]} */
-			const glyphs = [];
+			const glyphs: { unicode: string; }[] = [];
 
 			parseXMLString(svgSource, (err, result) => {
 				// Normalise glyphs into JS objects
-				result.svg.defs[0].font[0].glyph.forEach((/** @type {{ $: { unicode: string, "glyph-name": string } }} */glyph) => {
+				result.svg.defs[0].font[0].glyph.forEach((glyph: { $: { unicode: string, "glyph-name": string } }) => {
 					if (glyph.$['glyph-name'].length === 1) { // Skip non-characters (.notdef, .null, etc.)
 						glyphs.push(glyph.$);
 					}
@@ -798,11 +794,10 @@ export const webfont = {
 
 		const svgFont = fs.readFileSync('test/tmp/folders/icons.svg', 'utf8');
 		const paths = JSON.parse(fs.readFileSync('test/src_folders/paths.json', 'utf8'));
-		/** @type {{ unicode: string, d: string, "glyph-name": string }[]} */
-		const glyphs = [];
+		const glyphs: { unicode: string, d: string, "glyph-name": string }[] = [];
 		parseXMLString(svgFont, (err, result) => {
 			// Normalise glyphs into JS objects
-			result.svg.defs[0].font[0].glyph.forEach((/** @type {{ $: { unicode: string, d: string, "glyph-name": string } }} */glyph) => {
+			result.svg.defs[0].font[0].glyph.forEach((glyph: { $: { unicode: string, d: string, "glyph-name": string } }) => {
 				if (/^uni/.test(glyph.$['glyph-name'])) { // Skip non-characters (.notdef, .null, etc.)
 					glyphs.push(glyph.$);
 				}

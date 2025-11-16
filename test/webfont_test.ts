@@ -179,7 +179,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		});
 
 		const css = fs.readFileSync('test/tmp/embed_woff/icons.css', 'utf8');
-		let m;
+		let m: RegExpMatchArray;
 
 		// Data:uri
 		m = css.match(/data:application\/x-font-woff;charset=utf-8;base64,.*?format\("woff"\)/g);
@@ -197,7 +197,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		});
 
 		const css = fs.readFileSync('test/tmp/embed_ttf/icons.css', 'utf8');
-		let m;
+		let m: RegExpMatchArray;
 
 		// Data:uri
 		m = css.match(/data:application\/x-font-ttf;charset=utf-8;base64,.*?format\("truetype"\)/g);
@@ -215,7 +215,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		});
 
 		const css = fs.readFileSync('test/tmp/embed_ttf_woff/icons.css', 'utf8');
-		let m;
+		let m: RegExpMatchArray;
 
 		// Data:uri
 		m = css.match(/data:application\/x-font-ttf;charset=utf-8;base64,.*?format\("truetype"\)/g);

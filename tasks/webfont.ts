@@ -432,7 +432,7 @@ export const webfont = async (name: string, target: string, filesSrc: string[], 
 
 		let context = prepareBaseTemplateContext();
 
-		let htmlStyles;
+		let htmlStyles: string;
 
 		// Prepare relative font paths for injection into @font-face refs in HTML
 		const relativeRe = new RegExp(_.escapeRegExp(o.relativeFontPath).replace(/[=!:\/]/g, '\\$&'), 'g');
@@ -484,9 +484,9 @@ export const webfont = async (name: string, target: string, filesSrc: string[], 
 		// Prepares config attributes related to destination filepath
 		const dest = outputConfig.dest || o.dest;
 
-		let filepath;
-		let destParent;
-		let destName;
+		let filepath: string;
+		let destParent: string;
+		let destName: string;
 
 		if (path.extname(dest) === '') {
 			// If user specifies a directory, filename should be same as template
@@ -666,7 +666,7 @@ export const webfont = async (name: string, target: string, filesSrc: string[], 
 		const filename = template(`${o.fontFilename}${font.ext}`, o);
 		let fontPathVariableName = `${o.fontFamilyName}-font-path`;
 
-		let url;
+		let url: string;
 		if (font.embeddable && has(o.embed, type)) {
 			url = embedFont(path.join(o.dest, filename));
 		} else {

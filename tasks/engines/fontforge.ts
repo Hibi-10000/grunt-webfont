@@ -62,7 +62,7 @@ export default async (o: OptionsInternal): Promise<false | { fontName: string }>
 	proc.stdin.write(JSON.stringify(params));
 	proc.stdin.end();
 
-	let out;
+	let out: string;
 	try {
 		out = (await promise).stdout;
 	} catch (err: unknown) {

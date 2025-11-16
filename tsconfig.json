@@ -8,8 +8,6 @@
     "target": "ESNext",
     "lib": ["ESNext"],
     "noEmit": true,
-    "allowJs": true,
-    "checkJs": true,
     "strict": true,
     "strictNullChecks": false,
     "strictFunctionTypes": false,

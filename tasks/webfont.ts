@@ -56,11 +56,16 @@ export default (grunt: IGrunt): void => {
 		 */
 		this.requiresConfig([this.name, this.target, 'src'].join('.'));
 
-		webfont(this.name, this.target, this.filesSrc, params, options, logger).finally(allDone);
+		webfontMain(this.name, this.target, this.filesSrc, params, options, logger).finally(allDone);
 	});
 };
 
-export const webfont = async (name: string, target: string, filesSrc: string[], params: Config, options?: Options, logger?: Logger): Promise<void> => {
+export const webfont = async (targetName: string, config: Config) => {
+	const filesSrc = globSync(config.src, { posix: true });
+	await webfontMain("webfont", targetName, filesSrc, config);
+}
+
+const webfontMain = async (name: string, target: string, filesSrc: string[], params: Config, options?: Options, logger?: Logger): Promise<void> => {
 	if (!options) options = params.options ?? {};
 	if (!logger) logger = wf.consolaLogger;
 	const md5 = crypto.createHash('md5');

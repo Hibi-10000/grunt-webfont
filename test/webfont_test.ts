@@ -7,15 +7,15 @@ import type { Test } from 'nodeunit';
 
 import * as wf from '../tasks/util/util.ts';
 
-function find(haystack: string, needle: string): boolean {
-	return haystack.indexOf(needle) !== -1;
+function find(source: string, target: string): boolean {
+	return source.indexOf(target) !== -1;
 }
 
-function findDuplicates(haystack: string[], needles?: never): string[] {
-	const sorted_arr = haystack.sort();
+function findDuplicates(array: string[]): string[] {
+	const sorted_arr = array.sort();
 
 	const results: string[] = [];
-	for (let i = 0; i < haystack.length - 1; i++) {
+	for (let i = 0; i < array.length - 1; i++) {
 		if (sorted_arr[i + 1] === sorted_arr[i]) {
 			results.push(sorted_arr[i]);
 		}

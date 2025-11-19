@@ -83,7 +83,6 @@
     "@types/grunt": "^0.4.32",
     "@types/lodash": "^4.17.20",
     "@types/node": "^24.10.0",
-    "@types/nodeunit": "^0.0.36",
     "@types/stylus": "^0.48.43",
     "@types/svg2ttf": "^5.0.3",
     "@types/temp": "^0.9.4",

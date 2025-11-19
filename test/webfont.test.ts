@@ -1,12 +1,10 @@
 import test from "node:test";
-import type { TestContext } from "node:test";
+import type { TestContext, TestContextAssert } from "node:test";
 //TODO: use assert instead of t.assert in nodeUnit_Test
-import assert from "node:assert/strict";
+//import assert from "node:assert/strict";
 
 import { mkdirSync, rmSync } from "node:fs";
 import path from "node:path";
-import { globSync } from "glob";
-import type { Test } from "nodeunit";
 
 import { webfont } from "../tasks/webfont.ts";
 import { webfont as webfontTests } from "./webfont_test.ts";
@@ -375,26 +373,12 @@ const configs: Configs = {
 	},
 };
 
-const nodeUnit_Test = (t: TestContext, done: (value?: never) => void): Test => ({
+const node_Test = (t: TestContext, done: (value?: never) => void): Pick<TestContextAssert, "ok" | "done" | "fail" | "equal" | "equals"> => ({
 	ok: t.assert.ok,
 	done: done,
 	fail: t.assert.fail,
 	equal: t.assert.equal,
 	equals: t.assert.equal,
-
-	expect: (_num) => {
-		throw new Error("Function not implemented.");
-	},
-	assert: assert,
-	notEqual: t.assert.notEqual,
-	deepEqual: t.assert.deepEqual,
-	notDeepEqual: t.assert.notDeepEqual,
-	strictEqual: t.assert.strictEqual,
-	notStrictEqual: t.assert.notStrictEqual,
-	throws: t.assert.throws,
-	doesNotThrow: t.assert.doesNotThrow,
-	ifError: t.assert.ifError,
-	same: t.assert.deepEqual,
 });
 
 await test('webfont', { concurrency: true, only: true }, async (t) => {
@@ -406,8 +390,8 @@ await test('webfont', { concurrency: true, only: true }, async (t) => {
 			await t.test(`${key} run`, { only: false }, async () =>
 				await webfont(key, config)
 			);
-			await new Promise(async (resolve) =>
-				webfontTest(nodeUnit_Test(t, resolve))
+			await new Promise<void>(async (resolve) =>
+				webfontTest(node_Test(t, resolve) as unknown as TestContextAssert)
 			);
 		}));
 	}

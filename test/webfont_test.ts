@@ -1,9 +1,9 @@
+import type { TestContextAssert } from 'node:test';
 import fs from 'node:fs';
 import path from 'node:path';
 import { globSync } from 'glob';
 import stylus from 'stylus';
 import { parseString as parseXMLString } from 'xml2js';
-import type { Test } from 'nodeunit';
 
 import * as wf from '../tasks/util/util.ts';
 
@@ -24,8 +24,8 @@ function findDuplicates(array: string[]): string[] {
 	return results;
 }
 
-export const webfont: { [key: string]: (test: Test) => void; } = {
-	test1: (test) => {
+export const webfont: Record<string, (test: TestContextAssert) => void | Promise<void>> = {
+	test1: (test: TestContextAssert) => {
 		// All out files should be created and should not be empty
 		['woff', 'ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
@@ -81,7 +81,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	test2: (test) => {
+	test2: (test: TestContextAssert) => {
 		const css = fs.readFileSync('test/tmp/test2/myfont.css', 'utf8');
 
 		// Read hash
@@ -145,7 +145,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	embed: (test) => {
+	embed: (test: TestContextAssert) => {
 		// All out files should be created and should not be empty
 		['ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
@@ -170,7 +170,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	embed_woff: (test) => {
+	embed_woff: (test: TestContextAssert) => {
 		// Excluded file types should not be created + WOFF should be deleted
 		['woff', 'ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
@@ -188,7 +188,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	embed_ttf: (test) => {
+	embed_ttf: (test: TestContextAssert) => {
 		// Excluded file types should not be created + TTF should be deleted
 		['woff', 'ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
@@ -206,7 +206,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	embed_ttf_woff: (test) => {
+	embed_ttf_woff: (test: TestContextAssert) => {
 		// Excluded file types should not be created + TTF should be deleted
 		['woff', 'ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
@@ -226,7 +226,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	one: (test) => {
+	one: (test: TestContextAssert) => {
 		// All out files should be created and should not be empty
 		['woff', 'ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
@@ -263,7 +263,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	template: (test) => {
+	template: (test: TestContextAssert) => {
 		const css = fs.readFileSync('test/tmp/template/icons.css', 'utf8');
 
 		// There should be comment from custom template
@@ -275,7 +275,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	template_scss: (test) => {
+	template_scss: (test: TestContextAssert) => {
 		const cssFilename = 'test/tmp/template_scss/_icons.scss';
 
 		test.ok(fs.existsSync(cssFilename), 'SCSS template: .scss file created.');
@@ -291,7 +291,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	template_sass: (test) => {
+	template_sass: (test: TestContextAssert) => {
 		const cssFilename = 'test/tmp/template_sass/_icons.sass';
 
 		test.ok(fs.existsSync(cssFilename), 'SASS template: .sass file created (stylesheet extension derived from template name).');
@@ -307,7 +307,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	enabled_template_variables: (test) => {
+	enabled_template_variables: (test: TestContextAssert) => {
 		const scssFilename = 'test/tmp/enabled_template_variables/_icons.scss';
 		const lessFilename = 'test/tmp/enabled_template_variables/icons.less';
 		const htmlFilename = 'test/tmp/enabled_template_variables/icons.html';
@@ -349,7 +349,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	html_template: (test) => {
+	html_template: (test: TestContextAssert) => {
 		const demo = fs.readFileSync('test/tmp/html_template/icons.html', 'utf8');
 
 		// There should be comment from custom template
@@ -361,7 +361,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	html_filename: (test) => {
+	html_filename: (test: TestContextAssert) => {
 		const htmlfile = 'test/tmp/html_filename/index.html';
 
 		// There should be comment from custom template
@@ -370,7 +370,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	relative_path: (test) => {
+	relative_path: (test: TestContextAssert) => {
 		const css = fs.readFileSync('test/tmp/relative_path/icons.css', 'utf8');
 
 		// CSS links to font files are correct
@@ -384,7 +384,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	sass: (test) => {
+	sass: (test: TestContextAssert) => {
 		test.ok(fs.existsSync('test/tmp/sass/_icons.sass'), 'SASS file with underscore created.');
 		test.ok(!fs.existsSync('test/tmp/sass/icons.sass'), 'SASS file without underscore not created.');
 		test.ok(!fs.existsSync('test/tmp/sass/icons.css'), 'CSS file not created.');
@@ -403,7 +403,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	less: (test) => {
+	less: (test: TestContextAssert) => {
 		test.ok(fs.existsSync('test/tmp/less/icons.less'), 'LESS file created.');
 		test.ok(!fs.existsSync('test/tmp/less/icons.css'), 'CSS file not created.');
 
@@ -430,7 +430,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	css_plus_scss: (test) => {
+	css_plus_scss: (test: TestContextAssert) => {
 		test.ok(fs.existsSync('test/tmp/scss/_icons.scss'), 'SCSS file with underscore created.');
 		test.ok(!fs.existsSync('test/tmp/scss/icons.scss'), 'SCSS file without underscore not created.');
 		test.ok(fs.existsSync('test/tmp/css/icons.css'), 'CSS file is created.');
@@ -438,7 +438,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	stylus_bem: (test) => {
+	stylus_bem: (test: TestContextAssert) => {
 		test.ok(fs.existsSync('test/tmp/stylus_bem/icons.styl'), 'Stylus file created.');
 		test.ok(!fs.existsSync('test/tmp/stylus_bem/icons.css'), 'CSS file not created.');
 
@@ -464,7 +464,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		});
 	},
 
-	stylus_bootstrap: (test) => {
+	stylus_bootstrap: (test: TestContextAssert) => {
 		test.ok(fs.existsSync('test/tmp/stylus_bootstrap/icons.styl'), 'Stylus file created.');
 		test.ok(!fs.existsSync('test/tmp/stylus_bootstrap/icons.css'), 'CSS file not created.');
 
@@ -482,7 +482,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		});
 	},
 
-	spaces: (test) => {
+	spaces: (test: TestContextAssert) => {
 		const css = fs.readFileSync('test/tmp/spaces/icons.css', 'utf8');
 
 		test.ok(
@@ -497,14 +497,14 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	disable_demo: (test) => {
+	disable_demo: (test: TestContextAssert) => {
 		test.ok(fs.existsSync('test/tmp/disable_demo/icons.css'), 'CSS file created.');
 		test.ok(!fs.existsSync('test/tmp/disable_demo/icons.html'), 'HTML file not created.');
 
 		test.done();
 	},
 
-	non_css_demo: (test) => {
+	non_css_demo: (test: TestContextAssert) => {
 		test.ok(!fs.existsSync('test/tmp/non_css_demo/icons.css'), 'CSS file not created.');
 		test.ok(fs.existsSync('test/tmp/non_css_demo/icons.html'), 'HTML file created.');
 
@@ -543,7 +543,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	parent_source: (test) => {
+	parent_source: (test: TestContextAssert) => {
 		const svgs = globSync('test/src/**.*');
 		const css = fs.readFileSync('test/tmp/parent_source/icons.css', 'utf8');
 
@@ -559,7 +559,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	ligatures: (test) => {
+	ligatures: (test: TestContextAssert) => {
 		const svgs = globSync('test/ligatures_src/**.*');
 		const css = fs.readFileSync('test/tmp/ligatures/icons.css', 'utf8');
 
@@ -575,7 +575,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	duplicate_names: (test) => {
+	duplicate_names: (test: TestContextAssert) => {
 		const svgs = globSync('test/src_duplicate_names/**/*.svg');
 		const css = fs.readFileSync('test/tmp/duplicate_names/icons.css', 'utf8');
 
@@ -591,7 +591,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	order: (test) => {
+	order: (test: TestContextAssert) => {
 		//const svgs = globSync('test/src/**.*');
 		const css = fs.readFileSync('test/tmp/order/icons.css', 'utf8');
 
@@ -604,7 +604,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	template_options: (test) => {
+	template_options: (test: TestContextAssert) => {
 		const svgs = globSync('test/src/**.*');
 		const less = fs.readFileSync('test/tmp/template_options/icons.less', 'utf8');
 		const html = fs.readFileSync('test/tmp/template_options/icons.html', 'utf8');
@@ -634,7 +634,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	node: (test) => {
+	node: (test: TestContextAssert) => {
 		// All out files should be created and should not be empty
 		['woff', 'ttf', 'eot'].forEach((type) => {
 			const name = type.toUpperCase();
@@ -686,7 +686,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	ie7: (test) => {
+	ie7: (test: TestContextAssert) => {
 		const css = fs.readFileSync('test/tmp/ie7/icons.css', 'utf8');
 		const svgs = globSync('test/src/*.svg');
 		test.ok(find(css, '*zoom'), '*zoom property should be set');
@@ -701,7 +701,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	ie7_bootstrap: (test) => {
+	ie7_bootstrap: (test: TestContextAssert) => {
 		const css = fs.readFileSync('test/tmp/ie7_bootstrap/icons.css', 'utf8');
 		const svgs = globSync('test/src/*.svg');
 		test.ok(find(css, '*zoom'), '*zoom property should be set');
@@ -716,7 +716,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	optimize_enabled: (test) => {
+	optimize_enabled: (test: TestContextAssert) => {
 		const optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
 		const svg = fs.readFileSync('test/tmp/optimize_enabled/icons.svg', 'utf8');
 		if(svg.indexOf(optimizedPathSegment) === -1) {
@@ -725,7 +725,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	optimize_disabled: (test) => {
+	optimize_disabled: (test: TestContextAssert) => {
 		const optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
 		const svg = fs.readFileSync('test/tmp/optimize_disabled/icons.svg', 'utf8');
 		if(svg.indexOf(optimizedPathSegment) > -1) {
@@ -734,7 +734,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	codepoints: (test) => {
+	codepoints: (test: TestContextAssert) => {
 		// Default codepoint of 0xE001 can be overidden
 		const resultSVG = globSync('test/tmp/codepoints/icons.svg');
 		const css = fs.readFileSync('test/tmp/codepoints/icons.css', 'utf8');
@@ -771,7 +771,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	camel: (test) => {
+	camel: (test: TestContextAssert) => {
 		const svgs = globSync('test/camel/*.svg');
 		const css = fs.readFileSync('test/tmp/camel/icons.css', 'utf8');
 
@@ -787,7 +787,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	folders: (test) => {
+	folders: (test: TestContextAssert) => {
 		// @todo Temporarily disabled because different fontforge versions produce different paths
 		test.done();
 		if (true) return;
@@ -811,7 +811,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	woff2: (test) => {
+	woff2: (test: TestContextAssert) => {
 		// All out files should be created and should not be empty
 		['woff', 'woff2'].forEach((type) => {
 			const name = type.toUpperCase();
@@ -853,7 +853,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	woff2_node: (test) => {
+	woff2_node: (test: TestContextAssert) => {
 		// All out files should be created and should not be empty
 		['woff', 'woff2'].forEach((type) => {
 			const name = type.toUpperCase();
@@ -895,7 +895,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	target_overrides: (test) => {
+	target_overrides: (test: TestContextAssert) => {
 
 		//const css = fs.readFileSync('test/tmp/target_overrides_css/icons.css', 'utf8');
 		test.ok(fs.existsSync('test/tmp/target_overrides_css/icons.css'), 'CSS file created.');
@@ -909,7 +909,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	font_family_name: (test) => {
+	font_family_name: (test: TestContextAssert) => {
 		const html = fs.readFileSync('test/tmp/font_family_name/icons.html', 'utf8');
 
 		// fontFamilyName should be in the HTML file's title
@@ -924,7 +924,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	custom_output: (test) => {
+	custom_output: (test: TestContextAssert) => {
 
 		// File should have been created when filename is specified
 		test.ok(fs.existsSync('test/tmp/custom_output/test-icon-config.js'));
@@ -938,7 +938,7 @@ export const webfont: { [key: string]: (test: Test) => void; } = {
 		test.done();
 	},
 
-	filename_length: (test) => {
+	filename_length: (test: TestContextAssert) => {
 
 		// File should have been created.
 		test.ok(fs.existsSync('test/tmp/filename_length/icons.css'));

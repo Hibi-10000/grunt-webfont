@@ -759,7 +759,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 				// - the correct glyph character code is present in the generated CSS
 				const unicodeCharArr = glyphs.map((g) => { return g.unicode; });
 				for (let index = 0; index < glyphs.length; index++) {
-					test.equals(0, findDuplicates(unicodeCharArr).length);
+					test.equal(0, findDuplicates(unicodeCharArr).length);
 					test.ok(
 						find(css, `content:"\\${(startCodepoint + index).toString(16)}"`),
 						`Character at index ${index} has its codepoint in the CSS`
@@ -804,7 +804,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 			});
 
 			glyphs.forEach((glyph) => {
-				test.equals(glyph.d, paths[glyph['glyph-name']], `Glyph with codepoint ${glyph.unicode} has correct path.`);
+				test.equal(glyph.d, paths[glyph['glyph-name']], `Glyph with codepoint ${glyph.unicode} has correct path.`);
 			});
 		});
 

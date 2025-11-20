@@ -373,12 +373,11 @@ const configs: Configs = {
 	},
 };
 
-const node_Test = (t: TestContext, done: (value?: never) => void): Pick<TestContextAssert, "ok" | "done" | "fail" | "equal" | "equals"> => ({
+const node_Test = (t: TestContext, done: (value?: never) => void): Pick<TestContextAssert, "ok" | "done" | "fail" | "equal"> => ({
 	ok: t.assert.ok,
 	done: done,
 	fail: t.assert.fail,
 	equal: t.assert.equal,
-	equals: t.assert.equal,
 });
 
 await test('webfont', { concurrency: true, only: true }, async (t) => {

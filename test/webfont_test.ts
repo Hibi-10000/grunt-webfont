@@ -1,3 +1,4 @@
+import { AssertionError } from 'node:assert/strict';
 import type { TestContextAssert } from 'node:test';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -720,7 +721,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		const optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
 		const svg = fs.readFileSync('test/tmp/optimize_enabled/icons.svg', 'utf8');
 		if(svg.indexOf(optimizedPathSegment) === -1) {
-			test.fail(true, 'SVG element must be contains the optimized path', undefined, undefined);
+			test.fail(new AssertionError({ actual: true, expected: 'SVG element must be contains the optimized path' }));
 		}
 		test.done();
 	},
@@ -729,7 +730,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		const optimizedPathSegment = '280.2V280.098C349.867 293.072 358.595';
 		const svg = fs.readFileSync('test/tmp/optimize_disabled/icons.svg', 'utf8');
 		if(svg.indexOf(optimizedPathSegment) > -1) {
-			test.fail(true, 'SVG element must be contains the un-optimized path', undefined, undefined);
+			test.fail(new AssertionError({ actual: true, expected: 'SVG element must be contains the un-optimized path' }));
 		}
 		test.done();
 	},

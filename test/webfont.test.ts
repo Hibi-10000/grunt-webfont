@@ -1,5 +1,4 @@
 import test from "node:test";
-import type { TestContext, TestContextAssert } from "node:test";
 //TODO: use assert instead of t.assert in nodeUnit_Test
 //import assert from "node:assert/strict";
 
@@ -373,13 +372,6 @@ const configs: Configs = {
 	},
 };
 
-const node_Test = (t: TestContext, done: (value?: never) => void): Pick<TestContextAssert, "ok" | "done" | "fail" | "equal"> => ({
-	ok: t.assert.ok,
-	done: done,
-	fail: t.assert.fail,
-	equal: t.assert.equal,
-});
-
 await test('webfont', { concurrency: true, only: true }, async (t) => {
 	const tests: Promise<void>[] = [];
 	for (const key in configs) {
@@ -389,9 +381,7 @@ await test('webfont', { concurrency: true, only: true }, async (t) => {
 			await t.test(`${key} run`, { only: false }, async () =>
 				await webfont(key, config)
 			);
-			await new Promise<void>(async (resolve) =>
-				webfontTest(node_Test(t, resolve) as unknown as TestContextAssert)
-			);
+			await webfontTest(t.assert);
 		}));
 	}
 	await Promise.allSettled(tests);

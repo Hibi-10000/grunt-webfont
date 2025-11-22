@@ -1,5 +1,5 @@
 import { AssertionError } from 'node:assert/strict';
-import type { TestContextAssert } from 'node:test';
+import type { TestContextAssert as _TestContextAssert } from 'node:test';
 import fs from 'node:fs';
 import path from 'node:path';
 import { globSync } from 'glob';
@@ -25,6 +25,9 @@ function findDuplicates(array: string[]): string[] {
 	return results;
 }
 
+type TestContextAssert = {
+    [K in keyof _TestContextAssert as string extends K ? never : K]: _TestContextAssert[K];
+};
 export const webfont: Record<string, (test: TestContextAssert) => void | Promise<void>> = {
 	test1: (test: TestContextAssert) => {
 		// All out files should be created and should not be empty

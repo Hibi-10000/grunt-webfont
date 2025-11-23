@@ -11,6 +11,8 @@ export interface Logger {
 	},
 }
 
+export type FontFormat = 'eot' | 'woff2' | 'woff' | 'ttf' | 'svg';
+
 export interface CustomOutput {
 	template: string,
 	dest: string,
@@ -107,9 +109,9 @@ export interface OptionsInternal extends TemplateOptions {
 	htmlDemoTemplate: string,
 	htmlDemoFilename: string,
 	styles: string[] | string,
-	types: string[],
-	order: string[],
-	embed: string[],
+	types: FontFormat[],
+	order: FontFormat[],
+	embed: FontFormat[],
 	rename: (path: string, suffix?: string) => string,
 	engine: 'fontforge' | 'node',
 	autoHint: boolean,
@@ -124,7 +126,7 @@ export interface OptionsInternal extends TemplateOptions {
 	descent: number,
 	version: string | boolean,
 	cache: string,
-	callback: (filename: string, types: string[], glyphs: string[], hash: string) => void,
+	callback: (filename: string, types: FontFormat[], glyphs: string[], hash: string) => void,
 	customOutputs: CustomOutput[],
 	execMaxBuffer: number,
 

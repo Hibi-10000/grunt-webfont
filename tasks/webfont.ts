@@ -16,7 +16,7 @@ import ttf2woff2 from 'ttf2woff2';
 import fontforge from './engines/fontforge.ts';
 import node from './engines/node.ts';
 import * as wf from './util/util.ts';
-import type { Logger, CustomOutput, TemplateOptions, Config, Options, OptionsInternal, Context } from './types.ts';
+import type { Logger, FontFormat, CustomOutput, TemplateOptions, Config, Options, OptionsInternal, Context } from './types.ts';
 
 import packageJson from '../package.json' with { type: "json" };
 
@@ -117,9 +117,9 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 		htmlDemoTemplate: options.htmlDemoTemplate,
 		htmlDemoFilename: options.htmlDemoFilename,
 		styles: optionToArray(options.styles, 'font,icon'),
-		types: optionToArray(options.types, 'eot,woff,ttf'),
-		order: optionToArray(options.order, wf.fontFormats),
-		embed: options.embed === true ? ['woff'] : optionToArray(options.embed, false),
+		types: optionToArray(options.types, 'eot,woff,ttf') as FontFormat[],
+		order: optionToArray(options.order, wf.fontFormats) as FontFormat[],
+		embed: options.embed === true ? ['woff'] : optionToArray(options.embed, false) as FontFormat[],
 		rename: options.rename || path.basename,
 		engine: options.engine || 'fontforge',
 		autoHint: options.autoHint !== false,
@@ -354,7 +354,7 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 
 		// Generate font URLs to use in @font-face
 		const fontSrcs: { 0: string[], 1: string[] } = { 0: [], 1: [] };
-		o.order.forEach((type: 'eot'|'woff2'|'woff'|'ttf'|'svg') => {
+		o.order.forEach((type) => {
 			if (!has(o.types, type)) return;
 			const fontSrc1 = wf.fontsSrcsMap[type][0];
 			if (fontSrc1) fontSrcs[0].push(generateFontSrc(type, fontSrc1, stylesheet));
@@ -667,7 +667,7 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 	 * @param font URL or Base64 string
 	 * @param stylesheet type: css, scss, ...
 	 */
-	function generateFontSrc(type: string, font: { ext: string, format?: string, embeddable?: boolean }, stylesheet: string): string {
+	function generateFontSrc(type: FontFormat, font: { ext: string, format?: string, embeddable?: boolean }, stylesheet: string): string {
 		const filename = template(`${o.fontFilename}${font.ext}`, o);
 		let fontPathVariableName = `${o.fontFamilyName}-font-path`;
 

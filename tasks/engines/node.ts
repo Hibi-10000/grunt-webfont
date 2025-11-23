@@ -99,7 +99,6 @@ export default async (o: OptionsInternal): Promise<false> => {
 	try {
 		for (const type of typesToGenerate) {
 			if (type === 'woff2') continue;
-			//@ts-ignore
 			await createFontWriter(type);
 		}
 	} catch (e) {

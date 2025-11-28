@@ -1,13 +1,13 @@
 export interface Logger {
 	log: {
-		error: (...args: any[]) => void,
-		warn: (...args: any[]) => void,
-		info: (...args: any[]) => void,
-		verbose: (...args: any[]) => void,
+		error: (args: string) => void,
+		warn: (msg: string) => void,
+		info: (msg: string) => void,
+		verbose: (msg: string) => void,
 	},
 	fail: {
-		fatal: (...args: any[]) => void,
-		warn?: (...args: any[]) => void,
+		fatal: (args: string) => void,
+		//warn?: (args: string) => void,
 	},
 }
 

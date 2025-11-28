@@ -27,23 +27,13 @@ export default (grunt: IGrunt): void => {
 		 */
 		const logger: Logger = {
 			log: {
-				warn: (...args) => {
-					grunt.log.warn.apply(null, args);
-				},
-				error: (...args) => {
-					grunt.warn.apply(null, args);
-				},
-				info: (...args) => {
-					grunt.log.writeln.apply(null, args);
-				},
-				verbose: (...args) => {
-					grunt.log.verbose.writeln.apply(null, args);
-				},
+				error: grunt.warn,
+				warn: grunt.log.warn,
+				info: grunt.log.writeln,
+				verbose: grunt.log.verbose.writeln,
 			},
 			fail: {
-				fatal: (...args) => {
-					grunt.fail.fatal.apply(null, args);
-				},
+				fatal: grunt.fail.fatal,
 			},
 		};
 
@@ -180,7 +170,7 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 
 	// Check if we need to generate font
 	const previousHash = readHash(name, target);
-	logger.log.verbose('New hash:', o.hash, '- previous hash:', previousHash);
+	logger.log.verbose(`New hash: ${o.hash} - previous hash: ${previousHash}`);
 	if (o.hash === previousHash) {
 		logger.log.verbose('Config and source files weren’t changed since last run, checking resulting files...');
 		let regenerationNeeded = false;
@@ -197,7 +187,7 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 			regenerationNeeded = generatedFiles.some((filename) => {
 				if (!filename) return false;
 				if (!fs.existsSync(filename)) {
-					logger.log.verbose('File', filename, ' is missed.');
+					logger.log.verbose(`File ${filename} is missed.`);
 					return true;
 				}
 				return false;

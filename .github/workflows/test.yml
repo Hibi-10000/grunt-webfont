@@ -8,6 +8,9 @@ on:
   workflow_call:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -37,5 +40,5 @@ jobs:
 
       - name: Run tests
         run: |
-          pnpm test:grunt
-          pnpm test:node:cov
+          pnpm run test:grunt
+          pnpm run test:node:cov

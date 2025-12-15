@@ -1,15 +1,17 @@
 const path = require('node:path');
-//@ts-expect-error
 const clean = require('grunt-contrib-clean');
 const webfont = require('./tasks/webfont.ts').default;
 
-module.exports = (/** @type {import('grunt')} */grunt) => {
+type Grunt = typeof import('grunt');
+type Configs = import('./tasks/types.ts').Configs;
+
+module.exports = (grunt: Grunt) => {
 	clean(grunt);
 
 	webfont(grunt);
 
 	grunt.initConfig({
-		webfont: /** @type {import('./tasks/types.js').Configs} */({
+		webfont: {
 			test1: {
 				src: 'test/src/*.svg',
 				dest: 'test/tmp/test1',
@@ -192,7 +194,7 @@ module.exports = (/** @type {import('grunt')} */grunt) => {
 				dest: 'test/tmp/duplicate_names',
 				options: {
 					hashes: false,
-					rename: (/** @type {string} */name) => {
+					rename: (name) => {
 						return [path.basename(path.dirname(name)), path.basename(name)].join('-');
 					}
 				}
@@ -359,7 +361,7 @@ module.exports = (/** @type {import('grunt')} */grunt) => {
 					types: 'woff'
 				}
 			},
-		}),
+		} as Configs,
 		clean: ['test/tmp']
 	});
 };

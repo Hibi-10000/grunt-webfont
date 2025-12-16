@@ -66,7 +66,7 @@
   "dependencies": {
     "chalk": "^5.6.2",
     "consola": "^3.4.2",
-    "glob": "^11.0.3",
+    "glob": "^13.0.0",
     "lodash": "^4.17.21",
     "temp": "^0.9.4",
     "ttf2woff2": "^8.0.0"
@@ -77,12 +77,12 @@
     "svgo": "^4.0.0",
     "ttf2eot": "^3.1.0",
     "ttf2woff": "^3.0.0",
-    "which": "^5.0.0"
+    "which": "^6.0.0"
   },
   "devDependencies": {
     "@types/grunt": "^0.4.32",
-    "@types/lodash": "^4.17.20",
-    "@types/node": "^24.10.0",
+    "@types/lodash": "^4.17.21",
+    "@types/node": "^24.10.1",
     "@types/stylus": "^0.48.43",
     "@types/svg2ttf": "^5.0.3",
     "@types/temp": "^0.9.4",
@@ -92,7 +92,7 @@
     "grunt-cli": "^1.5.0",
     "grunt-contrib-clean": "^2.0.1",
     "stylus": "^0.64.0",
-    "tsdown": "^0.16.0",
+    "tsdown": "^0.17.1",
     "typescript": "^5.9.3",
     "xml2js": "^0.6.2"
   },

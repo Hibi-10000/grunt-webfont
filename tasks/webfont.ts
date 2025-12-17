@@ -50,7 +50,7 @@ export default (grunt: IGrunt): void => {
 	});
 };
 
-export const webfont = async (targetName: string, config: Config) => {
+export const webfont = async (targetName: string, config: Config): Promise<void> => {
 	const filesSrc = globSync(config.src, { posix: true });
 	await webfontMain("webfont", targetName, filesSrc, config);
 }

@@ -32,7 +32,6 @@ jobs:
         run: |
           pnpm install
           tree node_modules/.pnpm/ | grep @rolldown+binding
-          pnpm install --force
 
       - name: Run build
         run: |

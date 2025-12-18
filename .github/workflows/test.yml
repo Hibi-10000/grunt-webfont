@@ -36,7 +36,6 @@ jobs:
       - name: Run pnpm install
         run: |
           pnpm install
-          pnpm install --force
 
       - name: Run tests
         run: |

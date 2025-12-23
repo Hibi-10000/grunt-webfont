@@ -6,12 +6,14 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   test:
+    if: github.ref_type == 'tag'
     uses: ./.github/workflows/test.yml
 
   release:

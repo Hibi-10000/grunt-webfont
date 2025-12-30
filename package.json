@@ -43,7 +43,7 @@
     "build": "tsdown",
     "test:node": "node --test ./test/webfont.test.ts",
     "test:node:cov": "node --experimental-test-coverage --test ./test/webfont.test.ts",
-    "pretest:grunt": "grunt clean webfont --gruntfile ./Gruntfile.cts --stack",
+    "pretest:grunt": "grunt clean webfont --gruntfile ./Gruntfile.ts --stack",
     "test:grunt": "node --test-only ./test/webfont.test.ts --no-clean"
   },
   "engines": {

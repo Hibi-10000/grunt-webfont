@@ -1,11 +1,11 @@
-const path = require('node:path');
-const clean = require('grunt-contrib-clean');
-const webfont = require('./tasks/webfont.ts');
+import path from 'node:path';
+//@ts-expect-error
+import clean from 'grunt-contrib-clean';
+import webfont from './tasks/webfont.ts';
 
-type Grunt = typeof import('grunt');
-type Configs = import('./tasks/types.ts').Configs;
+import type { Configs } from './tasks/types.ts';
 
-module.exports = (grunt: Grunt) => {
+const config = (grunt: IGrunt) => {
 	clean(grunt);
 
 	webfont(grunt);
@@ -365,3 +365,5 @@ module.exports = (grunt: Grunt) => {
 		clean: ['test/tmp']
 	});
 };
+
+export { config as "module.exports" }

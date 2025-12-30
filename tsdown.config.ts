@@ -12,10 +12,6 @@ export default defineConfig({
 	},
 	skipNodeModulesBundle: true,
 	platform: "node",
-	copy: [
-		"public/webfont.cjs",
-		"public/webfont.d.cts",
-	],
 	report: {
 		gzip: false,
 	}

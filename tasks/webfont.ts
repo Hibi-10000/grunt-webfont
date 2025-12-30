@@ -20,7 +20,7 @@ import type { Logger, FontFormat, CustomOutput, TemplateOptions, Config, Options
 
 import packageJson from '../package.json' with { type: "json" };
 
-export default (grunt: IGrunt): void => {
+export const webfontGrunt = (grunt: IGrunt): void => {
 	grunt.registerMultiTask('webfont', 'Compile separate SVG files to webfont', function() {
 		/**
 		 * Consola to Grunt logger adapter.
@@ -54,6 +54,14 @@ export const webfont = async (targetName: string, config: Config): Promise<void>
 	const filesSrc = globSync(config.src, { posix: true });
 	await webfontMain("webfont", targetName, filesSrc, config);
 }
+
+const webfontGruntCjs = (grunt: IGrunt): void => webfontGrunt(grunt);
+Object.assign(webfontGruntCjs, {
+	default: webfontGrunt,
+	webfont: webfont,
+});
+
+export { webfontGrunt as default, webfontGruntCjs as "module.exports" };
 
 const webfontMain = async (name: string, target: string, filesSrc: string[], params: Config, options?: Options, logger?: Logger): Promise<void> => {
 	if (!options) options = params.options ?? {};

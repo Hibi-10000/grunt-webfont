@@ -1,6 +1,6 @@
 const path = require('node:path');
 const clean = require('grunt-contrib-clean');
-const webfont = require('./tasks/webfont.ts').default;
+const webfont = require('./tasks/webfont.ts');
 
 type Grunt = typeof import('grunt');
 type Configs = import('./tasks/types.ts').Configs;

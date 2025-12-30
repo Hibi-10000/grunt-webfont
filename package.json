@@ -33,16 +33,10 @@
     "icon"
   ],
   "license": "MIT",
-  "main": "./dist/webfont.cjs",
+  "main": "./dist/webfont.js",
   "exports": {
-    "require": {
-      "types": "./dist/webfont.d.cts",
-      "default": "./dist/webfont.cjs"
-    },
-    "import": {
-      "types": "./dist/webfont.d.ts",
-      "default": "./dist/webfont.js"
-    }
+    "types": "./dist/webfont.d.ts",
+    "default": "./dist/webfont.js"
   },
   "type": "module",
   "scripts": {

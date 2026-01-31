@@ -35,7 +35,7 @@ export const webfontGrunt = (grunt: IGrunt): void => {
 			fail: {
 				fatal: grunt.fail.fatal,
 			},
-		};
+		} as const;
 
 		const allDone = this.async();
 		const params = this.data;
@@ -351,7 +351,7 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 		o.relativeFontPath = normalizePath(o.relativeFontPath);
 
 		// Generate font URLs to use in @font-face
-		const fontSrcs: { 0: string[], 1: string[] } = { 0: [], 1: [] };
+		const fontSrcs: { readonly 0: string[], readonly 1: string[] } = { 0: [], 1: [] };
 		o.order.forEach((type) => {
 			if (!has(o.types, type)) return;
 			const fontSrc1 = wf.fontsSrcsMap[type][0];
@@ -584,7 +584,7 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 	 * @param needle Value to find
 	 * @return Needle was found
 	 */
-	function has(haystack: string[] | string, needle: string): boolean {
+	function has(haystack: readonly string[] | string, needle: string): boolean {
 		return haystack.indexOf(needle) !== -1;
 	}
 
@@ -594,7 +594,7 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 	 * @param map Options object
 	 * @param key Option to find in the object
 	 */
-	function option(map: { _default?: string, [key: string]: string }, key: string): string {
+	function option(map: { readonly _default?: string, readonly [key: string]: string }, key: string): string {
 		if (key in map) {
 			return map[key];
 		} else {
@@ -665,7 +665,7 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 	 * @param font URL or Base64 string
 	 * @param stylesheet type: css, scss, ...
 	 */
-	function generateFontSrc(type: FontFormat, font: { ext: string, format?: string, embeddable?: boolean }, stylesheet: string): string {
+	function generateFontSrc(type: FontFormat, font: { readonly ext: string, readonly format?: string, readonly embeddable?: boolean }, stylesheet: string): string {
 		const filename = template(`${o.fontFilename}${font.ext}`, o);
 		let fontPathVariableName = `${o.fontFamilyName}-font-path`;
 

@@ -23,9 +23,9 @@ export const consolaLogger: Logger = {
 		fatal: (...args) => {
 			consola.fatal.raw(...args);
 			process.exit(1);
-		}
+		},
 	},
-}
+} as const;
 
 export const showConsolaVerbose = () => {
 	consola.level = 4; // debug
@@ -51,7 +51,7 @@ export const fontsSrcsMap = {
 		},
 	},
 	woff: {
-		0: false as false,
+		0: false,
 		1: {
 			ext: '.woff',
 			format: 'woff',
@@ -59,7 +59,7 @@ export const fontsSrcsMap = {
 		},
 	},
 	woff2: {
-		0: false as false,
+		0: false,
 		1: {
 			ext: '.woff2',
 			format: 'woff2',
@@ -67,7 +67,7 @@ export const fontsSrcsMap = {
 		},
 	},
 	ttf: {
-		0: false as false,
+		0: false,
 		1: {
 			ext: '.ttf',
 			format: 'truetype',
@@ -75,13 +75,13 @@ export const fontsSrcsMap = {
 		},
 	},
 	svg: {
-		0: false as false,
+		0: false,
 		1: {
 			ext: '.svg#{fontBaseName}',
 			format: 'svg',
 		},
 	},
-};
+} as const;
 
 /**
  * CSS fileaname prefixes: _icons.scss.
@@ -90,7 +90,7 @@ export const cssFilePrefixes = {
 	_default: '',
 	sass: '_',
 	scss: '_'
-};
+} as const;
 
 /**
  * @font-face’s src parts seperators.
@@ -98,7 +98,7 @@ export const cssFilePrefixes = {
 export const fontSrcSeparators = {
 	_default: ',\n\t\t',
 	styl: ', '
-};
+} as const;
 
 /**
  * List of available font formats.

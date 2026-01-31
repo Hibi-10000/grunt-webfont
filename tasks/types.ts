@@ -1,13 +1,13 @@
 export interface Logger {
-	log: {
-		error: (args: string) => void,
-		warn: (msg: string) => void,
-		info: (msg: string) => void,
-		verbose: (msg: string) => void,
+	readonly log: {
+		readonly error: (args: string) => void,
+		readonly warn: (msg: string) => void,
+		readonly info: (msg: string) => void,
+		readonly verbose: (msg: string) => void,
 	},
-	fail: {
-		fatal: (args: string) => void,
-		//warn?: (args: string) => void,
+	readonly fail: {
+		readonly fatal: (args: string) => void,
+		//readonly warn?: (args: string) => void,
 	},
 }
 

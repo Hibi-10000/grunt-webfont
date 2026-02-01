@@ -115,9 +115,9 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 		htmlDemoTemplate: options.htmlDemoTemplate,
 		htmlDemoFilename: options.htmlDemoFilename,
 		styles: optionToArray(options.styles, 'font,icon'),
-		types: optionToArray(options.types, 'eot,woff,ttf') as FontFormat[],
-		order: optionToArray(options.order, wf.fontFormats) as FontFormat[],
-		embed: options.embed === true ? ['woff'] : optionToArray(options.embed, false) as FontFormat[],
+		types: optionToArray<FontFormat>(options.types, 'eot,woff,ttf'),
+		order: optionToArray<FontFormat>(options.order, wf.fontFormats),
+		embed: options.embed === true ? ['woff'] : optionToArray<FontFormat>(options.embed, false),
 		rename: options.rename || path.basename,
 		engine: options.engine || 'fontforge',
 		autoHint: options.autoHint !== false,
@@ -564,7 +564,7 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 	 * @param val Input string
 	 * @param defVal Default value
 	 */
-	function optionToArray(val: string | false, defVal: string | false): string[] {
+	function optionToArray<T extends string>(val: string | false, defVal: string | false): T[] {
 		if (val === undefined) {
 			val = defVal;
 		}
@@ -574,7 +574,7 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 		if (typeof val !== 'string') {
 			return val;
 		}
-		return val.split(',').map((value) => value.trim());
+		return val.split(',').map((value) => value.trim() as T);
 	}
 
 	/**

@@ -361,7 +361,7 @@ const config = (grunt: IGrunt) => {
 					types: 'woff'
 				}
 			},
-		} as Configs,
+		} satisfies Configs,
 		clean: ['test/tmp']
 	});
 };

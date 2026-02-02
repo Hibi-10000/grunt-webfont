@@ -14,6 +14,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x, 24.x]
     steps:
       - uses: actions/checkout@v6
 
@@ -25,7 +28,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: "package.json"
+          node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
 
       - name: Run pnpm install
@@ -40,5 +43,5 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: dist
+          name: dist-node${{ matrix.node-version }}
           path: dist

@@ -8,7 +8,7 @@ import path from 'node:path';
 import { globSync } from 'glob';
 import { consola } from 'consola';
 
-import type { Logger, OptionsInternal } from '../types.ts';
+import type { FontFormat, Logger, OptionsInternal } from '../types.ts';
 
 consola.options.throttle = 300;
 
@@ -103,7 +103,7 @@ export const fontSrcSeparators = {
 /**
  * List of available font formats.
  */
-export const fontFormats = 'eot,woff2,woff,ttf,svg';
+export const fontFormats: FontFormat[] = ['eot', 'woff2', 'woff', 'ttf', 'svg'];
 
 /**
  * Returns list of all generated font files.

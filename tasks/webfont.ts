@@ -114,8 +114,8 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 		htmlDemo: options.htmlDemo !== false,
 		htmlDemoTemplate: options.htmlDemoTemplate,
 		htmlDemoFilename: options.htmlDemoFilename,
-		styles: optionToArray(options.styles, 'font,icon'),
-		types: optionToArray<FontFormat>(options.types, 'eot,woff,ttf'),
+		styles: optionToArray(options.styles, ['font', 'icon']),
+		types: optionToArray<FontFormat>(options.types, ['eot', 'woff', 'ttf']),
 		order: optionToArray<FontFormat>(options.order, wf.fontFormats),
 		embed: options.embed === true ? ['woff'] : optionToArray<FontFormat>(options.embed, false),
 		rename: options.rename || path.basename,
@@ -564,9 +564,9 @@ const webfontMain = async (name: string, target: string, filesSrc: string[], par
 	 * @param val Input string
 	 * @param defVal Default value
 	 */
-	function optionToArray<T extends string>(val: string | false, defVal: string | false): T[] {
+	function optionToArray<T extends string>(val: string | false, defVal: T[] | false): T[] {
 		if (val === undefined) {
-			val = defVal;
+			return defVal || [];
 		}
 		if (!val) {
 			return [];

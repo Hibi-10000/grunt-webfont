@@ -63,9 +63,14 @@ Object.assign(webfontGruntCjs, {
 
 export { webfontGrunt as default, webfontGruntCjs as "module.exports" };
 
-const webfontMain = async (name: string, target: string, filesSrc: string[], params: Config, options?: Options, logger?: Logger): Promise<void> => {
-	if (!options) options = params.options ?? {};
-	if (!logger) logger = wf.consolaLogger;
+const webfontMain = async (
+	name: string,
+	target: string,
+	filesSrc: string[],
+	params: Config,
+	options: Options = params.options ?? {},
+	logger: Logger = wf.consolaLogger,
+): Promise<void> => {
 	const md5 = crypto.createHash('md5');
 
 	/*

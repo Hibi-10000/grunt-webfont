@@ -420,7 +420,7 @@ const webfontMain = async (
 			fs.writeFileSync(o.codepointsFile, codepointsToString);
 			logger.log.verbose(`Codepoints saved to file "${o.codepointsFile}".`);
 		} catch (err) {
-			logger.log.error(err.message);
+			logger.log.error((err as Error).message);
 		}
 	}
 
@@ -542,7 +542,7 @@ const webfontMain = async (
 			await fs.promises.mkdir(getDemoPath(), { recursive: true });
 		} catch (err) {
 			if (err) {
-				logger.log.info(err);
+				logger.log.info(err as string);
 				return;
 			}
 		}
@@ -751,7 +751,7 @@ const webfontMain = async (
 			const func = _.template(template.template);
 			return func(context);
 		} catch (e) {
-			logger.fail.fatal(`Error while rendering template ${template.filename}: ${e.message}`);
+			logger.fail.fatal(`Error while rendering template ${template.filename}: ${(e as Error).message}`);
 		}
 	}
 

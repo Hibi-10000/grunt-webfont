@@ -9,7 +9,7 @@ import fs from 'node:fs';
 import stream from 'node:stream';
 import path from 'node:path';
 import util from 'node:util';
-import { exec } from 'node:child_process';
+import { exec, type ExecException } from 'node:child_process';
 import { StringDecoder } from 'node:string_decoder';
 import temp from 'temp';
 import { SVGIcons2SVGFontStream } from 'svgicons2svgfont';
@@ -198,11 +198,11 @@ export default async (o: OptionsInternal): Promise<false> => {
 		try {
 			await execPromise(args, { maxBuffer: o.execMaxBuffer });
 		} catch (err) {
-			if (err.code === 127) {
+			if ((err as ExecException).code === 127) {
 				logger.log.verbose('Hinting skipped, ttfautohint not found.');
 				return false;
 			}
-			logger.log.error('Can’t run ttfautohint.\n\n' + err.message);
+			logger.log.error('Can’t run ttfautohint.\n\n' + (err as Error).message);
 			return false;
 		}
 		const hintedFont = fs.readFileSync(hintedFilepath);

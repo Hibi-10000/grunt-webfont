@@ -14,6 +14,9 @@ importers:
       consola:
         specifier: ^3.4.2
         version: 3.4.2
+      eta:
+        specifier: ^4.5.1
+        version: 4.5.1
       glob:
         specifier: ^13.0.0
         version: 13.0.0
@@ -522,6 +525,10 @@ packages:
     resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
     engines: {node: '>=4'}
     hasBin: true
+
+  eta@4.5.1:
+    resolution: {integrity: sha512-EaNCGm+8XEIU7YNcc+THptWAO5NfKBHHARxt+wxZljj9bTr/+arRoOm9/MpGt4n6xn9fLnPFRSoLD0WFYGFUxQ==}
+    engines: {node: '>=20'}
 
   eventemitter2@0.4.14:
     resolution: {integrity: sha512-K7J4xq5xAD5jHsGM5ReWXRTFa3JRGofHiMcVgQ8PRwgWxzjHpMWCIzsmyf60+mh8KLsqYPcjUMa0AC4hd6lPyQ==}
@@ -1853,6 +1860,8 @@ snapshots:
   err-code@2.0.3: {}
 
   esprima@4.0.1: {}
+
+  eta@4.5.1: {}
 
   eventemitter2@0.4.14: {}
 

@@ -10,7 +10,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { globSync } from 'glob';
 import chalk from 'chalk';
-import _ from 'lodash';
+import { Eta } from 'eta';
 import ttf2woff2 from 'ttf2woff2';
 
 import fontforge from './engines/fontforge.ts';
@@ -748,8 +748,15 @@ const webfontMain = async (
 	 */
 	function renderTemplate(template: { filename: string, template: string }, context: Context): string {
 		try {
-			const func = _.template(template.template);
-			return func(context);
+			return new Eta({
+				autoTrim: ["nl", false],
+				parse: {
+					exec: "",
+					interpolate: "~",
+					raw: "=",
+				},
+				useWith: true,
+			}).renderString(template.template, context);
 		} catch (e) {
 			logger.fail.fatal(`Error while rendering template ${template.filename}: ${(e as Error).message}`);
 		}

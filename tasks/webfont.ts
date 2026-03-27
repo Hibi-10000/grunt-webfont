@@ -443,7 +443,7 @@ const webfontMain = async (
 		let htmlStyles: string;
 
 		// Prepare relative font paths for injection into @font-face refs in HTML
-		const relativeRe = new RegExp(_.escapeRegExp(o.relativeFontPath).replace(/[=!:\/]/g, '\\$&'), 'g');
+		const relativeRe = new RegExp(o.relativeFontPath.replace(/[\\^$.*+?()[\]{}|]/g, '\\$&').replace(/[=!:\/]/g, '\\$&'), 'g');
 		const htmlRelativeFontPath = normalizePath(path.relative(o.destHtml, o.dest));
 		const _fontSrc1 = o.fontSrc1.replace(relativeRe, htmlRelativeFontPath);
 		const _fontSrc2 = o.fontSrc2.replace(relativeRe, htmlRelativeFontPath);

@@ -20,9 +20,6 @@ importers:
       glob:
         specifier: ^13.0.0
         version: 13.0.0
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
       temp:
         specifier: ^0.9.4
         version: 0.9.4
@@ -33,9 +30,6 @@ importers:
       '@types/grunt':
         specifier: ^0.4.32
         version: 0.4.32
-      '@types/lodash':
-        specifier: ^4.17.21
-        version: 4.17.21
       '@types/node':
         specifier: ^24.10.1
         version: 24.10.1
@@ -276,9 +270,6 @@ packages:
 
   '@types/grunt@0.4.32':
     resolution: {integrity: sha512-PJy6K4u35RMhBD/rc9xoUFip5bnZNZZqTZoNYsqsadFAsPzs6C24xYe/0QYX/NfuCKPiP6/vSi3R5skIgRp3hQ==}
-
-  '@types/lodash@4.17.21':
-    resolution: {integrity: sha512-FOvQ0YPD5NOfPgMzJihoT+Za5pdkDJWcbpuj1DjaKZIr/gxodQjY/uWEFlTNqW2ugXHUiL8lRQgw63dzKHZdeQ==}
 
   '@types/node@24.10.1':
     resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
@@ -1629,8 +1620,6 @@ snapshots:
   '@types/grunt@0.4.32':
     dependencies:
       '@types/node': 24.10.1
-
-  '@types/lodash@4.17.21': {}
 
   '@types/node@24.10.1':
     dependencies:

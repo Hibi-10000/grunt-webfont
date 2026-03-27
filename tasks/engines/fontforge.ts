@@ -51,7 +51,7 @@ export default async (o: OptionsInternal): Promise<false | { fontName: string }>
 				"fontforge process has unexpectedly closed.\n" +
 				`1. Try to run grunt in verbose mode to see fontforge output: ${chalk.bold('grunt --verbose webfont')}.\n` +
 				`2. If stderr maxBuffer exceeded try to increase ${chalk.bold('execMaxBuffer')}, ` +
-				`see ${chalk.underline('https://github.com/sapegin/grunt-webfont#execMaxBuffer')}. `
+				`see ${chalk.underline('https://github.com/Hibi-10000/grunt-webfont#execMaxBuffer')}. `
 			);
 		}
 	});
@@ -67,7 +67,7 @@ export default async (o: OptionsInternal): Promise<false | { fontName: string }>
 		out = (await promise).stdout;
 	} catch (err: unknown) {
 		if (err instanceof Error && (err as ExecException).code === 127) {
-			logger.log.error(`fontforge not found. Please install fontforge and all other requirements: ${chalk.underline('https://github.com/sapegin/grunt-webfont#installation')}`);
+			logger.log.error(`fontforge not found. Please install fontforge and all other requirements: ${chalk.underline('https://github.com/Hibi-10000/grunt-webfont#installation')}`);
 			return false;
 		}
 		if (err instanceof Error) {
@@ -111,8 +111,8 @@ export default async (o: OptionsInternal): Promise<false | { fontName: string }>
 		logger.log.verbose(`Webfont did not receive a proper JSON result from Python script: ${e}`);
 		logger.log.error(
 			'Something went wrong when running fontforge. Probably fontforge wasn’t installed correctly or one of your SVGs is too complicated for fontforge.\n\n' +
-			`1. Try to run Grunt in verbose mode: ${chalk.bold('grunt --verbose webfont')} and see what fontforge says. Then search GitHub issues for the solution: ${chalk.underline('https://github.com/sapegin/grunt-webfont/issues')}.\n\n` +
-			`2. Try to use “node” engine instead of “fontforge”: ${chalk.underline('https://github.com/sapegin/grunt-webfont#engine')}\n\n` +
+			`1. Try to run Grunt in verbose mode: ${chalk.bold('grunt --verbose webfont')} and see what fontforge says. Then search GitHub issues for the solution: ${chalk.underline('https://github.com/Hibi-10000/grunt-webfont/issues')}.\n\n` +
+			`2. Try to use “node” engine instead of “fontforge”: ${chalk.underline('https://github.com/Hibi-10000/grunt-webfont#engine')}\n\n` +
 			'3. To find “bad” icon try to remove SVGs one by one until error disappears. Then try to simplify this SVG in Sketch, Illustrator, etc.\n\n'
 		);
 		return false;

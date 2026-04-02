@@ -280,6 +280,7 @@ const configs: Configs = {
 		src: 'test/src/*.svg',
 		dest: 'test/tmp/codepoints',
 		options: {
+			types: 'svg',
 			hashes: false,
 			startCodepoint: 0x41,
 			codepoints: {
@@ -298,6 +299,7 @@ const configs: Configs = {
 		src: 'test/src_folders/**/*.svg',
 		dest: 'test/tmp/folders',
 		options: {
+			types: 'svg',
 			hashes: false,
 		},
 	},

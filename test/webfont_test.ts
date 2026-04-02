@@ -4,8 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { globSync } from 'glob';
 import stylus from 'stylus';
-import { parseString as parseXMLString } from 'xml2js';
-
+import { XMLParser } from "fast-xml-parser";
 import * as wf from '../tasks/util/util.ts';
 
 function find(source: string, target: string): boolean {
@@ -684,37 +683,33 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 
 	codepoints: (test: TestContextAssert) => {
 		// Default codepoint of 0xE001 can be overidden
-		const resultSVG = globSync('test/tmp/codepoints/icons.svg');
+		const resultSVG = fs.readFileSync('test/tmp/codepoints/icons.svg', 'utf8');
 		const css = fs.readFileSync('test/tmp/codepoints/icons.css', 'utf8');
 		//const html = fs.readFileSync('test/tmp/codepoints/icons.html', 'utf8');
 		const startCodepoint = 0x41;
 
 		// Generated SVG font should have glyphs at the overidden codepoints
-		resultSVG.forEach((file) => {
-			const svgSource = fs.readFileSync(file, 'utf8');
-			const glyphs: { unicode: string; }[] = [];
+		const glyphs: { unicode: string; }[] = [];
 
-			parseXMLString(svgSource, (err, result) => {
-				// Normalise glyphs into JS objects
-				result.svg.defs[0].font[0].glyph.forEach((glyph: { $: { unicode: string, "glyph-name": string } }) => {
-					if (glyph.$['glyph-name'].length === 1) { // Skip non-characters (.notdef, .null, etc.)
-						glyphs.push(glyph.$);
-					}
-				});
-
-				// Two assertions for each glyph:
-				// - each glyph has a unique unicode character
-				// - the correct glyph character code is present in the generated CSS
-				const unicodeCharArr = glyphs.map((g) => { return g.unicode; });
-				for (let index = 0; index < glyphs.length; index++) {
-					test.equal(0, findDuplicates(unicodeCharArr).length);
-					test.ok(
-						find(css, `content:"\\${(startCodepoint + index).toString(16)}"`),
-						`Character at index ${index} has its codepoint in the CSS`
-					);
-				}
-			});
+		const parsedSVG = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "" }).parse(resultSVG);
+		// Normalise glyphs into JS objects
+		parsedSVG.svg.defs.font.glyph.forEach((glyph: { unicode: string, "glyph-name": string }) => {
+			if (glyph['glyph-name'].length === 1) { // Skip non-characters (.notdef, .null, etc.)
+				glyphs.push(glyph);
+			}
 		});
+
+		// Two assertions for each glyph:
+		// - each glyph has a unique unicode character
+		// - the correct glyph character code is present in the generated CSS
+		const unicodeCharArr = glyphs.map((g) => { return g.unicode; });
+		test.equal(0, findDuplicates(unicodeCharArr).length);
+		for (let index = 0; index < glyphs.length; index++) {
+			test.ok(
+				find(css, `content:"\\${(startCodepoint + index).toString(16)}"`),
+				`Character at index ${index} has its codepoint in the CSS`
+			);
+		}
 	},
 
 	camel: (test: TestContextAssert) => {
@@ -738,18 +733,17 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		const svgFont = fs.readFileSync('test/tmp/folders/icons.svg', 'utf8');
 		const paths = JSON.parse(fs.readFileSync('test/src_folders/paths.json', 'utf8'));
 		const glyphs: { unicode: string, d: string, "glyph-name": string }[] = [];
-		parseXMLString(svgFont, (err, result) => {
-			// Normalise glyphs into JS objects
-			result.svg.defs[0].font[0].glyph.forEach((glyph: { $: { unicode: string, d: string, "glyph-name": string } }) => {
-				if (/^uni/.test(glyph.$['glyph-name'])) { // Skip non-characters (.notdef, .null, etc.)
-					glyphs.push(glyph.$);
-				}
-			});
-
-			glyphs.forEach((glyph) => {
-				test.equal(glyph.d, paths[glyph['glyph-name']], `Glyph with codepoint ${glyph.unicode} has correct path.`);
-			});
+		const parsedSVG = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "" }).parse(svgFont);
+		// Normalise glyphs into JS objects
+		parsedSVG.svg.defs.font.glyph.forEach((glyph: { unicode: string, d: string, "glyph-name": string }) => {
+			if (/^uni/.test(glyph['glyph-name'])) { // Skip non-characters (.notdef, .null, etc.)
+				glyphs.push(glyph);
+			}
 		});
+
+		for (const glyph of glyphs) {
+			test.equal(glyph.d, paths[glyph['glyph-name']], `Glyph with codepoint ${glyph.unicode} has correct path.`);
+		}
 	},
 
 	woff2: (test: TestContextAssert) => {

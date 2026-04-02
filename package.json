@@ -80,14 +80,13 @@
     "@types/svg2ttf": "^5.0.3",
     "@types/temp": "^0.9.4",
     "@types/which": "^3.0.4",
-    "@types/xml2js": "^0.4.14",
+    "fast-xml-parser": "^5.5.9",
     "grunt": "^1.6.1",
     "grunt-cli": "^1.5.0",
     "grunt-contrib-clean": "^2.0.1",
     "stylus": "^0.64.0",
     "tsdown": "^0.17.1",
-    "typescript": "^5.9.3",
-    "xml2js": "^0.6.2"
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "grunt": ">=0.4.0"

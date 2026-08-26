@@ -271,6 +271,7 @@ const config = (grunt: IGrunt) => {
 				src: 'test/src/*.svg',
 				dest: 'test/tmp/codepoints',
 				options: {
+					types: 'svg',
 					hashes: false,
 					startCodepoint: 0x41,
 					codepoints: {

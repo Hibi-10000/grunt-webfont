@@ -47,14 +47,18 @@
     "test:grunt": "node --test-only ./test/webfont.test.ts --no-clean"
   },
   "engines": {
-    "node": ">=20.11",
-    "pnpm": ">=10"
+    "node": ">=20.11"
   },
   "devEngines": {
     "runtime": {
       "name": "node",
       "version": "^24.11",
       "onFail": "download"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11",
+      "onFail": "warn"
     }
   },
   "dependencies": {

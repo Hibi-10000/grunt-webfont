@@ -64,32 +64,32 @@
   "dependencies": {
     "chalk": "^5.6.2",
     "consola": "^3.4.2",
-    "eta": "^4.5.1",
-    "glob": "^13.0.0",
+    "eta": "^4.6.0",
+    "glob": "^13.0.6",
     "temp": "^0.9.4",
-    "ttf2woff2": "^8.0.0"
+    "ttf2woff2": "^8.0.1"
   },
   "optionalDependencies": {
-    "svg2ttf": "^6.0.3",
+    "svg2ttf": "^6.1.0",
     "svgicons2svgfont": "~15.0.1",
-    "svgo": "^4.0.0",
+    "svgo": "^4.1.0",
     "ttf2eot": "^3.1.0",
     "ttf2woff": "^3.0.0",
-    "which": "^6.0.0"
+    "which": "^6.0.1"
   },
   "devDependencies": {
     "@types/grunt": "^0.4.32",
-    "@types/node": "^24.10.1",
+    "@types/node": "^24.13.3",
     "@types/stylus": "^0.48.43",
     "@types/svg2ttf": "^5.0.3",
     "@types/temp": "^0.9.4",
     "@types/which": "^3.0.4",
-    "fast-xml-parser": "^5.5.9",
-    "grunt": "^1.6.1",
+    "fast-xml-parser": "^5.11.1",
+    "grunt": "^1.6.3",
     "grunt-cli": "^1.5.0",
     "grunt-contrib-clean": "^2.0.1",
     "stylus": "^0.64.0",
-    "tsdown": "^0.17.1",
+    "tsdown": "^0.22.14",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {

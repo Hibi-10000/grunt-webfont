@@ -7,10 +7,6 @@ import stylus from 'stylus';
 import { XMLParser } from "fast-xml-parser";
 import * as wf from '../tasks/util/util.ts';
 
-function find(source: string, target: string): boolean {
-	return source.indexOf(target) !== -1;
-}
-
 function findDuplicates(array: string[]): string[] {
 	const sorted_arr = array.sort();
 
@@ -49,18 +45,18 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		// CSS links to font files are correct
 		['woff', 'ttf', 'eot'].forEach((type) => {
 			test.ok(
-				find(css, `url("icons.${type}`),
+				css.includes(`url("icons.${type}`),
 				`File path ${type} should be in CSS file.`
 			);
 		});
 
 		// Double EOT (for IE9 compat mode)
 		test.ok(
-			find(css, 'src:url("icons.eot");'),
+			css.includes('src:url("icons.eot");'),
 			'First EOT declaration.'
 		);
 		test.ok(
-			find(css, 'src:url("icons.eot?#iefix") format("embedded-opentype"),'),
+			css.includes('src:url("icons.eot?#iefix") format("embedded-opentype"),'),
 			'Second EOT declaration.'
 		);
 
@@ -68,15 +64,15 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		svgs.forEach((file, index) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, `.icon_${id}:before`),
+				css.includes(`.icon_${id}:before`),
 				`Icon ${id} should be in CSS file.`
 			);
 			test.ok(
-				find(css, `content:"\\${(wf.UNICODE_PUA_START + index).toString(16)}"`),
+				css.includes(`content:"\\${(wf.UNICODE_PUA_START + index).toString(16)}"`),
 				`Character at index ${index} has its codepoint in the CSS`
 			);
 			test.ok(
-				find(html, `<div class="icons__item" data-name="${id}"><i class="icon icon_${id}"></i> icon_${id}</div>`),
+				html.includes(`<div class="icons__item" data-name="${id}"><i class="icon icon_${id}"></i> icon_${id}</div>`),
 				`Icon ${id} should be in HTML file.`
 			);
 		});
@@ -116,7 +112,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		// CSS links to font files are correct
 		['woff', 'svg'].forEach((type) => {
 			test.ok(
-				find(css, `url("fonts/myfont.${type}?${hash}`),
+				css.includes(`url("fonts/myfont.${type}?${hash}`),
 				`File path ${type} should be in CSS file.`
 			);
 		});
@@ -124,7 +120,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		// CSS links to excluded formats should not be included
 		['ttf', 'eot'].forEach((type) => {
 			test.ok(
-				!find(css, `fonts/myfont.${type}`),
+				!css.includes(`fonts/myfont.${type}`),
 				`File path ${type} should be in CSS file.`
 			);
 		});
@@ -134,11 +130,11 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, `.icon-${id}:before`),
+				css.includes(`.icon-${id}:before`),
 				`Icon ${id} should be in CSS file.`
 			);
 			test.ok(
-				find(html, `<div class="icons__item" data-name="${id}"><i class=" icon-${id}"></i> icon-${id}</div>`),
+				html.includes(`<div class="icons__item" data-name="${id}"><i class=" icon-${id}"></i> icon-${id}</div>`),
 				`Icon ${id} should be in HTML file.`
 			);
 		});
@@ -237,7 +233,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		// CSS links to font files are correct
 		['woff', 'ttf', 'eot'].forEach((type) => {
 			test.ok(
-				find(css, `icons.${type}`),
+				css.includes(`icons.${type}`),
 				`File path ${type} should be in CSS file.`
 			);
 		});
@@ -246,7 +242,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, `.icon_${id}:before`),
+				css.includes(`.icon_${id}:before`),
 				`Icon ${id} should be in CSS file.`
 			);
 		});
@@ -257,7 +253,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 
 		// There should be comment from custom template
 		test.ok(
-			find(css, 'Custom template'),
+			css.includes('Custom template'),
 			'Comment from custom template.'
 		);
 	},
@@ -271,7 +267,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 
 		// There should be comment from custom template
 		test.ok(
-			find(css, 'Custom template'),
+			css.includes('Custom template'),
 			'SCSS template: comment from custom template.'
 		);
 	},
@@ -285,7 +281,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 
 		// There should be comment from custom template
 		test.ok(
-			find(css, 'Custom template'),
+			css.includes('Custom template'),
 			'SASS template: comment from custom template.'
 		);
 	},
@@ -301,31 +297,31 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 
 		// There should be a variable declaration for scss preprocessor
 		test.ok(
-			find(scss, '$icons-font-path : "../iamrelative/" !default;'),
+			scss.includes('$icons-font-path : "../iamrelative/" !default;'),
 			'SCSS enable template variables: variable exists.'
 		);
 
 		// There should be a variable declaration for scss preprocessor
 		test.ok(
-			find(scss, '$icons-font-path : "../iamrelative/" !default;'),
+			scss.includes('$icons-font-path : "../iamrelative/" !default;'),
 			'SCSS enable template variables: variable exists.'
 		);
 
 		// There should be a variable declaration for less preprocessor
 		test.ok(
-			find(less, '@icons-font-path : "../iamrelative/";'),
+			less.includes('@icons-font-path : "../iamrelative/";'),
 			'LESS enable template variables: variable exists.'
 		);
 
 		// The variable should be used in the less file
 		test.ok(
-			find(less, 'url("@{icons-font-path}icons'),
+			less.includes('url("@{icons-font-path}icons'),
 			'LESS enable template variables: variable used.'
 		);
 
 		// The LESS variable should not be included in the html demo source
 		test.ok(
-			!find(html, 'url("@{icons-font-path}icons'),
+			!html.includes('url("@{icons-font-path}icons'),
 			'Path variables were found in the HTML demo.'
 		);
 	},
@@ -335,7 +331,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 
 		// There should be comment from custom template
 		test.ok(
-			find(demo, 'Custom template'),
+			demo.includes('Custom template'),
 			'Comment from custom template.'
 		);
 	},
@@ -353,7 +349,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		// CSS links to font files are correct
 		['woff', 'ttf', 'eot'].forEach((type) => {
 			test.ok(
-				find(css, `url("../iamrelative/icons.${type}`),
+				css.includes(`url("../iamrelative/icons.${type}`),
 				`File path ${type} should be in CSS file.`
 			);
 		});
@@ -395,7 +391,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(less, `.icon_${id} {\n\t&:before`),
+				less.includes(`.icon_${id} {\n\t&:before`),
 				`LESS Mixin ${id} should be in CSS file.`
 			);
 		});
@@ -455,11 +451,11 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		const css = fs.readFileSync('test/tmp/spaces/icons.css', 'utf8');
 
 		test.ok(
-			find(css, '.icon_ma-il-ru:before'),
+			css.includes('.icon_ma-il-ru:before'),
 			'Spaces in class name should be replaced by hyphens.'
 		);
 		test.ok(
-			find(css, `content:"\\${wf.UNICODE_PUA_START.toString(16)}";`),
+			css.includes(`content:"\\${wf.UNICODE_PUA_START.toString(16)}";`),
 			'Right codepoint should exists.'
 		);
 	},
@@ -476,22 +472,22 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		const html = fs.readFileSync('test/tmp/non_css_demo/icons.html', 'utf8');
 
 		test.ok(
-			find(html, '@font-face {'),
+			html.includes('@font-face {'),
 			'Font-face declaration exists in HTML.'
 		);
 
 		test.ok(
-			find(html, '.icon {'),
+			html.includes('.icon {'),
 			'Base icon exists in HTML.'
 		);
 
 		test.ok(
-			!find(html, 'url("../iamrelative/icons-'),
+			!html.includes('url("../iamrelative/icons-'),
 			'Relative paths should not be in HTML.'
 		);
 
 		test.ok(
-			!find(html, '&:before'),
+			!html.includes('&:before'),
 			'LESS mixins should not be in HTML.'
 		);
 
@@ -500,7 +496,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(html, `.icon_${id}:before`),
+				html.includes(`.icon_${id}:before`),
 				`Icon ${id} CSS should be in HTML file.`
 			);
 		});
@@ -514,7 +510,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, `.icon_${id}:before`),
+				css.includes(`.icon_${id}:before`),
 				`Icon ${id} should be in CSS file.`
 			);
 		});
@@ -528,7 +524,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		svgs.forEach((file) => {
 			const name = path.basename(file, '.svg');
 			test.ok(
-				find(css, `content:"${name}";`),
+				css.includes(`content:"${name}";`),
 				`Icon ${name} should be in CSS file.`
 			);
 		});
@@ -542,7 +538,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		svgs.forEach((file) => {
 			const id = [path.basename(path.dirname(file)), path.basename(file, '.svg')].join('-');
 			test.ok(
-				find(css, `.icon_${id}:before`),
+				css.includes(`.icon_${id}:before`),
 				`Icon ${id} should be in CSS file.`
 			);
 		});
@@ -554,7 +550,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 
 		// Font-face src rules should be in right order
 		test.ok(
-			find(css, 'src:url("icons.svg#icons") format("svg"),\n\t\turl("icons.woff") format("woff");'),
+			css.includes('src:url("icons.svg#icons") format("svg"),\n\t\turl("icons.woff") format("woff");'),
 			'Font-face src rules should be in right order.'
 		);
 	},
@@ -565,7 +561,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		const html = fs.readFileSync('test/tmp/template_options/icons.html', 'utf8');
 
 		test.ok(
-			find(less, '.glyph-icon {'),
+			less.includes('.glyph-icon {'),
 			'Class .glyph-icon should be in LESS file.'
 		);
 
@@ -573,15 +569,15 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			// test.ok(
-			// 		find(less, `.make-icon-${id} {`),
+			// 		less.includes(`.make-icon-${id} {`),
 			// 		`Mixin .make-icon-${id} should be in LESS file.`
 			// );
 			test.ok(
-				find(less, `.glyph_${id} {`),
+				less.includes(`.glyph_${id} {`),
 				`Icon .glyph_${id} should be in LESS file.`
 			);
 			test.ok(
-				find(html, `<div class="icons__item" data-name="${id}"><i class="glyph-icon glyph_${id}"></i> glyph_${id}</div>`),
+				html.includes(`<div class="icons__item" data-name="${id}"><i class="glyph-icon glyph_${id}"></i> glyph_${id}</div>`),
 				`Icon .glyph_${id} should be in HTML file.`
 			);
 		});
@@ -608,18 +604,18 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		// CSS links to font files are correct
 		['woff', 'ttf', 'eot'].forEach((type) => {
 			test.ok(
-				find(css, `url("icons.${type}`),
+				css.includes(`url("icons.${type}`),
 				`File path ${type} shound be in CSS file.`
 			);
 		});
 
 		// Double EOT (for IE9 compat mode)
 		test.ok(
-			find(css, 'src:url("icons.eot");'),
+			css.includes('src:url("icons.eot");'),
 			'First EOT declaration.'
 		);
 		test.ok(
-			find(css, 'src:url("icons.eot?#iefix") format("embedded-opentype"),'),
+			css.includes('src:url("icons.eot?#iefix") format("embedded-opentype"),'),
 			'Second EOT declaration.'
 		);
 
@@ -627,11 +623,11 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, `.icon_${id}:before`),
+				css.includes(`.icon_${id}:before`),
 				`Icon ${id} shound be in CSS file.`
 			);
 			test.ok(
-				find(html, `<div class="icons__item" data-name="${id}"><i class="icon icon_${id}"></i> icon_${id}</div>`),
+				html.includes(`<div class="icons__item" data-name="${id}"><i class="icon icon_${id}"></i> icon_${id}</div>`),
 				`Icon ${id} shound be in HTML file.`
 			);
 		});
@@ -640,12 +636,12 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 	ie7: (test: TestContextAssert) => {
 		const css = fs.readFileSync('test/tmp/ie7/icons.css', 'utf8');
 		const svgs = globSync('test/src/*.svg');
-		test.ok(find(css, '*zoom'), '*zoom property should be set');
-		test.ok(find(css, '&#x') , 'HTML char are present');
+		test.ok(css.includes('*zoom'), '*zoom property should be set');
+		test.ok(css.includes('&#x') , 'HTML char are present');
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, `.icon_${id} {`),
+				css.includes(`.icon_${id} {`),
 				`Icon ${id} shound be in CSS file.`
 			);
 		});
@@ -654,12 +650,12 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 	ie7_bootstrap: (test: TestContextAssert) => {
 		const css = fs.readFileSync('test/tmp/ie7_bootstrap/icons.css', 'utf8');
 		const svgs = globSync('test/src/*.svg');
-		test.ok(find(css, '*zoom'), '*zoom property should be set');
-		test.ok(find(css, '&#x') , 'HTML char are present');
+		test.ok(css.includes('*zoom'), '*zoom property should be set');
+		test.ok(css.includes('&#x') , 'HTML char are present');
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, `.icon-${id} {`),
+				css.includes(`.icon-${id} {`),
 				`Icon ${id} shound be in CSS file.`
 			);
 		});
@@ -706,7 +702,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		test.equal(0, findDuplicates(unicodeCharArr).length);
 		for (let index = 0; index < glyphs.length; index++) {
 			test.ok(
-				find(css, `content:"\\${(startCodepoint + index).toString(16)}"`),
+				css.includes(`content:"\\${(startCodepoint + index).toString(16)}"`),
 				`Character at index ${index} has its codepoint in the CSS`
 			);
 		}
@@ -720,7 +716,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		svgs.forEach((file) => {
 			const id = path.basename(file, '.svg');
 			test.ok(
-				find(css, `.icon_${id}:before`),
+				css.includes(`.icon_${id}:before`),
 				`Icon ${id} should be in CSS file.`
 			);
 		});
@@ -772,7 +768,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		// CSS links to font files are correct
 		['woff2', 'woff'].forEach((type) => {
 			test.ok(
-				find(css, `url("icons.${type}`),
+				css.includes(`url("icons.${type}`),
 				`File path ${type} shound be in CSS file.`
 			);
 		});
@@ -780,7 +776,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		// CSS links to TTF should not be created
 		['ttf'].forEach((type) => {
 			test.ok(
-				!find(css, `url("icons.${type}`),
+				!css.includes(`url("icons.${type}`),
 				`File path ${type} shound NOT be in CSS file.`
 			);
 		});
@@ -812,7 +808,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		// CSS links to font files are correct
 		['woff2', 'woff'].forEach((type) => {
 			test.ok(
-				find(css, `url("icons.${type}`),
+				css.includes(`url("icons.${type}`),
 				`File path ${type} shound be in CSS file.`
 			);
 		});
@@ -820,7 +816,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		// CSS links to TTF should not be created
 		['ttf'].forEach((type) => {
 			test.ok(
-				!find(css, `url("icons.${type}`),
+				!css.includes(`url("icons.${type}`),
 				`File path ${type} shound NOT be in CSS file.`
 			);
 		});
@@ -843,7 +839,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 
 		// fontFamilyName should be in the HTML file's title
 		test.ok(
-			find(html, '<title>customName</title>'),
+			html.includes('<title>customName</title>'),
 			'fontFamilyName should be in the HTML file title'
 		);
 

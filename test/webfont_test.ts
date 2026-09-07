@@ -7,19 +7,6 @@ import stylus from 'stylus';
 import { XMLParser } from "fast-xml-parser";
 import * as wf from '../tasks/util/util.ts';
 
-function findDuplicates(array: string[]): string[] {
-	const sorted_arr = array.sort();
-
-	const results: string[] = [];
-	for (let i = 0; i < array.length - 1; i++) {
-		if (sorted_arr[i + 1] === sorted_arr[i]) {
-			results.push(sorted_arr[i]);
-		}
-	}
-
-	return results;
-}
-
 type TestContextAssert = {
     [K in keyof _TestContextAssert as string extends K ? never : K]: _TestContextAssert[K];
 };
@@ -699,7 +686,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 		// - each glyph has a unique unicode character
 		// - the correct glyph character code is present in the generated CSS
 		const unicodeCharArr = glyphs.map((g) => { return g.unicode; });
-		test.equal(0, findDuplicates(unicodeCharArr).length);
+		test.equal(0, unicodeCharArr.filter((value, index) => unicodeCharArr.indexOf(value) !== index).length);
 		for (let index = 0; index < glyphs.length; index++) {
 			test.ok(
 				css.includes(`content:"\\${(startCodepoint + index).toString(16)}"`),

@@ -90,7 +90,7 @@
     "grunt-contrib-clean": "^2.0.1",
     "stylus": "^0.64.0",
     "tsdown": "^0.22.14",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "grunt": ">=0.4.0"

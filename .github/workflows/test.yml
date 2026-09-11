@@ -38,7 +38,16 @@ jobs:
           pnpm ci --no-runtime
 
       - name: Run tests
+        if: matrix.node-version != '20.x'
         run: |
           pnpm exec node -v
           pnpm run test:grunt
           pnpm run test:node:cov
+
+      - name: Run tests on Node.js 20.x
+        if: matrix.node-version == '20.x'
+        run: |
+          pnpm exec node -v
+          pnpm dlx tsx ./node_modules/grunt/bin/grunt clean webfont --gruntfile ./Gruntfile.ts --stack
+          pnpm dlx tsx --test-only ./test/webfont.test.ts --no-clean
+          pnpm dlx tsx --experimental-test-coverage --test ./test/webfont.test.ts

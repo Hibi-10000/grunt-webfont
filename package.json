@@ -71,7 +71,7 @@
   },
   "optionalDependencies": {
     "svg2ttf": "^6.1.0",
-    "svgicons2svgfont": "~15.0.1",
+    "svgicons2svgfont": "^15.0.1",
     "svgo": "^4.1.0",
     "ttf2eot": "^3.1.0",
     "ttf2woff": "^3.0.0",

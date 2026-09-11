@@ -34,7 +34,7 @@ jobs:
 
       - name: Run build
         run: |
-          node -v
+          pnpm exec node -v
           pnpm run build
 
       - name: Upload build artifacts

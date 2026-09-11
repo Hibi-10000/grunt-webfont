@@ -38,6 +38,6 @@ jobs:
 
       - name: Run tests
         run: |
-          node -v
+          pnpm exec node -v
           pnpm run test:grunt
           pnpm run test:node:cov

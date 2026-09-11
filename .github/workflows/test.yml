@@ -34,7 +34,7 @@ jobs:
 
       - name: Run pnpm install
         run: |
-          pnpm ci
+          pnpm ci --no-runtime
 
       - name: Run tests
         run: |

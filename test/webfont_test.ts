@@ -504,7 +504,7 @@ export const webfont: Record<string, (test: TestContextAssert) => void | Promise
 	},
 
 	ligatures: (test: TestContextAssert) => {
-		const svgs = globSync('test/ligatures_src/**.*');
+		const svgs = globSync('test/src_ligatures/**.*');
 		const css = fs.readFileSync('test/tmp/ligatures/icons.css', 'utf8');
 
 		// Every SVG file should have corresponding entry in CSS file
